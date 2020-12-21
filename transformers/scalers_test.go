@@ -229,7 +229,7 @@ func TestQuantileScalerFit(t *testing.T) {
 		assert.Equal(t, QuantileScaler{NQuantiles: 3, Quantiles: []float64{1, 2, 3}}, encoder)
 	})
 
-	t.Run("nquantiles is zero in beggining", func(t *testing.T) {
+	t.Run("nquantiles is zero in beginning", func(t *testing.T) {
 		encoder := QuantileScaler{}
 		encoder.Fit(nil)
 		assert.Equal(t, QuantileScaler{NQuantiles: 1000}, encoder)
