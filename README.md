@@ -176,7 +176,7 @@ BenchmarkLargeMemoryTransformerFeatureTransformer_LargeComposites_100000elements
 
 If you can't use `go:gencode` version, you can try relfection based version.
 Note, that reflection version intrudes overhead that is particularly noticeable if your struct has a lot of fields.
-You would get ~2x time increase for struct with large composite transformers. 
+You would get ~2x time increase for struct with large composite transformers.
 And you would get ~20x time increase for struct with 32 fields.
 Note, some features like serialization and de-serialization are not supported yet.
 
