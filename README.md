@@ -1,5 +1,7 @@
 # go-featureprocessing
 
+[![codecov](https://codecov.io/gh/nikolaydubina/go-featureprocessing/branch/main/graph/badge.svg?token=02QNME4TNT)](https://codecov.io/gh/nikolaydubina/go-featureprocessing)
+
 > _Perfect for low latency machine learning inference of data models in Go_
 
 Fast and easy feature processing in Go based on [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html#non-linear-transformation).
