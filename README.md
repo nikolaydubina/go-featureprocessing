@@ -2,6 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/nikolaydubina/go-featureprocessing)](https://goreportcard.com/report/github.com/nikolaydubina/go-featureprocessing)
 [![codecov](https://codecov.io/gh/nikolaydubina/go-featureprocessing/branch/main/graph/badge.svg?token=02QNME4TNT)](https://codecov.io/gh/nikolaydubina/go-featureprocessing)
+[![Go Reference](https://pkg.go.dev/badge/github.com/nikolaydubina/go-featureprocessing.svg)](https://pkg.go.dev/github.com/nikolaydubina/go-featureprocessing)
 
 > _Perfect for low latency machine learning inference of data models in Go_
 
