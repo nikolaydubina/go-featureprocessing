@@ -46,16 +46,14 @@ var fp EmployeeFeatureTransformer
 config, _ := ioutil.ReadAll("employee_feature_processor.json")
 json.Unmarshal(config, &fp)
 
-fp.Transform(&employee})
+fp.Transform(&employee)
 // Output: []float64{22, 1, 0.5, 1.0039999999999998, 1, 1, 0, 0, 0, 1, 5, 0.7674945674619879, 0.4532946552278861, 0.4532946552278861}
 ```
 
 You can also fit transformer based on data
 ```go
-values := []Employee{...}
-
 fp := EmployeeFeatureTransformer{}
-fp.Fit(values)
+fp.Fit([]Employee{...})
 
 config, _ := json.Marshal(data)
 _ = ioutil.WriteFile("employee_feature_processor.json", config, 0644)
