@@ -62,7 +62,7 @@ func TestKBinsDiscretizerTransformFit(t *testing.T) {
 		assert.Equal(t, KBinsDiscretizer{QuantileScaler{NQuantiles: 3, Quantiles: []float64{1, 2, 3}}}, encoder)
 	})
 
-	t.Run("nquantiles is zero in beggining", func(t *testing.T) {
+	t.Run("nquantiles is zero in beginning", func(t *testing.T) {
 		encoder := KBinsDiscretizer{QuantileScaler{}}
 		encoder.Fit(nil)
 		assert.Equal(t, KBinsDiscretizer{QuantileScaler{NQuantiles: 1000}}, encoder)
