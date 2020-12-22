@@ -11,6 +11,7 @@ type CountVectorizer struct {
 	Separator string // default space
 }
 
+// Fit assigns a number from 0 to N for each word in input, where N is number of words
 func (t *CountVectorizer) Fit(vals []string) {
 	if t.Separator == "" {
 		t.Separator = " "
@@ -32,6 +33,7 @@ func (t *CountVectorizer) Fit(vals []string) {
 	}
 }
 
+// NumFeatures returns num of features made for single input field
 func (t *CountVectorizer) NumFeatures() int {
 	if t == nil {
 		return 0
@@ -39,6 +41,7 @@ func (t *CountVectorizer) NumFeatures() int {
 	return len(t.Mapping)
 }
 
+// Transform counts how many time each word appeared in input
 func (t *CountVectorizer) Transform(v string) []float64 {
 	if t == nil {
 		return nil
@@ -66,6 +69,7 @@ type TfIdfVectorizer struct {
 	Normalizer   SampleNormalizerL2
 }
 
+// Fit fits CountVectorizer and extra information for tf-idf computation
 func (t *TfIdfVectorizer) Fit(vals []string) {
 	t.CountVectorizer.Fit(vals)
 	if len(vals) == 0 {
@@ -86,6 +90,7 @@ func (t *TfIdfVectorizer) Fit(vals []string) {
 	}
 }
 
+// NumFeatures returns number of features for single field
 func (t *TfIdfVectorizer) NumFeatures() int {
 	if t == nil {
 		return 0
@@ -93,6 +98,7 @@ func (t *TfIdfVectorizer) NumFeatures() int {
 	return len(t.CountVectorizer.Mapping)
 }
 
+// Transform performs tf-idf computation
 func (t *TfIdfVectorizer) Transform(v string) []float64 {
 	if t == nil {
 		return nil

@@ -134,7 +134,7 @@ func randomMappingString(num int, strlen int) map[string]float64 {
 }
 
 func getAnyKeyFromMap(mp map[string]float64) string {
-	for k, _ := range mp {
+	for k := range mp {
 		return k
 	}
 	return ""

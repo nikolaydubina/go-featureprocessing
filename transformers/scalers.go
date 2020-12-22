@@ -5,19 +5,24 @@ import (
 	"sort"
 )
 
+// Identity is a transformer that returns unmodified input value
 type Identity struct{}
 
+// Fit is not used, it is here only to keep same interface as rest of transformers
 func (t *Identity) Fit(_ []float64) {}
 
+// Transform returns same value as input
 func (t *Identity) Transform(v float64) float64 {
 	return v
 }
 
+// MinMaxScaler is a transformer that rescales value into range between min and max
 type MinMaxScaler struct {
 	Min float64
 	Max float64
 }
 
+// Fit findx min and max value in range
 func (t *MinMaxScaler) Fit(vals []float64) {
 	for i, v := range vals {
 		if i == 0 {
@@ -33,6 +38,7 @@ func (t *MinMaxScaler) Fit(vals []float64) {
 	}
 }
 
+// Transform scales value from 0 to 1 linearly
 func (t *MinMaxScaler) Transform(v float64) float64 {
 	if t.Min == t.Max {
 		return 0
@@ -46,10 +52,12 @@ func (t *MinMaxScaler) Transform(v float64) float64 {
 	return (v - t.Min) / (t.Max - t.Min)
 }
 
+// MaxAbsScaler transforms value into -1 to +1 range linearly
 type MaxAbsScaler struct {
 	Max float64
 }
 
+// Fit finds maximum abssolute value
 func (t *MaxAbsScaler) Fit(vals []float64) {
 	for i, v := range vals {
 		if i == 0 {
@@ -61,6 +69,7 @@ func (t *MaxAbsScaler) Fit(vals []float64) {
 	}
 }
 
+// Transform scales value into -1 to +1 range
 func (t *MaxAbsScaler) Transform(v float64) float64 {
 	if t.Max == 0 {
 		return 0
@@ -80,6 +89,7 @@ type StandardScaler struct {
 	STD  float64
 }
 
+// Fit computes mean and standard deviation
 func (t *StandardScaler) Fit(vals []float64) {
 	sum := 0.
 	for _, v := range vals {
@@ -91,6 +101,7 @@ func (t *StandardScaler) Fit(vals []float64) {
 	}
 }
 
+// Transform centralizes and scales based on standard deviation and mean
 func (t *StandardScaler) Transform(v float64) float64 {
 	return (v - t.Mean) / t.STD
 }
@@ -123,13 +134,14 @@ func (t *QuantileScaler) Fit(vals []float64) {
 		t.Quantiles = make([]float64, t.NQuantiles)
 	}
 	f := float64(len(sorted)) / float64(t.NQuantiles)
-	for i, _ := range t.Quantiles {
+	for i := range t.Quantiles {
 		idx := int(float64(i) * f)
 		t.Quantiles[i] = sorted[idx]
 	}
 	return
 }
 
+// Transform changes distribution into uniform one from 0 to 1
 func (t *QuantileScaler) Transform(v float64) float64 {
 	if t == nil || len(t.Quantiles) == 0 {
 		return 0

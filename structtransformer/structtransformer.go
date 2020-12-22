@@ -28,11 +28,14 @@ type StructTransformer struct {
 	Transformers []interface{}
 }
 
+// Fit will fit all field transformers
 func (s *StructTransformer) Fit(_ []interface{}) {
 	// TODO: go through encoders, make slice for each with data, call fit on that data
+	panic("not implemented")
 	return
 }
 
+// Transform applies all field transformers
 func (s *StructTransformer) Transform(v interface{}) []float64 {
 	if v == nil || s == nil {
 		return nil

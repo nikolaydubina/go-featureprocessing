@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// Field represents single transformer and field it transforms, for internal use only
 type Field struct {
 	Name           string
 	Transformer    string
@@ -15,6 +16,7 @@ type Field struct {
 	NumericalInput bool
 }
 
+// TemplateParams represents all parameters for template, for internal use only
 type TemplateParams struct {
 	PackageName              string
 	StructName               string

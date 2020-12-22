@@ -8,6 +8,7 @@ type OneHotEncoder struct {
 	Values []string
 }
 
+// Fit assigns each value from inputs a number, then makes string of values and sorts values
 func (t *OneHotEncoder) Fit(vals []string) {
 	if vals == nil {
 		return
@@ -27,10 +28,12 @@ func (t *OneHotEncoder) Fit(vals []string) {
 	})
 }
 
+// NumFeatures returns number of features one field is expanded
 func (t *OneHotEncoder) NumFeatures() int {
 	return len(t.Values)
 }
 
+// Transform assigns 1 to value that is found
 func (t *OneHotEncoder) Transform(v string) []float64 {
 	if len(t.Values) == 0 {
 		return nil
@@ -49,6 +52,7 @@ type OrdinalEncoder struct {
 	Mapping map[string]float64
 }
 
+// Fit assigns each word value from 1 to N
 func (t *OrdinalEncoder) Fit(vals []string) {
 	if len(vals) == 0 {
 		return
@@ -61,6 +65,7 @@ func (t *OrdinalEncoder) Fit(vals []string) {
 	}
 }
 
+// Transform returns number of input, if not found returns zero value which is 0
 func (t *OrdinalEncoder) Transform(v string) float64 {
 
 	return t.Mapping[v]
