@@ -32,7 +32,6 @@ type StructTransformer struct {
 func (s *StructTransformer) Fit(_ []interface{}) {
 	// TODO: go through encoders, make slice for each with data, call fit on that data
 	panic("not implemented")
-	return
 }
 
 // Transform applies all field transformers
