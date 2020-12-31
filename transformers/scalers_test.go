@@ -25,6 +25,12 @@ func TestIdentity(t *testing.T) {
 			assert.Equal(t, s.output, features)
 		})
 	}
+
+	t.Run("fit", func(t *testing.T) {
+		encoder := Identity{}
+		encoder.Fit(nil)
+		assert.Equal(t, Identity{}, encoder)
+	})
 }
 
 func TestMinMaxScalerTransform(t *testing.T) {

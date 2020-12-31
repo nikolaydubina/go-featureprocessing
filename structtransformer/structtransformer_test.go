@@ -58,6 +58,80 @@ func TestStructTransformer(t *testing.T) {
 		assert.Equal(t, []float64(nil), tr.Transform(&s))
 	})
 
+	t.Run("test transform unexpected type panics", func(t *testing.T) {
+		type T int
+		type S struct {
+			Age    T      `feature:"minmax"`
+			Salary bool   `feature:"standard"`
+			Gender string `feature:"onehot"`
+			City   string `feature:"ordinal"`
+		}
+		s := S{}
+		tr := StructTransformer{Transformers: []interface{}{
+			&MinMaxScaler{Min: 1, Max: 10},
+			&StandardScaler{Mean: 15, STD: 2.5},
+			&OneHotEncoder{Values: []string{"male", "female"}},
+			&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+		}}
+		assert.PanicsWithValue(t, "unsupported type in struct", func() { tr.Transform(s) })
+	})
+
+	t.Run("test transform nil transformer skipped", func(t *testing.T) {
+		type S struct {
+			Age    int     `feature:"minmax"`
+			Salary float64 `feature:"standard"`
+			Gender string  `feature:"onehot"`
+			City   string  `feature:"ordinal"`
+		}
+
+		tr := StructTransformer{Transformers: []interface{}{
+			&MinMaxScaler{Min: 1, Max: 10},
+			nil,
+			&OneHotEncoder{Values: []string{"male", "female"}},
+			&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+		}}
+
+		assert.Equal(t, []float64{1, 0, 1, 2}, tr.Transform(S{Age: 23, Salary: 17.5, Gender: "female", City: "city-B"}))
+	})
+
+	t.Run("test transform unexpected numerical transformer skipped", func(t *testing.T) {
+		type S struct {
+			Age    int     `feature:"minmax"`
+			Salary float64 `feature:"standard"`
+			Gender string  `feature:"onehot"`
+			City   string  `feature:"ordinal"`
+		}
+		type T struct{}
+
+		tr := StructTransformer{Transformers: []interface{}{
+			&MinMaxScaler{Min: 1, Max: 10},
+			&T{},
+			&OneHotEncoder{Values: []string{"male", "female"}},
+			&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+		}}
+
+		assert.Equal(t, []float64{1, 0, 1, 2}, tr.Transform(S{Age: 23, Salary: 17.5, Gender: "female", City: "city-B"}))
+	})
+
+	t.Run("test transform unexpected string transformer skipped", func(t *testing.T) {
+		type S struct {
+			Age    int     `feature:"minmax"`
+			Salary float64 `feature:"standard"`
+			Gender string  `feature:"onehot"`
+			City   string  `feature:"ordinal"`
+		}
+		type T struct{}
+
+		tr := StructTransformer{Transformers: []interface{}{
+			&MinMaxScaler{Min: 1, Max: 10},
+			&StandardScaler{Mean: 15, STD: 2.5},
+			&OneHotEncoder{Values: []string{"male", "female"}},
+			&T{},
+		}}
+
+		assert.Equal(t, []float64{1, 1, 0, 1}, tr.Transform(S{Age: 23, Salary: 17.5, Gender: "female", City: "city-B"}))
+	})
+
 	t.Run("test transform nil interface", func(t *testing.T) {
 		type S interface {
 			Get() int
@@ -66,6 +140,19 @@ func TestStructTransformer(t *testing.T) {
 		tr := StructTransformer{}
 		assert.Equal(t, []float64(nil), tr.Transform(&s))
 		assert.Equal(t, []float64(nil), tr.Transform(s))
+	})
+
+	t.Run("test fit not implemented", func(t *testing.T) {
+		type S struct {
+			Age    int     `feature:"minmax"`
+			Salary float64 `feature:"standard"`
+			Gender string  `feature:"onehot"`
+			City   string  `feature:"ordinal"`
+		}
+		s := []interface{}{&S{}, &S{}}
+		tr := StructTransformer{}
+		assert.PanicsWithValue(t, "not implemented", func() { tr.Fit(s) })
+
 	})
 }
 
