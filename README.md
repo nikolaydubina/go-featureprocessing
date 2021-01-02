@@ -106,12 +106,12 @@ fp := EmployeeFeatureTransformer{
 - [x] `numerical` MaxAbsScaler
 - [x] `numerical` StandardScaler
 - [x] `numerical` QuantileScaler
-- [x] `numerical` SampleNormalizerL1 (whole sample)
-- [x] `numerical` SampleNormalizerL2 (whole sample)
+- [x] `numerical` SampleNormalizerL1
+- [x] `numerical` SampleNormalizerL2
 - [x] `categorical` OneHotEncoder
 - [x] `categorical` OrdinalEncoder
 - [x] `numerical` KBinsDiscretizer
-- [x] `text` CountVectorizer (bag-of-words)
+- [x] `text` CountVectorizer
 - [x] `text` TFIDFVectorizer
 
 ### Benchmarks
