@@ -142,7 +142,6 @@ For typical use, with this struct encoder you can get <100ns processing time. Ho
           17µs           - Python JSON encode or decode times
           30µs           - UNIX domain socket, eventfd, fifo pipes latency
           30µs           - Go XML Unmarshal
-          35µs           - Go stadnard json decode
          100µs           - Redis intrinsic latency
          100µs           - AWS DynamoDB + DAX
          100µs           - KDB+ queries
