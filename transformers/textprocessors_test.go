@@ -40,7 +40,7 @@ func TestCountVectorizerFit(t *testing.T) {
 	})
 }
 
-func TestTfIdfVectorizerFit(t *testing.T) {
+func TestTFIDFVectorizerFit(t *testing.T) {
 	samples := []struct {
 		name        string
 		ndocs       int
@@ -55,8 +55,8 @@ func TestTfIdfVectorizerFit(t *testing.T) {
 
 	for _, s := range samples {
 		t.Run(s.name, func(t *testing.T) {
-			encoder := TfIdfVectorizer{}
-			expectedEncoder := TfIdfVectorizer{
+			encoder := TFIDFVectorizer{}
+			expectedEncoder := TFIDFVectorizer{
 				CountVectorizer: CountVectorizer{Mapping: s.mapping, Separator: " "},
 				NumDocuments:    s.ndocs,
 				DocCount:        s.doccount,
@@ -68,14 +68,14 @@ func TestTfIdfVectorizerFit(t *testing.T) {
 	}
 
 	t.Run("transofmer is nil", func(t *testing.T) {
-		var encoder *TfIdfVectorizer
+		var encoder *TFIDFVectorizer
 		assert.Equal(t, []float64(nil), encoder.Transform("asdf asdf"))
 		assert.Equal(t, 0, encoder.NumFeatures())
 	})
 }
 
 // test is based on data from: https://scikit-learn.org/stable/modules/feature_extraction.html
-func TestTfIdfVectorizerTransform(t *testing.T) {
+func TestTFIDFVectorizerTransform(t *testing.T) {
 	samples := []struct {
 		name     string
 		ndocs    int
@@ -98,7 +98,7 @@ func TestTfIdfVectorizerTransform(t *testing.T) {
 
 	for _, s := range samples {
 		t.Run(s.name, func(t *testing.T) {
-			encoder := TfIdfVectorizer{
+			encoder := TFIDFVectorizer{
 				CountVectorizer: CountVectorizer{Mapping: s.mapping, Separator: " "},
 				NumDocuments:    s.ndocs,
 				DocCount:        s.doccount,

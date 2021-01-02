@@ -92,7 +92,7 @@ fp := EmployeeFeatureTransformer{
    City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
    Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
    Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}, NQuantiles: 5}},
-   Description: TfIdfVectorizer{
+   Description: TFIDFVectorizer{
       NumDocuments:    2,
       DocCount:        map[int]int{0: 1, 1: 2, 2: 2},
       CountVectorizer: CountVectorizer{Mapping: map[string]int{"text": 0, "problem": 1, "help": 2}, Separator: " "},
@@ -112,7 +112,7 @@ fp := EmployeeFeatureTransformer{
 - [x] `categorical` OrdinalEncoder
 - [x] `numerical` KBinsDiscretizer
 - [x] `text` CountVectorizer (bag-of-words)
-- [x] `text` TfIdfVectorizer
+- [x] `text` TFIDFVectorizer
 
 ### Benchmarks
 

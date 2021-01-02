@@ -17,7 +17,7 @@ type EmployeeFeatureTransformer struct {
 	City        fp.OneHotEncoder
 	Car         fp.OrdinalEncoder
 	Income      fp.KBinsDiscretizer
-	Description fp.TfIdfVectorizer
+	Description fp.TFIDFVectorizer
 }
 
 // Fit fits transformer for each field

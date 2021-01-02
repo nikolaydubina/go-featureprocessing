@@ -59,10 +59,10 @@ func (t *CountVectorizer) Transform(v string) []float64 {
 	return counts
 }
 
-// TfIdfVectorizer performs tf-idf vectorization on top of count vectorization.
+// TFIDFVectorizer performs tf-idf vectorization on top of count vectorization.
 // Based on: https://scikit-learn.org/stable/modules/feature_extraction.html
 // Using non-smooth version, adding 1 to log instead of denominator in idf.
-type TfIdfVectorizer struct {
+type TFIDFVectorizer struct {
 	CountVectorizer
 	DocCount     map[int]int // number of documents word appeared in
 	NumDocuments int
@@ -70,7 +70,7 @@ type TfIdfVectorizer struct {
 }
 
 // Fit fits CountVectorizer and extra information for tf-idf computation
-func (t *TfIdfVectorizer) Fit(vals []string) {
+func (t *TFIDFVectorizer) Fit(vals []string) {
 	t.CountVectorizer.Fit(vals)
 	if len(vals) == 0 {
 		return
@@ -91,7 +91,7 @@ func (t *TfIdfVectorizer) Fit(vals []string) {
 }
 
 // NumFeatures returns number of features for single field
-func (t *TfIdfVectorizer) NumFeatures() int {
+func (t *TFIDFVectorizer) NumFeatures() int {
 	if t == nil {
 		return 0
 	}
@@ -99,7 +99,7 @@ func (t *TfIdfVectorizer) NumFeatures() int {
 }
 
 // Transform performs tf-idf computation
-func (t *TfIdfVectorizer) Transform(v string) []float64 {
+func (t *TFIDFVectorizer) Transform(v string) []float64 {
 	if t == nil {
 		return nil
 	}

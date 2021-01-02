@@ -37,7 +37,7 @@ var tagToTransformer = map[string]string{
 	"ordinal":         "OrdinalEncoder",
 	"kbins":           "KBinsDiscretizer",
 	"countvectorizer": "CountVectorizer",
-	"tfidf":           "TfIdfVectorizer",
+	"tfidf":           "TFIDFVectorizer",
 }
 
 var isTransformerExpanding = map[string]bool{

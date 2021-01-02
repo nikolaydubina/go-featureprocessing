@@ -18,7 +18,7 @@ type AllTransformersFeatureTransformer struct {
 	Name6 fp.OrdinalEncoder
 	Name7 fp.KBinsDiscretizer
 	Name8 fp.CountVectorizer
-	Name9 fp.TfIdfVectorizer
+	Name9 fp.TFIDFVectorizer
 }
 
 // Fit fits transformer for each field
