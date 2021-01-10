@@ -78,6 +78,20 @@ func TestWith32FieldsFeatureTransformerTransform(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, tr, tr2)
 	})
+
+	t.Run("inplace transform does not run when destination does not match num features", func(t *testing.T) {
+		var s With32Fields
+		fuzz.New().Fuzz(&s)
+
+		tr := With32FieldsFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
+
+		features := make([]float64, 1000)
+		features[0] = 123456789.0
+		tr.TransformInplace(features, &s)
+
+		assert.Equal(t, 123456789.0, features[0])
+	})
 }
 
 func TestWith32FieldsFeatureTransformerFit(t *testing.T) {
@@ -145,5 +159,20 @@ func BenchmarkWith32FieldsFeatureTransformer_Transform(b *testing.B) {
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		tr.Transform(&s)
+	}
+}
+
+func BenchmarkWith32FieldsFeatureTransformer_Transform_Inplace(b *testing.B) {
+	var s With32Fields
+	fuzz.New().Fuzz(&s)
+
+	tr := With32FieldsFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
+
+	features := make([]float64, tr.GetNumFeatures())
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		tr.TransformInplace(features, &s)
 	}
 }

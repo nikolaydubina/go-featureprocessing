@@ -245,103 +245,112 @@ func (e *With32FieldsFeatureTransformer) Transform(s *With32Fields) []float64 {
 	}
 
 	features := make([]float64, e.GetNumFeatures())
+	e.TransformInplace(features, s)
+	return features
+}
+
+// TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
+func (e *With32FieldsFeatureTransformer) TransformInplace(dst []float64, s *With32Fields) {
+	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+		return
+	}
 
 	idx := 0
 
-	features[idx] = e.Name1.Transform(float64(s.Name1))
+	dst[idx] = e.Name1.Transform(float64(s.Name1))
 	idx++
 
-	features[idx] = e.Name2.Transform(float64(s.Name2))
+	dst[idx] = e.Name2.Transform(float64(s.Name2))
 	idx++
 
-	features[idx] = e.Name3.Transform(float64(s.Name3))
+	dst[idx] = e.Name3.Transform(float64(s.Name3))
 	idx++
 
-	features[idx] = e.Name4.Transform(float64(s.Name4))
+	dst[idx] = e.Name4.Transform(float64(s.Name4))
 	idx++
 
-	features[idx] = e.Name5.Transform(float64(s.Name5))
+	dst[idx] = e.Name5.Transform(float64(s.Name5))
 	idx++
 
-	features[idx] = e.Name6.Transform(float64(s.Name6))
+	dst[idx] = e.Name6.Transform(float64(s.Name6))
 	idx++
 
-	features[idx] = e.Name7.Transform(float64(s.Name7))
+	dst[idx] = e.Name7.Transform(float64(s.Name7))
 	idx++
 
-	features[idx] = e.Name8.Transform(float64(s.Name8))
+	dst[idx] = e.Name8.Transform(float64(s.Name8))
 	idx++
 
-	features[idx] = e.Name9.Transform(float64(s.Name9))
+	dst[idx] = e.Name9.Transform(float64(s.Name9))
 	idx++
 
-	features[idx] = e.Name10.Transform(float64(s.Name10))
+	dst[idx] = e.Name10.Transform(float64(s.Name10))
 	idx++
 
-	features[idx] = e.Name11.Transform(float64(s.Name11))
+	dst[idx] = e.Name11.Transform(float64(s.Name11))
 	idx++
 
-	features[idx] = e.Name12.Transform(float64(s.Name12))
+	dst[idx] = e.Name12.Transform(float64(s.Name12))
 	idx++
 
-	features[idx] = e.Name13.Transform(float64(s.Name13))
+	dst[idx] = e.Name13.Transform(float64(s.Name13))
 	idx++
 
-	features[idx] = e.Name14.Transform(float64(s.Name14))
+	dst[idx] = e.Name14.Transform(float64(s.Name14))
 	idx++
 
-	features[idx] = e.Name15.Transform(float64(s.Name15))
+	dst[idx] = e.Name15.Transform(float64(s.Name15))
 	idx++
 
-	features[idx] = e.Name16.Transform(float64(s.Name16))
+	dst[idx] = e.Name16.Transform(float64(s.Name16))
 	idx++
 
-	features[idx] = e.Name17.Transform(float64(s.Name17))
+	dst[idx] = e.Name17.Transform(float64(s.Name17))
 	idx++
 
-	features[idx] = e.Name18.Transform(float64(s.Name18))
+	dst[idx] = e.Name18.Transform(float64(s.Name18))
 	idx++
 
-	features[idx] = e.Name19.Transform(float64(s.Name19))
+	dst[idx] = e.Name19.Transform(float64(s.Name19))
 	idx++
 
-	features[idx] = e.Name21.Transform(float64(s.Name21))
+	dst[idx] = e.Name21.Transform(float64(s.Name21))
 	idx++
 
-	features[idx] = e.Name22.Transform(float64(s.Name22))
+	dst[idx] = e.Name22.Transform(float64(s.Name22))
 	idx++
 
-	features[idx] = e.Name23.Transform(float64(s.Name23))
+	dst[idx] = e.Name23.Transform(float64(s.Name23))
 	idx++
 
-	features[idx] = e.Name24.Transform(float64(s.Name24))
+	dst[idx] = e.Name24.Transform(float64(s.Name24))
 	idx++
 
-	features[idx] = e.Name25.Transform(float64(s.Name25))
+	dst[idx] = e.Name25.Transform(float64(s.Name25))
 	idx++
 
-	features[idx] = e.Name26.Transform(float64(s.Name26))
+	dst[idx] = e.Name26.Transform(float64(s.Name26))
 	idx++
 
-	features[idx] = e.Name27.Transform(float64(s.Name27))
+	dst[idx] = e.Name27.Transform(float64(s.Name27))
 	idx++
 
-	features[idx] = e.Name28.Transform(float64(s.Name28))
+	dst[idx] = e.Name28.Transform(float64(s.Name28))
 	idx++
 
-	features[idx] = e.Name29.Transform(float64(s.Name29))
+	dst[idx] = e.Name29.Transform(float64(s.Name29))
 	idx++
 
-	features[idx] = e.Name30.Transform(float64(s.Name30))
+	dst[idx] = e.Name30.Transform(float64(s.Name30))
 	idx++
 
-	features[idx] = e.Name31.Transform(float64(s.Name31))
+	dst[idx] = e.Name31.Transform(float64(s.Name31))
 	idx++
 
-	features[idx] = e.Name32.Transform(float64(s.Name32))
+	dst[idx] = e.Name32.Transform(float64(s.Name32))
 	idx++
 
-	return features
+	return
 }
 
 // GetNumFeatures returns number of features in output feature vector

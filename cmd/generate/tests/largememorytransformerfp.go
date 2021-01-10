@@ -85,34 +85,43 @@ func (e *LargeMemoryTransformerFeatureTransformer) Transform(s *LargeMemoryTrans
 	}
 
 	features := make([]float64, e.GetNumFeatures())
+	e.TransformInplace(features, s)
+	return features
+}
+
+// TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
+func (e *LargeMemoryTransformerFeatureTransformer) TransformInplace(dst []float64, s *LargeMemoryTransformer) {
+	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+		return
+	}
 
 	idx := 0
 
-	e.Name1.TransformInplace(features[idx:idx+e.Name1.NumFeatures()], s.Name1)
+	e.Name1.TransformInplace(dst[idx:idx+e.Name1.NumFeatures()], s.Name1)
 	idx += e.Name1.NumFeatures()
 
-	e.Name2.TransformInplace(features[idx:idx+e.Name2.NumFeatures()], s.Name2)
+	e.Name2.TransformInplace(dst[idx:idx+e.Name2.NumFeatures()], s.Name2)
 	idx += e.Name2.NumFeatures()
 
-	features[idx] = e.Name3.Transform(string(s.Name3))
+	dst[idx] = e.Name3.Transform(string(s.Name3))
 	idx++
 
-	features[idx] = e.Name4.Transform(string(s.Name4))
+	dst[idx] = e.Name4.Transform(string(s.Name4))
 	idx++
 
-	features[idx] = e.Name5.Transform(float64(s.Name5))
+	dst[idx] = e.Name5.Transform(float64(s.Name5))
 	idx++
 
-	features[idx] = e.Name6.Transform(float64(s.Name6))
+	dst[idx] = e.Name6.Transform(float64(s.Name6))
 	idx++
 
-	features[idx] = e.Name7.Transform(float64(s.Name7))
+	dst[idx] = e.Name7.Transform(float64(s.Name7))
 	idx++
 
-	features[idx] = e.Name8.Transform(float64(s.Name8))
+	dst[idx] = e.Name8.Transform(float64(s.Name8))
 	idx++
 
-	return features
+	return
 }
 
 // GetNumFeatures returns number of features in output feature vector

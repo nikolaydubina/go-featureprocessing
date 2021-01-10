@@ -57,22 +57,31 @@ func (e *WeirdTagsFeatureTransformer) Transform(s *WeirdTags) []float64 {
 	}
 
 	features := make([]float64, e.GetNumFeatures())
+	e.TransformInplace(features, s)
+	return features
+}
+
+// TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
+func (e *WeirdTagsFeatureTransformer) TransformInplace(dst []float64, s *WeirdTags) {
+	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+		return
+	}
 
 	idx := 0
 
-	features[idx] = e.OnlyFeature.Transform(float64(s.OnlyFeature))
+	dst[idx] = e.OnlyFeature.Transform(float64(s.OnlyFeature))
 	idx++
 
-	features[idx] = e.FeatureNotFirst.Transform(float64(s.FeatureNotFirst))
+	dst[idx] = e.FeatureNotFirst.Transform(float64(s.FeatureNotFirst))
 	idx++
 
-	e.FirstFeature.TransformInplace(features[idx:idx+e.FirstFeature.NumFeatures()], s.FirstFeature)
+	e.FirstFeature.TransformInplace(dst[idx:idx+e.FirstFeature.NumFeatures()], s.FirstFeature)
 	idx += e.FirstFeature.NumFeatures()
 
-	features[idx] = e.Multiline.Transform(float64(s.Multiline))
+	dst[idx] = e.Multiline.Transform(float64(s.Multiline))
 	idx++
 
-	return features
+	return
 }
 
 // GetNumFeatures returns number of features in output feature vector

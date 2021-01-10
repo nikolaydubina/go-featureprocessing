@@ -43,21 +43,29 @@ func (e *{{$.StructName}}FeatureTransformer) Transform(s *{{$.StructName}}) []fl
 	}
 
 	features := make([]float64, e.GetNumFeatures())
+	e.TransformInplace(features, s)
+	return features
+}
+
+// TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
+func (e *{{$.StructName}}FeatureTransformer) TransformInplace(dst []float64, s *{{$.StructName}}) {
+	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+		return
+	}
 
 	idx := 0
 	{{range $i, $tr := $.Fields}}
 
 	{{if $tr.Expanding }}
-	e.{{$tr.Name}}.TransformInplace(features[idx:idx + e.{{$tr.Name}}.NumFeatures()], s.{{$tr.Name}})
+	e.{{$tr.Name}}.TransformInplace(dst[idx:idx + e.{{$tr.Name}}.NumFeatures()], s.{{$tr.Name}})
 	idx += e.{{$tr.Name}}.NumFeatures()
 	{{else}}
-	features[idx] = e.{{$tr.Name}}.Transform( {{if $tr.NumericalInput }}float64{{else}}string{{end}}( s.{{$tr.Name}} ))
+	dst[idx] = e.{{$tr.Name}}.Transform( {{if $tr.NumericalInput }}float64{{else}}string{{end}}( s.{{$tr.Name}} ))
 	idx++
 	{{end}}
 
 	{{end}}
-
-	return features
+	return
 }
 
 // GetNumFeatures returns number of features in output feature vector

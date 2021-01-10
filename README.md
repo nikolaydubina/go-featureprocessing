@@ -162,21 +162,26 @@ For typical use, with this struct encoder you can get <100ns processing time. Ho
 goos: darwin
 goarch: amd64
 pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
-BenchmarkAllTransformersFeatureTransformer_Transform-4                                         	22896980	       155 ns/op	      80 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100elements-4             	 3778204	       940 ns/op	    2688 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_1000elements-4            	  485426	      7215 ns/op	   24576 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_10000elements-4           	   57453	     62333 ns/op	  237568 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100000elements-4          	    3054	   1086724 ns/op	 2277376 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform-4                                                	30949274	       114 ns/op	      80 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100elements-4                    	 4824252	       753 ns/op	    1792 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_1000elements-4                   	  521397	      6286 ns/op	   16384 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_10000elements-4                  	   66386	     53885 ns/op	  155648 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100000elements-4                 	    7140	    520269 ns/op	 1540096 B/op	       1 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_Transform-4                                  	37419522	      92.9 ns/op	      64 B/op	       1 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100elements-4      	 6168792	       581 ns/op	    1792 B/op	       1 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_1000elements-4     	  767218	      4528 ns/op	   16384 B/op	       1 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_10000elements-4    	   95557	     38307 ns/op	  163840 B/op	       1 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100000elements-4   	    8799	    410428 ns/op	 1605632 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_Inplace-4                                 	27632720	       125 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform-4                                         	21233566	       166 ns/op	      80 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100elements-4             	 3554344	       966 ns/op	    2688 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_1000elements-4            	  467529	      7522 ns/op	   24576 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_10000elements-4           	   51957	     67007 ns/op	  237568 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100000elements-4          	    2886	   1089829 ns/op	 2277376 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_Inplace-4                                        	42998768	        83 ns/op	       0 B/op	       0 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform-4                                                	30137730	       119 ns/op	      80 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100elements-4                    	 4290463	       804 ns/op	    1792 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_1000elements-4                   	  497818	      6671 ns/op	   16384 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_10000elements-4                  	   59731	     58622 ns/op	  155648 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100000elements-4                 	    6238	    583672 ns/op	 1540096 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_Inplace-4                          	48558846	        70 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform-4                                  	36734350	        98 ns/op	      64 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100elements-4      	 5227923	       621 ns/op	    1792 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_1000elements-4     	  715039	      4868 ns/op	   16384 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_10000elements-4    	   90288	     42765 ns/op	  163840 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100000elements-4   	    7198	    485724 ns/op	 1605632 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Transform_Inplace-4                                    100000000	        36 ns/op	       0 B/op	       0 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Transform-4                                            	37006303	        93 ns/op	     256 B/op	       1 allocs/op
 ```
 
 ### [beta] Reflection based version

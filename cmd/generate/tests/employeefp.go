@@ -92,37 +92,46 @@ func (e *EmployeeFeatureTransformer) Transform(s *Employee) []float64 {
 	}
 
 	features := make([]float64, e.GetNumFeatures())
+	e.TransformInplace(features, s)
+	return features
+}
+
+// TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
+func (e *EmployeeFeatureTransformer) TransformInplace(dst []float64, s *Employee) {
+	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+		return
+	}
 
 	idx := 0
 
-	features[idx] = e.Age.Transform(float64(s.Age))
+	dst[idx] = e.Age.Transform(float64(s.Age))
 	idx++
 
-	features[idx] = e.Salary.Transform(float64(s.Salary))
+	dst[idx] = e.Salary.Transform(float64(s.Salary))
 	idx++
 
-	features[idx] = e.Kids.Transform(float64(s.Kids))
+	dst[idx] = e.Kids.Transform(float64(s.Kids))
 	idx++
 
-	features[idx] = e.Weight.Transform(float64(s.Weight))
+	dst[idx] = e.Weight.Transform(float64(s.Weight))
 	idx++
 
-	features[idx] = e.Height.Transform(float64(s.Height))
+	dst[idx] = e.Height.Transform(float64(s.Height))
 	idx++
 
-	e.City.TransformInplace(features[idx:idx+e.City.NumFeatures()], s.City)
+	e.City.TransformInplace(dst[idx:idx+e.City.NumFeatures()], s.City)
 	idx += e.City.NumFeatures()
 
-	features[idx] = e.Car.Transform(string(s.Car))
+	dst[idx] = e.Car.Transform(string(s.Car))
 	idx++
 
-	features[idx] = e.Income.Transform(float64(s.Income))
+	dst[idx] = e.Income.Transform(float64(s.Income))
 	idx++
 
-	e.Description.TransformInplace(features[idx:idx+e.Description.NumFeatures()], s.Description)
+	e.Description.TransformInplace(dst[idx:idx+e.Description.NumFeatures()], s.Description)
 	idx += e.Description.NumFeatures()
 
-	return features
+	return
 }
 
 // GetNumFeatures returns number of features in output feature vector
