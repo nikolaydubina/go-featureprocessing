@@ -142,6 +142,10 @@ func Benchmark{{$.StructName}}FeatureTransformer_Fit_100000elements(b *testing.B
 	fitTransformer{{$.StructName}}(b, 100000)
 }
 
+func Benchmark{{$.StructName}}FeatureTransformer_Fit_1000000elements(b *testing.B) {
+	fitTransformer{{$.StructName}}(b, 1000000)
+}
+
 func Benchmark{{$.StructName}}FeatureTransformer_Transform(b *testing.B) {
 	var s {{$.StructName}}
 	fuzz.New().Fuzz(&s)

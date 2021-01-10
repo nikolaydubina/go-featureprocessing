@@ -139,6 +139,10 @@ func BenchmarkEmployeeFeatureTransformer_Fit_100000elements(b *testing.B) {
 	fitTransformerEmployee(b, 100000)
 }
 
+func BenchmarkEmployeeFeatureTransformer_Fit_1000000elements(b *testing.B) {
+	fitTransformerEmployee(b, 1000000)
+}
+
 func BenchmarkEmployeeFeatureTransformer_Transform(b *testing.B) {
 	var s Employee
 	fuzz.New().Fuzz(&s)

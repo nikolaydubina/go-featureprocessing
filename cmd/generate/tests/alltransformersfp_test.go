@@ -139,6 +139,10 @@ func BenchmarkAllTransformersFeatureTransformer_Fit_100000elements(b *testing.B)
 	fitTransformerAllTransformers(b, 100000)
 }
 
+func BenchmarkAllTransformersFeatureTransformer_Fit_1000000elements(b *testing.B) {
+	fitTransformerAllTransformers(b, 1000000)
+}
+
 func BenchmarkAllTransformersFeatureTransformer_Transform(b *testing.B) {
 	var s AllTransformers
 	fuzz.New().Fuzz(&s)

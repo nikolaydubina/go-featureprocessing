@@ -139,6 +139,10 @@ func BenchmarkLargeMemoryTransformerFeatureTransformer_Fit_100000elements(b *tes
 	fitTransformerLargeMemoryTransformer(b, 100000)
 }
 
+func BenchmarkLargeMemoryTransformerFeatureTransformer_Fit_1000000elements(b *testing.B) {
+	fitTransformerLargeMemoryTransformer(b, 1000000)
+}
+
 func BenchmarkLargeMemoryTransformerFeatureTransformer_Transform(b *testing.B) {
 	var s LargeMemoryTransformer
 	fuzz.New().Fuzz(&s)

@@ -86,12 +86,6 @@ func (e *LargeMemoryTransformerFeatureTransformer) Transform(s *LargeMemoryTrans
 
 	features := make([]float64, 0, e.GetNumFeatures())
 
-	return e.transform(features, s)
-}
-
-// transform is utilizing mid-stack inliner, the idea is that publicly exported function will be inlined,
-// meaning final features slice will not escape to heap
-func (e *LargeMemoryTransformerFeatureTransformer) transform(features []float64, s *LargeMemoryTransformer) []float64 {
 	features = append(features, e.Name1.Transform(string(s.Name1))...)
 	features = append(features, e.Name2.Transform(string(s.Name2))...)
 	features = append(features, e.Name3.Transform(string(s.Name3)))
