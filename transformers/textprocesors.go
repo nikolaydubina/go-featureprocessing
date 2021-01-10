@@ -45,28 +45,37 @@ func (t *CountVectorizer) NumFeatures() int {
 
 // Transform counts how many time each word appeared in input
 func (t *CountVectorizer) Transform(v string) []float64 {
-	if t == nil {
-		return nil
-	}
-	if len(t.Mapping) == 0 {
+	if t == nil || len(t.Mapping) == 0 {
 		return nil
 	}
 	counts := make([]float64, t.NumFeatures())
+	t.TransformInplace(counts, v)
+	return counts
+}
+
+// TransformInplace counts how many time each word appeared in input, inplace version
+func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
+	if t == nil || len(t.Mapping) == 0 || len(dest) != t.NumFeatures() {
+		return
+	}
 
 	// sanity check, do not transform on invalid transformer
-	numf := uint(t.NumFeatures())
 	for _, idx := range t.Mapping {
-		if idx >= numf {
-			return counts
+		if idx >= uint(t.NumFeatures()) {
+			return
 		}
+	}
+
+	// zero out first
+	for i, _ := range dest {
+		dest[i] = 0
 	}
 
 	for _, w := range strings.Split(v, t.Separator) {
 		if i, ok := t.Mapping[w]; ok {
-			counts[i]++
+			dest[i]++
 		}
 	}
-	return counts
 }
 
 // TFIDFVectorizer performs tf-idf vectorization on top of count vectorization.
@@ -114,16 +123,24 @@ func (t *TFIDFVectorizer) Transform(v string) []float64 {
 		return nil
 	}
 	features := make([]float64, t.NumFeatures())
-	if len(v) == 0 {
-		return features
-	}
-	counts := t.CountVectorizer.Transform(v)
+	t.TransformInplace(features, v)
+	return features
+}
 
-	for i, tf := range counts {
+// TransformInplace performs tf-idf computation, inplace
+func (t *TFIDFVectorizer) TransformInplace(dest []float64, v string) {
+	if t == nil || dest == nil || len(dest) != t.NumFeatures() {
+		return
+	}
+	t.CountVectorizer.TransformInplace(dest, v)
+
+	for i, tf := range dest {
 		if tf > 0 && t.DocCount[i] > 0 {
-			features[i] = tf * (math.Log(float64(t.NumDocuments)/float64(t.DocCount[i])) + 1)
+			dest[i] = tf * (math.Log(float64(t.NumDocuments)/float64(t.DocCount[i])) + 1)
+		} else {
+			dest[i] = 0
 		}
 	}
 
-	return t.Normalizer.Transform(features)
+	t.Normalizer.TransformInplace(dest, dest)
 }

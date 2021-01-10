@@ -35,16 +35,26 @@ func (t *OneHotEncoder) NumFeatures() int {
 
 // Transform assigns 1 to value that is found
 func (t *OneHotEncoder) Transform(v string) []float64 {
-	if len(t.Values) == 0 {
+	if t == nil || len(t.Values) == 0 {
 		return nil
 	}
 	flags := make([]float64, len(t.Values))
+	t.TransformInplace(flags, v)
+	return flags
+}
+
+// TransformInplace assigns 1 to value that is found, inplace
+func (t *OneHotEncoder) TransformInplace(dest []float64, v string) {
+	if t == nil || len(t.Values) == 0 || len(dest) != len(t.Values) {
+		return
+	}
 	for idx, val := range t.Values {
 		if val == v {
-			flags[idx] = 1.
+			dest[idx] = 1
+		} else {
+			dest[idx] = 0
 		}
 	}
-	return flags
 }
 
 // OrdinalEncoder returns 0 for string that is not found, or else a number for that string
@@ -67,6 +77,5 @@ func (t *OrdinalEncoder) Fit(vals []string) {
 
 // Transform returns number of input, if not found returns zero value which is 0
 func (t *OrdinalEncoder) Transform(v string) float64 {
-
 	return t.Mapping[v]
 }

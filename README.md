@@ -8,7 +8,7 @@
 > _Perfect for low latency machine learning inference of data models in Go_
 
 Fast and easy feature processing in Go with feature parity of [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html#non-linear-transformation).
-Supports fitting and serialization. Does not cross `cgo` boundary. Convenient to use and integrate with other languages and frameworks.
+Supports fitting and serialization. Does not cross `cgo` boundary. No memory allocation. Convenient to use and integrate with other languages and frameworks.
 
 ```go
 //go:generate go run github.com/nikolaydubina/go-featureprocessing/cmd/generate -struct=Employee
@@ -162,16 +162,21 @@ For typical use, with this struct encoder you can get <100ns processing time. Ho
 goos: darwin
 goarch: amd64
 pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
-BenchmarkAllTransformersFeatureTransformer-4                                            37771152               119 ns/op              72 B/op          2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_LargeComposites_100elements-4                 7216501               438 ns/op            1792 B/op          2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_LargeComposites_1000elements-4                1006317              3777 ns/op           16384 B/op          2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_LargeComposites_10000elements-4                 87037             40359 ns/op          163840 B/op          2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_LargeComposites_100000elements-4                 9944            360439 ns/op         1605632 B/op          2 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer-4                                     27948330               131 ns/op              80 B/op          3 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_LargeComposites_100elements-4          3469578               883 ns/op            3584 B/op          3 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_LargeComposites_1000elements-4          532857              7207 ns/op           32768 B/op          3 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_LargeComposites_10000elements-4          50118             69664 ns/op          327680 B/op          3 allocs/op
-BenchmarkLargeMemoryTransformerFeatureTransformer_LargeComposites_100000elements-4          4510            847300 ns/op         3211264 B/op          3 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform-4                                         	22896980	       155 ns/op	      80 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100elements-4             	 3778204	       940 ns/op	    2688 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_1000elements-4            	  485426	      7215 ns/op	   24576 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_10000elements-4           	   57453	     62333 ns/op	  237568 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100000elements-4          	    3054	   1086724 ns/op	 2277376 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform-4                                                	30949274	       114 ns/op	      80 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100elements-4                    	 4824252	       753 ns/op	    1792 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_1000elements-4                   	  521397	      6286 ns/op	   16384 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_10000elements-4                  	   66386	     53885 ns/op	  155648 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100000elements-4                 	    7140	    520269 ns/op	 1540096 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform-4                                  	37419522	      92.9 ns/op	      64 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100elements-4      	 6168792	       581 ns/op	    1792 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_1000elements-4     	  767218	      4528 ns/op	   16384 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_10000elements-4    	   95557	     38307 ns/op	  163840 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100000elements-4   	    8799	    410428 ns/op	 1605632 B/op	       1 allocs/op
 ```
 
 ### [beta] Reflection based version

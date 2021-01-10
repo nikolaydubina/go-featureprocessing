@@ -244,39 +244,102 @@ func (e *With32FieldsFeatureTransformer) Transform(s *With32Fields) []float64 {
 		return nil
 	}
 
-	features := make([]float64, 0, e.GetNumFeatures())
+	features := make([]float64, e.GetNumFeatures())
 
-	features = append(features, e.Name1.Transform(float64(s.Name1)))
-	features = append(features, e.Name2.Transform(float64(s.Name2)))
-	features = append(features, e.Name3.Transform(float64(s.Name3)))
-	features = append(features, e.Name4.Transform(float64(s.Name4)))
-	features = append(features, e.Name5.Transform(float64(s.Name5)))
-	features = append(features, e.Name6.Transform(float64(s.Name6)))
-	features = append(features, e.Name7.Transform(float64(s.Name7)))
-	features = append(features, e.Name8.Transform(float64(s.Name8)))
-	features = append(features, e.Name9.Transform(float64(s.Name9)))
-	features = append(features, e.Name10.Transform(float64(s.Name10)))
-	features = append(features, e.Name11.Transform(float64(s.Name11)))
-	features = append(features, e.Name12.Transform(float64(s.Name12)))
-	features = append(features, e.Name13.Transform(float64(s.Name13)))
-	features = append(features, e.Name14.Transform(float64(s.Name14)))
-	features = append(features, e.Name15.Transform(float64(s.Name15)))
-	features = append(features, e.Name16.Transform(float64(s.Name16)))
-	features = append(features, e.Name17.Transform(float64(s.Name17)))
-	features = append(features, e.Name18.Transform(float64(s.Name18)))
-	features = append(features, e.Name19.Transform(float64(s.Name19)))
-	features = append(features, e.Name21.Transform(float64(s.Name21)))
-	features = append(features, e.Name22.Transform(float64(s.Name22)))
-	features = append(features, e.Name23.Transform(float64(s.Name23)))
-	features = append(features, e.Name24.Transform(float64(s.Name24)))
-	features = append(features, e.Name25.Transform(float64(s.Name25)))
-	features = append(features, e.Name26.Transform(float64(s.Name26)))
-	features = append(features, e.Name27.Transform(float64(s.Name27)))
-	features = append(features, e.Name28.Transform(float64(s.Name28)))
-	features = append(features, e.Name29.Transform(float64(s.Name29)))
-	features = append(features, e.Name30.Transform(float64(s.Name30)))
-	features = append(features, e.Name31.Transform(float64(s.Name31)))
-	features = append(features, e.Name32.Transform(float64(s.Name32)))
+	idx := 0
+
+	features[idx] = e.Name1.Transform(float64(s.Name1))
+	idx++
+
+	features[idx] = e.Name2.Transform(float64(s.Name2))
+	idx++
+
+	features[idx] = e.Name3.Transform(float64(s.Name3))
+	idx++
+
+	features[idx] = e.Name4.Transform(float64(s.Name4))
+	idx++
+
+	features[idx] = e.Name5.Transform(float64(s.Name5))
+	idx++
+
+	features[idx] = e.Name6.Transform(float64(s.Name6))
+	idx++
+
+	features[idx] = e.Name7.Transform(float64(s.Name7))
+	idx++
+
+	features[idx] = e.Name8.Transform(float64(s.Name8))
+	idx++
+
+	features[idx] = e.Name9.Transform(float64(s.Name9))
+	idx++
+
+	features[idx] = e.Name10.Transform(float64(s.Name10))
+	idx++
+
+	features[idx] = e.Name11.Transform(float64(s.Name11))
+	idx++
+
+	features[idx] = e.Name12.Transform(float64(s.Name12))
+	idx++
+
+	features[idx] = e.Name13.Transform(float64(s.Name13))
+	idx++
+
+	features[idx] = e.Name14.Transform(float64(s.Name14))
+	idx++
+
+	features[idx] = e.Name15.Transform(float64(s.Name15))
+	idx++
+
+	features[idx] = e.Name16.Transform(float64(s.Name16))
+	idx++
+
+	features[idx] = e.Name17.Transform(float64(s.Name17))
+	idx++
+
+	features[idx] = e.Name18.Transform(float64(s.Name18))
+	idx++
+
+	features[idx] = e.Name19.Transform(float64(s.Name19))
+	idx++
+
+	features[idx] = e.Name21.Transform(float64(s.Name21))
+	idx++
+
+	features[idx] = e.Name22.Transform(float64(s.Name22))
+	idx++
+
+	features[idx] = e.Name23.Transform(float64(s.Name23))
+	idx++
+
+	features[idx] = e.Name24.Transform(float64(s.Name24))
+	idx++
+
+	features[idx] = e.Name25.Transform(float64(s.Name25))
+	idx++
+
+	features[idx] = e.Name26.Transform(float64(s.Name26))
+	idx++
+
+	features[idx] = e.Name27.Transform(float64(s.Name27))
+	idx++
+
+	features[idx] = e.Name28.Transform(float64(s.Name28))
+	idx++
+
+	features[idx] = e.Name29.Transform(float64(s.Name29))
+	idx++
+
+	features[idx] = e.Name30.Transform(float64(s.Name30))
+	idx++
+
+	features[idx] = e.Name31.Transform(float64(s.Name31))
+	idx++
+
+	features[idx] = e.Name32.Transform(float64(s.Name32))
+	idx++
 
 	return features
 }

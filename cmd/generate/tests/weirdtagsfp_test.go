@@ -135,14 +135,6 @@ func BenchmarkWeirdTagsFeatureTransformer_Fit_10000elements(b *testing.B) {
 	fitTransformerWeirdTags(b, 10000)
 }
 
-func BenchmarkWeirdTagsFeatureTransformer_Fit_100000elements(b *testing.B) {
-	fitTransformerWeirdTags(b, 100000)
-}
-
-func BenchmarkWeirdTagsFeatureTransformer_Fit_1000000elements(b *testing.B) {
-	fitTransformerWeirdTags(b, 1000000)
-}
-
 func BenchmarkWeirdTagsFeatureTransformer_Transform(b *testing.B) {
 	var s WeirdTags
 	fuzz.New().Fuzz(&s)
