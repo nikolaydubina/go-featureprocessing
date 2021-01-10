@@ -8,7 +8,13 @@
 > _Perfect for low latency machine learning inference of data models in Go_
 
 Fast and easy feature processing in Go with feature parity of [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html#non-linear-transformation).
-Supports fitting and serialization. Does not cross `cgo` boundary. No memory allocation. Convenient to use and integrate with other languages and frameworks.
+
+- ✅ Does not cross `cgo` boundary
+- ✅ No memory allocation
+- ✅ Convenient to use and integrate with other languages and frameworks due to transformer serialization
+- ✅ Generated code has 100% test coverage
+- ✅ Generated code has benchmarks
+- ✅ Fitting
 
 ```go
 //go:generate go run github.com/nikolaydubina/go-featureprocessing/cmd/generate -struct=Employee
