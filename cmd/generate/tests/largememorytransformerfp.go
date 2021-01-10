@@ -84,16 +84,33 @@ func (e *LargeMemoryTransformerFeatureTransformer) Transform(s *LargeMemoryTrans
 		return nil
 	}
 
-	features := make([]float64, 0, e.GetNumFeatures())
+	features := make([]float64, e.GetNumFeatures())
 
-	features = append(features, e.Name1.Transform(string(s.Name1))...)
-	features = append(features, e.Name2.Transform(string(s.Name2))...)
-	features = append(features, e.Name3.Transform(string(s.Name3)))
-	features = append(features, e.Name4.Transform(string(s.Name4)))
-	features = append(features, e.Name5.Transform(float64(s.Name5)))
-	features = append(features, e.Name6.Transform(float64(s.Name6)))
-	features = append(features, e.Name7.Transform(float64(s.Name7)))
-	features = append(features, e.Name8.Transform(float64(s.Name8)))
+	idx := 0
+
+	e.Name1.TransformInplace(features[idx:idx+e.Name1.NumFeatures()], s.Name1)
+	idx += e.Name1.NumFeatures()
+
+	e.Name2.TransformInplace(features[idx:idx+e.Name2.NumFeatures()], s.Name2)
+	idx += e.Name2.NumFeatures()
+
+	features[idx] = e.Name3.Transform(string(s.Name3))
+	idx++
+
+	features[idx] = e.Name4.Transform(string(s.Name4))
+	idx++
+
+	features[idx] = e.Name5.Transform(float64(s.Name5))
+	idx++
+
+	features[idx] = e.Name6.Transform(float64(s.Name6))
+	idx++
+
+	features[idx] = e.Name7.Transform(float64(s.Name7))
+	idx++
+
+	features[idx] = e.Name8.Transform(float64(s.Name8))
+	idx++
 
 	return features
 }

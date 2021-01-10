@@ -98,18 +98,39 @@ func (e *AllTransformersFeatureTransformer) Transform(s *AllTransformers) []floa
 		return nil
 	}
 
-	features := make([]float64, 0, e.GetNumFeatures())
+	features := make([]float64, e.GetNumFeatures())
 
-	features = append(features, e.Name0.Transform(float64(s.Name0)))
-	features = append(features, e.Name1.Transform(float64(s.Name1)))
-	features = append(features, e.Name2.Transform(float64(s.Name2)))
-	features = append(features, e.Name3.Transform(float64(s.Name3)))
-	features = append(features, e.Name4.Transform(float64(s.Name4)))
-	features = append(features, e.Name5.Transform(string(s.Name5))...)
-	features = append(features, e.Name6.Transform(string(s.Name6)))
-	features = append(features, e.Name7.Transform(float64(s.Name7)))
-	features = append(features, e.Name8.Transform(string(s.Name8))...)
-	features = append(features, e.Name9.Transform(string(s.Name9))...)
+	idx := 0
+
+	features[idx] = e.Name0.Transform(float64(s.Name0))
+	idx++
+
+	features[idx] = e.Name1.Transform(float64(s.Name1))
+	idx++
+
+	features[idx] = e.Name2.Transform(float64(s.Name2))
+	idx++
+
+	features[idx] = e.Name3.Transform(float64(s.Name3))
+	idx++
+
+	features[idx] = e.Name4.Transform(float64(s.Name4))
+	idx++
+
+	e.Name5.TransformInplace(features[idx:idx+e.Name5.NumFeatures()], s.Name5)
+	idx += e.Name5.NumFeatures()
+
+	features[idx] = e.Name6.Transform(string(s.Name6))
+	idx++
+
+	features[idx] = e.Name7.Transform(float64(s.Name7))
+	idx++
+
+	e.Name8.TransformInplace(features[idx:idx+e.Name8.NumFeatures()], s.Name8)
+	idx += e.Name8.NumFeatures()
+
+	e.Name9.TransformInplace(features[idx:idx+e.Name9.NumFeatures()], s.Name9)
+	idx += e.Name9.NumFeatures()
 
 	return features
 }

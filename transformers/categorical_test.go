@@ -55,7 +55,39 @@ func TestOneHotEncoderTransform(t *testing.T) {
 			encoder := OneHotEncoder{Values: s.vals}
 			assert.Equal(t, s.output, encoder.Transform(s.input))
 		})
+
+		if len(s.output) > 0 {
+			t.Run(s.name+"_inplace", func(t *testing.T) {
+				encoder := OneHotEncoder{Values: s.vals}
+				assert.Equal(t, s.output, encoder.Transform(s.input))
+
+				features := make([]float64, encoder.NumFeatures())
+				encoder.TransformInplace(features, s.input)
+				assert.Equal(t, s.output, features)
+
+				features = make([]float64, encoder.NumFeatures()+100)
+				features[0] = 11223344556677
+				features[1] = 10101010110101
+				features[10] = 12341231 // has to overwrite this
+				features[99] = 12312312312312
+
+				expected := make([]float64, len(features))
+				copy(expected, features)
+				copy(expected[10:], s.output)
+
+				encoder.TransformInplace(features[10:10+encoder.NumFeatures()], s.input)
+				assert.Equal(t, expected, features)
+			})
+		}
 	}
+
+	t.Run("inplace does not compute when input is wrong", func(t *testing.T) {
+		encoder := OneHotEncoder{Values: []string{"a", "b"}}
+
+		features := []float64{1.1, 2.1, 3.1, 4.1}
+		encoder.TransformInplace(features, "a")
+		assert.Equal(t, []float64{1.1, 2.1, 3.1, 4.1}, features)
+	})
 }
 
 func TestOrdinalEncoderFit(t *testing.T) {

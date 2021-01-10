@@ -91,17 +91,36 @@ func (e *EmployeeFeatureTransformer) Transform(s *Employee) []float64 {
 		return nil
 	}
 
-	features := make([]float64, 0, e.GetNumFeatures())
+	features := make([]float64, e.GetNumFeatures())
 
-	features = append(features, e.Age.Transform(float64(s.Age)))
-	features = append(features, e.Salary.Transform(float64(s.Salary)))
-	features = append(features, e.Kids.Transform(float64(s.Kids)))
-	features = append(features, e.Weight.Transform(float64(s.Weight)))
-	features = append(features, e.Height.Transform(float64(s.Height)))
-	features = append(features, e.City.Transform(string(s.City))...)
-	features = append(features, e.Car.Transform(string(s.Car)))
-	features = append(features, e.Income.Transform(float64(s.Income)))
-	features = append(features, e.Description.Transform(string(s.Description))...)
+	idx := 0
+
+	features[idx] = e.Age.Transform(float64(s.Age))
+	idx++
+
+	features[idx] = e.Salary.Transform(float64(s.Salary))
+	idx++
+
+	features[idx] = e.Kids.Transform(float64(s.Kids))
+	idx++
+
+	features[idx] = e.Weight.Transform(float64(s.Weight))
+	idx++
+
+	features[idx] = e.Height.Transform(float64(s.Height))
+	idx++
+
+	e.City.TransformInplace(features[idx:idx+e.City.NumFeatures()], s.City)
+	idx += e.City.NumFeatures()
+
+	features[idx] = e.Car.Transform(string(s.Car))
+	idx++
+
+	features[idx] = e.Income.Transform(float64(s.Income))
+	idx++
+
+	e.Description.TransformInplace(features[idx:idx+e.Description.NumFeatures()], s.Description)
+	idx += e.Description.NumFeatures()
 
 	return features
 }

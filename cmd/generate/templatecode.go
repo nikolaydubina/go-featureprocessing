@@ -42,9 +42,19 @@ func (e *{{$.StructName}}FeatureTransformer) Transform(s *{{$.StructName}}) []fl
 		return nil
 	}
 
-	features := make([]float64, 0, e.GetNumFeatures())
+	features := make([]float64, e.GetNumFeatures())
 
-	{{range $i, $tr := $.Fields}}features = append(features, e.{{$tr.Name}}.Transform( {{if $tr.NumericalInput }}float64{{else}}string{{end}}( s.{{$tr.Name}} ) ){{if $tr.Expanding}}...{{end}})
+	idx := 0
+	{{range $i, $tr := $.Fields}}
+
+	{{if $tr.Expanding }}
+	e.{{$tr.Name}}.TransformInplace(features[idx:idx + e.{{$tr.Name}}.NumFeatures()], s.{{$tr.Name}})
+	idx += e.{{$tr.Name}}.NumFeatures()
+	{{else}}
+	features[idx] = e.{{$tr.Name}}.Transform( {{if $tr.NumericalInput }}float64{{else}}string{{end}}( s.{{$tr.Name}} ))
+	idx++
+	{{end}}
+
 	{{end}}
 
 	return features

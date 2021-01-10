@@ -51,6 +51,8 @@ func (t *OneHotEncoder) TransformInplace(dest []float64, v string) {
 	for idx, val := range t.Values {
 		if val == v {
 			dest[idx] = 1
+		} else {
+			dest[idx] = 0
 		}
 	}
 }

@@ -56,12 +56,21 @@ func (e *WeirdTagsFeatureTransformer) Transform(s *WeirdTags) []float64 {
 		return nil
 	}
 
-	features := make([]float64, 0, e.GetNumFeatures())
+	features := make([]float64, e.GetNumFeatures())
 
-	features = append(features, e.OnlyFeature.Transform(float64(s.OnlyFeature)))
-	features = append(features, e.FeatureNotFirst.Transform(float64(s.FeatureNotFirst)))
-	features = append(features, e.FirstFeature.Transform(string(s.FirstFeature))...)
-	features = append(features, e.Multiline.Transform(float64(s.Multiline)))
+	idx := 0
+
+	features[idx] = e.OnlyFeature.Transform(float64(s.OnlyFeature))
+	idx++
+
+	features[idx] = e.FeatureNotFirst.Transform(float64(s.FeatureNotFirst))
+	idx++
+
+	e.FirstFeature.TransformInplace(features[idx:idx+e.FirstFeature.NumFeatures()], s.FirstFeature)
+	idx += e.FirstFeature.NumFeatures()
+
+	features[idx] = e.Multiline.Transform(float64(s.Multiline))
+	idx++
 
 	return features
 }

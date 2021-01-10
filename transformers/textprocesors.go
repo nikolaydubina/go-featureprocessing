@@ -66,6 +66,11 @@ func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
 		}
 	}
 
+	// zero out first
+	for i, _ := range dest {
+		dest[i] = 0
+	}
+
 	for _, w := range strings.Split(v, t.Separator) {
 		if i, ok := t.Mapping[w]; ok {
 			dest[i]++
@@ -132,6 +137,8 @@ func (t *TFIDFVectorizer) TransformInplace(dest []float64, v string) {
 	for i, tf := range dest {
 		if tf > 0 && t.DocCount[i] > 0 {
 			dest[i] = tf * (math.Log(float64(t.NumDocuments)/float64(t.DocCount[i])) + 1)
+		} else {
+			dest[i] = 0
 		}
 	}
 
