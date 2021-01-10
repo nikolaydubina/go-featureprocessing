@@ -7,7 +7,7 @@
 
 > _Perfect for low latency machine learning inference of data models in Go_
 
-Fast and easy feature processing in Go with feature parity of [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html#non-linear-transformation).
+Ultra-fast and simple feature processing in Go with feature parity of [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html#non-linear-transformation).
 
 - ✅ Does not cross `cgo` boundary
 - ✅ No memory allocation
