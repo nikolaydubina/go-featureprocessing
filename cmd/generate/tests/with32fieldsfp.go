@@ -246,6 +246,12 @@ func (e *With32FieldsFeatureTransformer) Transform(s *With32Fields) []float64 {
 
 	features := make([]float64, 0, e.GetNumFeatures())
 
+	return e.transform(features, s)
+}
+
+// transform is utilizing mid-stack inliner, the idea is that publicly exported function will be inlined,
+// meaning final features slice will not escape to heap
+func (e *With32FieldsFeatureTransformer) transform(features []float64, s *With32Fields) []float64 {
 	features = append(features, e.Name1.Transform(float64(s.Name1)))
 	features = append(features, e.Name2.Transform(float64(s.Name2)))
 	features = append(features, e.Name3.Transform(float64(s.Name3)))

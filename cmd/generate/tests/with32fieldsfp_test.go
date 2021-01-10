@@ -139,10 +139,6 @@ func BenchmarkWith32FieldsFeatureTransformer_Fit_100000elements(b *testing.B) {
 	fitTransformerWith32Fields(b, 100000)
 }
 
-func BenchmarkWith32FieldsFeatureTransformer_Fit_1000000elements(b *testing.B) {
-	fitTransformerWith32Fields(b, 1000000)
-}
-
 func BenchmarkWith32FieldsFeatureTransformer_Transform(b *testing.B) {
 	var s With32Fields
 	fuzz.New().Fuzz(&s)

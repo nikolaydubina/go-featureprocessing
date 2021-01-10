@@ -100,6 +100,12 @@ func (e *AllTransformersFeatureTransformer) Transform(s *AllTransformers) []floa
 
 	features := make([]float64, 0, e.GetNumFeatures())
 
+	return e.transform(features, s)
+}
+
+// transform is utilizing mid-stack inliner, the idea is that publicly exported function will be inlined,
+// meaning final features slice will not escape to heap
+func (e *AllTransformersFeatureTransformer) transform(features []float64, s *AllTransformers) []float64 {
 	features = append(features, e.Name0.Transform(float64(s.Name0)))
 	features = append(features, e.Name1.Transform(float64(s.Name1)))
 	features = append(features, e.Name2.Transform(float64(s.Name2)))

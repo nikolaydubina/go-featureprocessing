@@ -44,9 +44,14 @@ func (e *{{$.StructName}}FeatureTransformer) Transform(s *{{$.StructName}}) []fl
 
 	features := make([]float64, 0, e.GetNumFeatures())
 
+	return e.transform(features, s)
+}
+
+// transform is utilizing mid-stack inliner, the idea is that publicly exported function will be inlined, 
+// meaning final features slice will not escape to heap
+func (e *{{$.StructName}}FeatureTransformer) transform(features []float64, s *{{$.StructName}}) []float64 {
 	{{range $i, $tr := $.Fields}}features = append(features, e.{{$tr.Name}}.Transform( {{if $tr.NumericalInput }}float64{{else}}string{{end}}( s.{{$tr.Name}} ) ){{if $tr.Expanding}}...{{end}})
 	{{end}}
-
 	return features
 }
 
