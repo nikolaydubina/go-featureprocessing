@@ -11,7 +11,7 @@ Fast and easy feature processing in Go with feature parity of [sklearn](https://
 
 - ✅ Does not cross `cgo` boundary
 - ✅ No memory allocation
-- ✅ Convenient to use and integrate with other languages and frameworks due to transformer serialization
+- ✅ Convenient serializiation makes it easy to integrate with other frameworks
 - ✅ Generated code has 100% test coverage
 - ✅ Generated code has benchmarks
 - ✅ Fitting
