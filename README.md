@@ -81,7 +81,7 @@ Serialized transformer is easy to read, update, and integrate with other tools.
    "Description": {
       "Mapping": {"help": 2, "problem": 1, "text": 0},
       "Separator": " ",
-      "DocCount": {"0": 1, "1": 2, "2": 2},
+      "DocCount": [1, 2, 2],
       "NumDocuments": 2,
       "Normalizer": {}
    }
@@ -100,7 +100,7 @@ fp := EmployeeFeatureTransformer{
    Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
    Description: TFIDFVectorizer{
       NumDocuments:    2,
-      DocCount:        map[int]int{0: 1, 1: 2, 2: 2},
+      DocCount:        []uint{1, 2, 2},
       CountVectorizer: CountVectorizer{Mapping: map[string]int{"text": 0, "problem": 1, "help": 2}, Separator: " "},
    },
 }

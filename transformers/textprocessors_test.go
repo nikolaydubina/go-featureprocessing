@@ -44,13 +44,13 @@ func TestTFIDFVectorizerFit(t *testing.T) {
 	samples := []struct {
 		name        string
 		ndocs       int
-		doccount    map[int]uint
+		doccount    []uint
 		mapping     map[string]uint
 		input       []string
 		numFeatures int
 	}{
-		{"basic", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, []string{"a a a b b", "a a a c", "a a", "a a a", "a a a a", "a a a c c"}, 3},
-		{"empty encoder empty input", 0, map[int]uint(nil), map[string]uint(nil), nil, 0},
+		{"basic", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, []string{"a a a b b", "a a a c", "a a", "a a a", "a a a a", "a a a c c"}, 3},
+		{"empty encoder empty input", 0, []uint(nil), map[string]uint(nil), nil, 0},
 	}
 
 	for _, s := range samples {
@@ -79,21 +79,21 @@ func TestTFIDFVectorizerTransform(t *testing.T) {
 	samples := []struct {
 		name     string
 		ndocs    int
-		doccount map[int]uint
+		doccount []uint
 		mapping  map[string]uint
 		input    string
 		output   []float64
 	}{
-		{"basic_1", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a c", []float64{0.8194099510753755, 0, 0.5732079309279058}},
-		{"basic_2", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a", []float64{1, 0, 0}},
-		{"basic_3", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a", []float64{1, 0, 0}},
-		{"basic_4", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a a", []float64{1, 0, 0}},
-		{"basic_5", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a b b", []float64{0.47330339145578754, 0.8808994832762984, 0}},
-		{"basic_6", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a c c", []float64{0.58149260706886, 0, 0.8135516873095773}},
-		{"not found", 6, map[int]uint{0: 6, 1: 1, 2: 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "dddd", []float64{0, 0, 0}},
-		{"empty input", 2, map[int]uint{0: 1, 1: 2}, map[string]uint{"a": 0, "b": 1}, "     ", []float64{0, 0}},
-		{"empty vals", 2, map[int]uint{0: 1, 1: 2}, map[string]uint{}, " b  a  ", []float64{}},
-		{"nil input", 2, map[int]uint{0: 1, 1: 2}, map[string]uint{}, "", []float64{}},
+		{"basic_1", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a c", []float64{0.8194099510753755, 0, 0.5732079309279058}},
+		{"basic_2", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a", []float64{1, 0, 0}},
+		{"basic_3", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a", []float64{1, 0, 0}},
+		{"basic_4", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a a", []float64{1, 0, 0}},
+		{"basic_5", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a b b", []float64{0.47330339145578754, 0.8808994832762984, 0}},
+		{"basic_6", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a c c", []float64{0.58149260706886, 0, 0.8135516873095773}},
+		{"not found", 6, []uint{6, 1, 2}, map[string]uint{"a": 0, "b": 1, "c": 2}, "dddd", []float64{0, 0, 0}},
+		{"empty input", 2, []uint{1, 2}, map[string]uint{"a": 0, "b": 1}, "     ", []float64{0, 0}},
+		{"empty vals", 2, []uint{1, 2}, map[string]uint{}, " b  a  ", []float64{}},
+		{"nil input", 2, []uint{1, 2}, map[string]uint{}, "", []float64{}},
 	}
 
 	for _, s := range samples {
@@ -138,7 +138,7 @@ func TestTFIDFVectorizerTransform(t *testing.T) {
 		encoder := TFIDFVectorizer{
 			CountVectorizer: CountVectorizer{Mapping: map[string]uint{"a": 0, "b": 1}, Separator: " "},
 			NumDocuments:    5,
-			DocCount:        map[int]uint{0: 2, 1: 5},
+			DocCount:        []uint{2, 5},
 		}
 
 		features := []float64{1, 2, 3, 4}

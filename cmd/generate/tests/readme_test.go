@@ -33,7 +33,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
-				DocCount:        map[int]uint{0: 1, 1: 2, 2: 2},
+				DocCount:        []uint{1, 2, 2},
 				CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
 			},
 		}
@@ -83,7 +83,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{420.1, 9000.1}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
-				DocCount:        map[int]uint{0: 1, 1: 2, 2: 2},
+				DocCount:        []uint{1, 2, 2},
 				CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
 			},
 		}
@@ -102,7 +102,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
-				DocCount:        map[int]uint{0: 1, 1: 2, 2: 2},
+				DocCount:        []uint{1, 2, 2},
 				CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
 			},
 		}
@@ -161,11 +161,11 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             "text": 0
         },
         "Separator": " ",
-        "DocCount": {
-            "0": 1,
-            "1": 2,
-            "2": 2
-        },
+        "DocCount": [
+            1,
+            2,
+            2
+        ],
         "NumDocuments": 2,
         "Normalizer": {}
     }

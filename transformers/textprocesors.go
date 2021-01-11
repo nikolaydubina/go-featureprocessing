@@ -67,7 +67,7 @@ func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
 	}
 
 	// zero out first
-	for i, _ := range dest {
+	for i := range dest {
 		dest[i] = 0
 	}
 
@@ -83,7 +83,7 @@ func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
 // Using non-smooth version, adding 1 to log instead of denominator in idf.
 type TFIDFVectorizer struct {
 	CountVectorizer
-	DocCount     map[int]uint // number of documents word appeared in
+	DocCount     []uint // number of documents i-th word appeared in
 	NumDocuments int
 	Normalizer   SampleNormalizerL2
 }
@@ -96,7 +96,7 @@ func (t *TFIDFVectorizer) Fit(vals []string) {
 	}
 
 	t.NumDocuments = len(vals)
-	t.DocCount = make(map[int]uint)
+	t.DocCount = make([]uint, t.NumFeatures())
 
 	// second pass over whole input to count how many documents each word appeared in
 	for _, v := range vals {
