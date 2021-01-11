@@ -7,7 +7,7 @@
 
 > _Perfect for low latency machine learning inference of data models in Go_
 
-Ultra-fast and simple feature processing in Go with feature parity of [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html#non-linear-transformation).
+Ultra-fast and simple feature processing in Go with feature parity of [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html).
 
 - ✅ Does not cross `cgo` boundary
 - ✅ No memory allocation
@@ -229,11 +229,12 @@ reflect:
 
 Feel free to open an issue or submit a PR! Some outstanding tasks:
 
-- [ ] order fields in order different from struct declaration
-- [ ] same field multiple transformers
-- [ ] sklearn model to serialized transformer json conversion tool
 - [ ] batch transformations
-- [ ] hand crafted assembly
+- [ ] field names
+- [ ] multiple transformers for same field
+- [ ] order fields in order different from struct declaration
+- [ ] hand crafted assembly, SIMD support
+- [ ] sklearn model to serialized transformer json conversion tool
 
 ### Reference
 
