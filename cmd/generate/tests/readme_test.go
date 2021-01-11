@@ -27,10 +27,10 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Salary: MinMaxScaler{Min: 500, Max: 900},
 			Kids:   MaxAbsScaler{Max: 4},
 			Weight: StandardScaler{Mean: 60, STD: 25},
-			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}, NQuantiles: 5},
+			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
 			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
 			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
-			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}, NQuantiles: 5}},
+			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
 				DocCount:        map[int]uint{0: 1, 1: 2, 2: 2},
@@ -71,18 +71,16 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 		}
 
 		tr := EmployeeFeatureTransformer{}
-		tr.Height.NQuantiles = 5
-		tr.Income.NQuantiles = 5
 		tr.Fit(employee)
 
 		trExpected := EmployeeFeatureTransformer{
 			Salary: MinMaxScaler{Min: 500, Max: 900},
 			Kids:   MaxAbsScaler{Max: 2},
 			Weight: StandardScaler{Mean: 30, STD: 28.284271247461902},
-			Height: QuantileScaler{Quantiles: []float64{120, 160}, NQuantiles: 2},
+			Height: QuantileScaler{Quantiles: []float64{120, 160}},
 			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul"}},
 			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 2}},
-			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{420.1, 9000.1}, NQuantiles: 2}},
+			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{420.1, 9000.1}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
 				DocCount:        map[int]uint{0: 1, 1: 2, 2: 2},
@@ -98,10 +96,10 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Salary: MinMaxScaler{Min: 500, Max: 900},
 			Kids:   MaxAbsScaler{Max: 4},
 			Weight: StandardScaler{Mean: 60, STD: 25},
-			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}, NQuantiles: 5},
+			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
 			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
 			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
-			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}, NQuantiles: 5}},
+			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
 				DocCount:        map[int]uint{0: 1, 1: 2, 2: 2},
@@ -131,8 +129,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             110,
             120,
             150
-        ],
-        "NQuantiles": 5
+        ]
     },
     "City": {
         "Values": [
@@ -155,8 +152,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             2000,
             3000,
             10000
-        ],
-        "NQuantiles": 5
+        ]
     },
     "Description": {
         "Mapping": {

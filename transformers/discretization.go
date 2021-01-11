@@ -18,8 +18,8 @@ func (t *KBinsDiscretizer) Transform(v float64) float64 {
 		return 0
 	}
 	i := sort.SearchFloat64s(t.Quantiles[:], v)
-	if i >= t.NQuantiles {
-		return float64(t.NQuantiles) + 1
+	if i >= len(t.Quantiles) {
+		return float64(len(t.Quantiles)) + 1
 	}
 	return float64(i) + 1
 }

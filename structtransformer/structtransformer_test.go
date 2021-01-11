@@ -244,10 +244,10 @@ func benchLargeTransformer(b *testing.B, numelem int) {
 		&OneHotEncoder{Values: randomSliceString(numelem, 20)},
 		&OrdinalEncoder{Mapping: randomMappingString(numelem, 20)},
 		&OrdinalEncoder{Mapping: randomMappingString(numelem, 20)},
-		&QuantileScaler{Quantiles: randomSliceFloat64(numelem), NQuantiles: numelem},
-		&QuantileScaler{Quantiles: randomSliceFloat64(numelem), NQuantiles: numelem},
-		&KBinsDiscretizer{QuantileScaler{Quantiles: randomSliceFloat64(numelem), NQuantiles: numelem}},
-		&KBinsDiscretizer{QuantileScaler{Quantiles: randomSliceFloat64(numelem), NQuantiles: numelem}},
+		&QuantileScaler{Quantiles: randomSliceFloat64(numelem)},
+		&QuantileScaler{Quantiles: randomSliceFloat64(numelem)},
+		&KBinsDiscretizer{QuantileScaler{Quantiles: randomSliceFloat64(numelem)}},
+		&KBinsDiscretizer{QuantileScaler{Quantiles: randomSliceFloat64(numelem)}},
 	}}
 
 	s := S{

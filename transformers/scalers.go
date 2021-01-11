@@ -107,33 +107,31 @@ func (t *StandardScaler) Transform(v float64) float64 {
 }
 
 // QuantileScaler transforms any distribution to uniform distribution
-// This is done by mapping values to quantiles they belong to
+// This is done by mapping values to quantiles they belong to.
 type QuantileScaler struct {
-	Quantiles  []float64
-	NQuantiles int // used only for fitting
+	Quantiles []float64
 }
 
-// Fit sets parameters for qunatiles based on input.
+// Fit sets parameters for quantiles based on input.
+// Number of quantiles are specified by size of Quantiles slice.
+// If it is empty or nil, then 100 is used as default.
 // If input is smaller than number of quantiles, then using length of input.
 func (t *QuantileScaler) Fit(vals []float64) {
-	if t.NQuantiles == 0 {
-		t.NQuantiles = 1000
-	}
 	if len(vals) == 0 {
 		return
 	}
-	if len(vals) < t.NQuantiles {
-		t.NQuantiles = len(vals)
+	if len(t.Quantiles) == 0 {
+		t.Quantiles = make([]float64, 100)
+	}
+	if len(vals) < len(t.Quantiles) {
+		t.Quantiles = t.Quantiles[:len(vals)]
 	}
 
 	sorted := make([]float64, len(vals))
 	copy(sorted, vals)
 	sort.Float64s(sorted)
 
-	if len(t.Quantiles) != t.NQuantiles {
-		t.Quantiles = make([]float64, t.NQuantiles)
-	}
-	f := float64(len(sorted)) / float64(t.NQuantiles)
+	f := float64(len(sorted)) / float64(len(t.Quantiles))
 	for i := range t.Quantiles {
 		idx := int(float64(i) * f)
 		t.Quantiles[i] = sorted[idx]
