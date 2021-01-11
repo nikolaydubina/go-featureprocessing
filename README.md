@@ -229,6 +229,7 @@ reflect:
 
 Feel free to open an issue or submit a PR! Some outstanding tasks:
 
+- [ ] serialization with json tag sayin which transformer it is + field name
 - [ ] batch transformations
 - [ ] field names
 - [ ] multiple transformers for same field
