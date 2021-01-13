@@ -148,3 +148,46 @@ func (e *EmployeeFeatureTransformer) GetNumFeatures() int {
 
 	return count
 }
+
+// FeatureNames provides names of features that match output of transform
+func (e *EmployeeFeatureTransformer) FeatureNames() []string {
+	if e == nil {
+		return nil
+	}
+
+	idx := 0
+	names := make([]string, e.GetNumFeatures())
+
+	names[idx] = "Age"
+	idx++
+
+	names[idx] = "Salary"
+	idx++
+
+	names[idx] = "Kids"
+	idx++
+
+	names[idx] = "Weight"
+	idx++
+
+	names[idx] = "Height"
+	idx++
+
+	for _, w := range e.City.FeatureNames() {
+		names[idx] = "City_" + w
+		idx++
+	}
+
+	names[idx] = "Car"
+	idx++
+
+	names[idx] = "Income"
+	idx++
+
+	for _, w := range e.Description.FeatureNames() {
+		names[idx] = "Description_" + w
+		idx++
+	}
+
+	return names
+}

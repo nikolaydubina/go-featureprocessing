@@ -57,6 +57,18 @@ func (t *OneHotEncoder) TransformInplace(dest []float64, v string) {
 	}
 }
 
+// FeatureNames returns names of each produced value.
+func (t *OneHotEncoder) FeatureNames() []string {
+	if t == nil || len(t.Values) == 0 {
+		return nil
+	}
+	names := make([]string, t.NumFeatures())
+	for i, w := range t.Values {
+		names[i] = w
+	}
+	return names
+}
+
 // OrdinalEncoder returns 0 for string that is not found, or else a number for that string
 type OrdinalEncoder struct {
 	Mapping map[string]float64

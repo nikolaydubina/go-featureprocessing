@@ -43,6 +43,33 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 		assert.Equal(t, expected, features)
 	})
 
+	t.Run("feature names", func(t *testing.T) {
+		tr := EmployeeFeatureTransformer{
+			Salary: MinMaxScaler{Min: 500, Max: 900},
+			Kids:   MaxAbsScaler{Max: 4},
+			Weight: StandardScaler{Mean: 60, STD: 25},
+			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
+			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
+			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
+			Description: TFIDFVectorizer{
+				NumDocuments:    2,
+				DocCount:        []uint{1, 2, 2},
+				CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
+			},
+		}
+		names := tr.FeatureNames()
+		expected := []string{"Age", "Salary", "Kids", "Weight", "Height", "City_Pangyo", "City_Seoul", "City_Daejeon", "City_Busan", "Car", "Income", "Description_text", "Description_problem", "Description_help"}
+		assert.Equal(t, expected, names)
+	})
+
+	t.Run("feature names empty categorical skipped", func(t *testing.T) {
+		tr := EmployeeFeatureTransformer{}
+		names := tr.FeatureNames()
+		expected := []string{"Age", "Salary", "Kids", "Weight", "Height", "Car", "Income"}
+		assert.Equal(t, expected, names)
+	})
+
 	t.Run("fit", func(t *testing.T) {
 		employee := []Employee{
 			{

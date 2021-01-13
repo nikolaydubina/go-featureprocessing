@@ -96,3 +96,29 @@ func (e *WeirdTagsFeatureTransformer) GetNumFeatures() int {
 
 	return count
 }
+
+// FeatureNames provides names of features that match output of transform
+func (e *WeirdTagsFeatureTransformer) FeatureNames() []string {
+	if e == nil {
+		return nil
+	}
+
+	idx := 0
+	names := make([]string, e.GetNumFeatures())
+
+	names[idx] = "OnlyFeature"
+	idx++
+
+	names[idx] = "FeatureNotFirst"
+	idx++
+
+	for _, w := range e.FirstFeature.FeatureNames() {
+		names[idx] = "FirstFeature_" + w
+		idx++
+	}
+
+	names[idx] = "Multiline"
+	idx++
+
+	return names
+}

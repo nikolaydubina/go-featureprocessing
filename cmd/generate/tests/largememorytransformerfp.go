@@ -136,3 +136,43 @@ func (e *LargeMemoryTransformerFeatureTransformer) GetNumFeatures() int {
 
 	return count
 }
+
+// FeatureNames provides names of features that match output of transform
+func (e *LargeMemoryTransformerFeatureTransformer) FeatureNames() []string {
+	if e == nil {
+		return nil
+	}
+
+	idx := 0
+	names := make([]string, e.GetNumFeatures())
+
+	for _, w := range e.Name1.FeatureNames() {
+		names[idx] = "Name1_" + w
+		idx++
+	}
+
+	for _, w := range e.Name2.FeatureNames() {
+		names[idx] = "Name2_" + w
+		idx++
+	}
+
+	names[idx] = "Name3"
+	idx++
+
+	names[idx] = "Name4"
+	idx++
+
+	names[idx] = "Name5"
+	idx++
+
+	names[idx] = "Name6"
+	idx++
+
+	names[idx] = "Name7"
+	idx++
+
+	names[idx] = "Name8"
+	idx++
+
+	return names
+}

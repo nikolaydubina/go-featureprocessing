@@ -55,6 +55,9 @@ json.Unmarshal(config, &fp)
 
 fp.Transform(&employee)
 // Output: []float64{22, 1, 0.5, 1.0039999999999998, 1, 1, 0, 0, 0, 1, 5, 0.7674945674619879, 0.4532946552278861, 0.4532946552278861}
+
+tr.FeatureNames()
+// Output: []string{"Age", "Salary", "Kids", "Weight", "Height", "City_Pangyo", "City_Seoul", "City_Daejeon", "City_Busan", "Car", "Income", "Description_text", "Description_problem", "Description_help"}
 ```
 
 You can also fit transformer based on data

@@ -363,3 +363,108 @@ func (e *With32FieldsFeatureTransformer) GetNumFeatures() int {
 
 	return count
 }
+
+// FeatureNames provides names of features that match output of transform
+func (e *With32FieldsFeatureTransformer) FeatureNames() []string {
+	if e == nil {
+		return nil
+	}
+
+	idx := 0
+	names := make([]string, e.GetNumFeatures())
+
+	names[idx] = "Name1"
+	idx++
+
+	names[idx] = "Name2"
+	idx++
+
+	names[idx] = "Name3"
+	idx++
+
+	names[idx] = "Name4"
+	idx++
+
+	names[idx] = "Name5"
+	idx++
+
+	names[idx] = "Name6"
+	idx++
+
+	names[idx] = "Name7"
+	idx++
+
+	names[idx] = "Name8"
+	idx++
+
+	names[idx] = "Name9"
+	idx++
+
+	names[idx] = "Name10"
+	idx++
+
+	names[idx] = "Name11"
+	idx++
+
+	names[idx] = "Name12"
+	idx++
+
+	names[idx] = "Name13"
+	idx++
+
+	names[idx] = "Name14"
+	idx++
+
+	names[idx] = "Name15"
+	idx++
+
+	names[idx] = "Name16"
+	idx++
+
+	names[idx] = "Name17"
+	idx++
+
+	names[idx] = "Name18"
+	idx++
+
+	names[idx] = "Name19"
+	idx++
+
+	names[idx] = "Name21"
+	idx++
+
+	names[idx] = "Name22"
+	idx++
+
+	names[idx] = "Name23"
+	idx++
+
+	names[idx] = "Name24"
+	idx++
+
+	names[idx] = "Name25"
+	idx++
+
+	names[idx] = "Name26"
+	idx++
+
+	names[idx] = "Name27"
+	idx++
+
+	names[idx] = "Name28"
+	idx++
+
+	names[idx] = "Name29"
+	idx++
+
+	names[idx] = "Name30"
+	idx++
+
+	names[idx] = "Name31"
+	idx++
+
+	names[idx] = "Name32"
+	idx++
+
+	return names
+}

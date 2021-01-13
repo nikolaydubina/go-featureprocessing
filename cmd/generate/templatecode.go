@@ -79,4 +79,28 @@ func (e *{{$.StructName}}FeatureTransformer) GetNumFeatures() int {
 	{{end}}
 	return count
 }
+
+// FeatureNames provides names of features that match output of transform
+func (e *{{$.StructName}}FeatureTransformer) FeatureNames() []string {
+	if e == nil {
+		return nil
+	}
+
+	idx := 0
+	names := make([]string, e.GetNumFeatures())
+
+	{{range $i, $tr := $.Fields}}
+	{{if $tr.Expanding }}
+	for _, w := range e.{{$tr.Name}}.FeatureNames() {
+		names[idx] = "{{$tr.Name}}_" + w
+		idx++
+	}
+	{{else}}
+	names[idx] = "{{$tr.Name}}"
+	idx++
+	{{end}}
+	{{end}}
+
+	return names
+}
 `

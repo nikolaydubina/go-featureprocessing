@@ -10,10 +10,51 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// makeMock creates some valid WeirdTagsFeatureTransformer by fitting on fuzzy data.
+// This function is handy for tests.
+func makeMockWeirdTagsFeatureTransformer() *WeirdTagsFeatureTransformer {
+	s := make([]WeirdTags, 10)
+	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&s)
+
+	tr := WeirdTagsFeatureTransformer{}
+	tr.Fit(s)
+	return &tr
+}
+
+func TestWeirdTagsFeatureTransformerFeatureNames(t *testing.T) {
+	validTransformer := makeMockWeirdTagsFeatureTransformer()
+
+	fuzzyTransformer := WeirdTagsFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&fuzzyTransformer)
+
+	t.Run("feature names", func(t *testing.T) {
+		names := validTransformer.FeatureNames()
+		assert.True(t, len(names) > 0)
+		assert.Equal(t, len(names), validTransformer.GetNumFeatures())
+	})
+
+	t.Run("feature names fuzzy transformer has some feature names", func(t *testing.T) {
+		names := fuzzyTransformer.FeatureNames()
+		assert.True(t, len(names) > 0)
+	})
+
+	t.Run("feature name transformer is empty", func(t *testing.T) {
+		tr := WeirdTagsFeatureTransformer{}
+		names := tr.FeatureNames()
+		assert.True(t, len(names) > 0)
+		assert.Equal(t, len(names), tr.GetNumFeatures())
+	})
+
+	t.Run("feature name transformer is nil", func(t *testing.T) {
+		var tr *WeirdTagsFeatureTransformer
+		names := tr.FeatureNames()
+		assert.Nil(t, names)
+	})
+}
+
 func TestWeirdTagsFeatureTransformerTransform(t *testing.T) {
-	t.Run("empty struct", func(t *testing.T) {
-		var s WeirdTags
-		fuzz.New().Fuzz(&s)
+	t.Run("empty struct fuzzy transformer", func(t *testing.T) {
+		s := WeirdTags{}
 
 		tr := WeirdTagsFeatureTransformer{}
 		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)

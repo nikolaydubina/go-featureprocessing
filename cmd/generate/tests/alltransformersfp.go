@@ -159,3 +159,51 @@ func (e *AllTransformersFeatureTransformer) GetNumFeatures() int {
 
 	return count
 }
+
+// FeatureNames provides names of features that match output of transform
+func (e *AllTransformersFeatureTransformer) FeatureNames() []string {
+	if e == nil {
+		return nil
+	}
+
+	idx := 0
+	names := make([]string, e.GetNumFeatures())
+
+	names[idx] = "Name0"
+	idx++
+
+	names[idx] = "Name1"
+	idx++
+
+	names[idx] = "Name2"
+	idx++
+
+	names[idx] = "Name3"
+	idx++
+
+	names[idx] = "Name4"
+	idx++
+
+	for _, w := range e.Name5.FeatureNames() {
+		names[idx] = "Name5_" + w
+		idx++
+	}
+
+	names[idx] = "Name6"
+	idx++
+
+	names[idx] = "Name7"
+	idx++
+
+	for _, w := range e.Name8.FeatureNames() {
+		names[idx] = "Name8_" + w
+		idx++
+	}
+
+	for _, w := range e.Name9.FeatureNames() {
+		names[idx] = "Name9_" + w
+		idx++
+	}
+
+	return names
+}
