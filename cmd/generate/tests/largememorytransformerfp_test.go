@@ -13,8 +13,8 @@ import (
 // makeMock creates some valid LargeMemoryTransformerFeatureTransformer by fitting on fuzzy data.
 // This function is handy for tests.
 func makeMockLargeMemoryTransformerFeatureTransformer() *LargeMemoryTransformerFeatureTransformer {
-	s := make([]LargeMemoryTransformer, 10)
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&s)
+	s := make([]LargeMemoryTransformer, 1000000)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&s)
 
 	tr := LargeMemoryTransformerFeatureTransformer{}
 	tr.Fit(s)
@@ -25,7 +25,7 @@ func TestLargeMemoryTransformerFeatureTransformerFeatureNames(t *testing.T) {
 	validTransformer := makeMockLargeMemoryTransformerFeatureTransformer()
 
 	fuzzyTransformer := LargeMemoryTransformerFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&fuzzyTransformer)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&fuzzyTransformer)
 
 	t.Run("feature names", func(t *testing.T) {
 		names := validTransformer.FeatureNames()

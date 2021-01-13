@@ -16,8 +16,8 @@ import (
 // makeMock creates some valid {{$.StructName}}FeatureTransformer by fitting on fuzzy data.
 // This function is handy for tests.
 func makeMock{{$.StructName}}FeatureTransformer() *{{$.StructName}}FeatureTransformer {
-	s := make([]{{$.StructName}}, 10)
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&s)
+	s := make([]{{$.StructName}}, 1000000)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&s)
 	
 	tr := {{$.StructName}}FeatureTransformer{}
 	tr.Fit(s)
@@ -28,7 +28,7 @@ func Test{{$.StructName}}FeatureTransformerFeatureNames(t *testing.T) {
 	validTransformer := makeMock{{$.StructName}}FeatureTransformer()
 
 	fuzzyTransformer := {{$.StructName}}FeatureTransformer{} 
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&fuzzyTransformer)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&fuzzyTransformer)
 
 	t.Run("feature names", func(t *testing.T) {
 		names := validTransformer.FeatureNames()

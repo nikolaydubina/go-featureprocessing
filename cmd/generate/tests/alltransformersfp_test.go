@@ -13,8 +13,8 @@ import (
 // makeMock creates some valid AllTransformersFeatureTransformer by fitting on fuzzy data.
 // This function is handy for tests.
 func makeMockAllTransformersFeatureTransformer() *AllTransformersFeatureTransformer {
-	s := make([]AllTransformers, 10)
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&s)
+	s := make([]AllTransformers, 1000000)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&s)
 
 	tr := AllTransformersFeatureTransformer{}
 	tr.Fit(s)
@@ -25,7 +25,7 @@ func TestAllTransformersFeatureTransformerFeatureNames(t *testing.T) {
 	validTransformer := makeMockAllTransformersFeatureTransformer()
 
 	fuzzyTransformer := AllTransformersFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&fuzzyTransformer)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&fuzzyTransformer)
 
 	t.Run("feature names", func(t *testing.T) {
 		names := validTransformer.FeatureNames()

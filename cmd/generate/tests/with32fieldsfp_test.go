@@ -13,8 +13,8 @@ import (
 // makeMock creates some valid With32FieldsFeatureTransformer by fitting on fuzzy data.
 // This function is handy for tests.
 func makeMockWith32FieldsFeatureTransformer() *With32FieldsFeatureTransformer {
-	s := make([]With32Fields, 10)
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&s)
+	s := make([]With32Fields, 1000000)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&s)
 
 	tr := With32FieldsFeatureTransformer{}
 	tr.Fit(s)
@@ -25,7 +25,7 @@ func TestWith32FieldsFeatureTransformerFeatureNames(t *testing.T) {
 	validTransformer := makeMockWith32FieldsFeatureTransformer()
 
 	fuzzyTransformer := With32FieldsFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&fuzzyTransformer)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&fuzzyTransformer)
 
 	t.Run("feature names", func(t *testing.T) {
 		names := validTransformer.FeatureNames()

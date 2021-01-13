@@ -99,4 +99,9 @@ type WeirdTags struct {
 	
 	a;sdfkl`
 	WithoutTag string
+
+	// UTF-8
+	A안녕하세요  int    `feature:"minmax"`
+	B안녕하세요1 string `feature:"onehot"`
+	C안녕하세요0 string `feature:"tfidf"`
 }

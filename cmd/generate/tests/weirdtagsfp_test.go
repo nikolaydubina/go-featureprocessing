@@ -13,8 +13,8 @@ import (
 // makeMock creates some valid WeirdTagsFeatureTransformer by fitting on fuzzy data.
 // This function is handy for tests.
 func makeMockWeirdTagsFeatureTransformer() *WeirdTagsFeatureTransformer {
-	s := make([]WeirdTags, 10)
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&s)
+	s := make([]WeirdTags, 1000000)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&s)
 
 	tr := WeirdTagsFeatureTransformer{}
 	tr.Fit(s)
@@ -25,7 +25,7 @@ func TestWeirdTagsFeatureTransformerFeatureNames(t *testing.T) {
 	validTransformer := makeMockWeirdTagsFeatureTransformer()
 
 	fuzzyTransformer := WeirdTagsFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&fuzzyTransformer)
+	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&fuzzyTransformer)
 
 	t.Run("feature names", func(t *testing.T) {
 		names := validTransformer.FeatureNames()

@@ -13,6 +13,9 @@ type WeirdTagsFeatureTransformer struct {
 	FeatureNotFirst fp.MaxAbsScaler
 	FirstFeature    fp.OneHotEncoder
 	Multiline       fp.MaxAbsScaler
+	A안녕하세요          fp.MinMaxScaler
+	B안녕하세요1         fp.OneHotEncoder
+	C안녕하세요0         fp.TFIDFVectorizer
 }
 
 // Fit fits transformer for each field
@@ -48,6 +51,24 @@ func (e *WeirdTagsFeatureTransformer) Fit(s []WeirdTags) {
 
 	e.Multiline.Fit(dataNum)
 
+	for i, v := range s {
+		dataNum[i] = float64(v.A안녕하세요)
+	}
+
+	e.A안녕하세요.Fit(dataNum)
+
+	for i, v := range s {
+		dataStr[i] = string(v.B안녕하세요1)
+	}
+
+	e.B안녕하세요1.Fit(dataStr)
+
+	for i, v := range s {
+		dataStr[i] = string(v.C안녕하세요0)
+	}
+
+	e.C안녕하세요0.Fit(dataStr)
+
 }
 
 // Transform transforms struct into feature vector accordingly to transformers
@@ -81,6 +102,15 @@ func (e *WeirdTagsFeatureTransformer) TransformInplace(dst []float64, s *WeirdTa
 	dst[idx] = e.Multiline.Transform(float64(s.Multiline))
 	idx++
 
+	dst[idx] = e.A안녕하세요.Transform(float64(s.A안녕하세요))
+	idx++
+
+	e.B안녕하세요1.TransformInplace(dst[idx:idx+e.B안녕하세요1.NumFeatures()], s.B안녕하세요1)
+	idx += e.B안녕하세요1.NumFeatures()
+
+	e.C안녕하세요0.TransformInplace(dst[idx:idx+e.C안녕하세요0.NumFeatures()], s.C안녕하세요0)
+	idx += e.C안녕하세요0.NumFeatures()
+
 	return
 }
 
@@ -90,9 +120,12 @@ func (e *WeirdTagsFeatureTransformer) GetNumFeatures() int {
 		return 0
 	}
 
-	count := 3
+	count := 4
 
 	count += e.FirstFeature.NumFeatures()
+
+	count += e.B안녕하세요1.NumFeatures()
+	count += e.C안녕하세요0.NumFeatures()
 
 	return count
 }
@@ -119,6 +152,19 @@ func (e *WeirdTagsFeatureTransformer) FeatureNames() []string {
 
 	names[idx] = "Multiline"
 	idx++
+
+	names[idx] = "A안녕하세요"
+	idx++
+
+	for _, w := range e.B안녕하세요1.FeatureNames() {
+		names[idx] = "B안녕하세요1_" + w
+		idx++
+	}
+
+	for _, w := range e.C안녕하세요0.FeatureNames() {
+		names[idx] = "C안녕하세요0_" + w
+		idx++
+	}
 
 	return names
 }
