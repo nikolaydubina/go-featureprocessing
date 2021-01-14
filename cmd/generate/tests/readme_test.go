@@ -137,19 +137,19 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 		output, err := json.MarshalIndent(tr, "", "    ")
 		outputStr := string(output)
 		expected := `{
-    "Age": {},
-    "Salary": {
+    "Age_identity": {},
+    "Salary_minmax": {
         "Min": 500,
         "Max": 900
     },
-    "Kids": {
+    "Kids_maxabs": {
         "Max": 4
     },
-    "Weight": {
+    "Weight_standard": {
         "Mean": 60,
         "STD": 25
     },
-    "Height": {
+    "Height_quantile": {
         "Quantiles": [
             20,
             100,
@@ -158,7 +158,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             150
         ]
     },
-    "City": {
+    "City_onehot": {
         "Values": [
             "Pangyo",
             "Seoul",
@@ -166,13 +166,13 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             "Busan"
         ]
     },
-    "Car": {
+    "Car_ordinal": {
         "Mapping": {
             "BMW": 90000,
             "Tesla": 1
         }
     },
-    "Income": {
+    "Income_kbins": {
         "Quantiles": [
             1000,
             1100,
@@ -181,7 +181,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             10000
         ]
     },
-    "Description": {
+    "Description_tfidf": {
         "Mapping": {
             "help": 2,
             "problem": 1,

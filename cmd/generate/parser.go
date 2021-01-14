@@ -16,6 +16,7 @@ type Field struct {
 	Transformer    string
 	Expanding      bool
 	NumericalInput bool
+	TransformerTag string
 }
 
 // TemplateParams represents all parameters for template, for internal use only
@@ -185,6 +186,7 @@ func parseCode(filename string, code []byte, structName string, packageName stri
 					Transformer:    tagToTransformer[tag],
 					Expanding:      isTransformerExpanding[tag],
 					NumericalInput: isTypeNumerical[fieldTypeVal],
+					TransformerTag: tag,
 				}
 				if !isTransformerExpanding[tag] {
 					numFieldsFlat++

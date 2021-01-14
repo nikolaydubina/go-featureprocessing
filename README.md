@@ -73,15 +73,15 @@ This transformer can be serialized and de-serialized by standard Go routines.
 Serialized transformer is easy to read, update, and integrate with other tools.
 ```json
 {
-   "Age": {},
-   "Salary": {"Min": 500, "Max": 900},
-   "Kids": {"Max": 4},
-   "Weight": {"Mean": 60, "STD": 25},
-   "Height": {"Quantiles": [20, 100, 110, 120, 150]},
-   "City": {"Values": ["Pangyo", "Seoul", "Daejeon", "Busan"]},
-   "Car": {"Mapping": {"BMW": 90000, "Tesla": 1}},
-   "Income": {"Quantiles": [1000, 1100, 2000, 3000, 10000]},
-   "Description": {
+   "Age_identity": {},
+   "Salary_minmax": {"Min": 500, "Max": 900},
+   "Kids_maxabs": {"Max": 4},
+   "Weight_standard": {"Mean": 60, "STD": 25},
+   "Height_quantile": {"Quantiles": [20, 100, 110, 120, 150]},
+   "City_onehot": {"Values": ["Pangyo", "Seoul", "Daejeon", "Busan"]},
+   "Car_ordinal": {"Mapping": {"BMW": 90000, "Tesla": 1}},
+   "Income_kbins": {"Quantiles": [1000, 1100, 2000, 3000, 10000]},
+   "Description_tfidf": {
       "Mapping": {"help": 2, "problem": 1, "text": 0},
       "Separator": " ",
       "DocCount": [1, 2, 2],
@@ -232,9 +232,7 @@ reflect:
 
 Feel free to open an issue or submit a PR! Some outstanding tasks:
 
-- [ ] serialization with json tag sayin which transformer it is + field name
 - [ ] batch transformations
-- [ ] field names
 - [ ] multiple transformers for same field
 - [ ] order fields in order different from struct declaration
 - [ ] hand crafted assembly, SIMD support
