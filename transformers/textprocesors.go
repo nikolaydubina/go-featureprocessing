@@ -152,6 +152,14 @@ func (t *TFIDFVectorizer) TransformInplace(dest []float64, v string) {
 	if t == nil || dest == nil || len(dest) != t.NumFeatures() {
 		return
 	}
+
+	// sanity check, do not transform on invalid transformer
+	for _, idx := range t.Mapping {
+		if idx >= uint(t.NumFeatures()) {
+			return
+		}
+	}
+
 	t.CountVectorizer.TransformInplace(dest, v)
 
 	for i, tf := range dest {
