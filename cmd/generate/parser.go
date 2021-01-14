@@ -6,6 +6,8 @@ import (
 	"go/parser"
 	"go/token"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 // Field represents single transformer and field it transforms, for internal use only
@@ -125,6 +127,19 @@ func parseCode(filename string, code []byte, structName string, packageName stri
 					continue
 				}
 				name := field.Names[0].Name
+
+				// Field name has to start from UTF-8 letter.
+				// This is contraint of Go language spec.
+				firstRune, _ := utf8.DecodeRuneInString(name)
+				if !unicode.IsLetter(firstRune) {
+					continue
+				}
+
+				// Should start from latin letter,
+				// otherwise some weird error happens with fields inclusion.
+				if !unicode.In(firstRune, unicode.Scripts["Latin"]) {
+					continue
+				}
 
 				// type
 				fieldType := field.Type

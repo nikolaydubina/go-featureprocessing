@@ -100,8 +100,11 @@ type WeirdTags struct {
 	a;sdfkl`
 	WithoutTag string
 
-	// UTF-8
+	// UTF-8 is allowed
 	A안녕하세요  int    `feature:"minmax"`
 	B안녕하세요1 string `feature:"onehot"`
 	C안녕하세요0 string `feature:"tfidf"`
+
+	// UTF-8 that starts from non-latin rune is skipped
+	안녕하세요2 string `feature:"tfidf"`
 }
