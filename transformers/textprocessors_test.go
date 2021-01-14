@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCountVectorizerFit(t *testing.T) {
+func TestCountVectorizer(t *testing.T) {
 	samples := []struct {
 		name   string
 		input  []string
@@ -37,6 +37,29 @@ func TestCountVectorizerFit(t *testing.T) {
 	t.Run("transform returns nil on nil encoder", func(t *testing.T) {
 		var encoder *CountVectorizer
 		assert.Equal(t, []float64(nil), encoder.Transform("asdf"))
+	})
+
+	t.Run("feature names on empty transformer", func(t *testing.T) {
+		var encoder *CountVectorizer
+		assert.Equal(t, []string(nil), encoder.FeatureNames())
+	})
+
+	t.Run("feature names", func(t *testing.T) {
+		encoder := CountVectorizer{Mapping: map[string]uint{"a": 1, "b": 0}}
+		assert.Equal(t, []string{"b", "a"}, encoder.FeatureNames())
+	})
+
+	t.Run("inplace does not run when mapping is broken", func(t *testing.T) {
+		encoder := CountVectorizer{Mapping: map[string]uint{"a": 0, "b": 5}, Separator: " "}
+		features := []float64{1, 2}
+		encoder.TransformInplace(features, "a b")
+		assert.Equal(t, []float64{1, 2}, features)
+	})
+
+	t.Run("feature names does not run when mapping is broken", func(t *testing.T) {
+		encoder := CountVectorizer{Mapping: map[string]uint{"a": 0, "b": 5}, Separator: " "}
+		names := encoder.FeatureNames()
+		assert.Nil(t, names)
 	})
 }
 
@@ -144,5 +167,29 @@ func TestTFIDFVectorizerTransform(t *testing.T) {
 		features := []float64{1, 2, 3, 4}
 		encoder.TransformInplace(features, "a b c d")
 		assert.Equal(t, []float64{1, 2, 3, 4}, features)
+	})
+
+	t.Run("inplace does not run when mapping is broken", func(t *testing.T) {
+		encoder := TFIDFVectorizer{
+			CountVectorizer: CountVectorizer{Mapping: map[string]uint{"a": 0, "b": 5}, Separator: " "},
+			NumDocuments:    5,
+			DocCount:        []uint{2, 5},
+		}
+
+		features := []float64{1, 2}
+		encoder.TransformInplace(features, "a b")
+		assert.Equal(t, []float64{1, 2}, features)
+	})
+}
+
+func TestTFIDFVectorizerFeatureNames(t *testing.T) {
+	t.Run("feature names on empty transformer", func(t *testing.T) {
+		var encoder *TFIDFVectorizer
+		assert.Equal(t, []string(nil), encoder.FeatureNames())
+	})
+
+	t.Run("feature names", func(t *testing.T) {
+		encoder := TFIDFVectorizer{CountVectorizer: CountVectorizer{Mapping: map[string]uint{"a": 1, "b": 0}}}
+		assert.Equal(t, []string{"b", "a"}, encoder.FeatureNames())
 	})
 }

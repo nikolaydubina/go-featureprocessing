@@ -43,6 +43,33 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 		assert.Equal(t, expected, features)
 	})
 
+	t.Run("feature names", func(t *testing.T) {
+		tr := EmployeeFeatureTransformer{
+			Salary: MinMaxScaler{Min: 500, Max: 900},
+			Kids:   MaxAbsScaler{Max: 4},
+			Weight: StandardScaler{Mean: 60, STD: 25},
+			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
+			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
+			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
+			Description: TFIDFVectorizer{
+				NumDocuments:    2,
+				DocCount:        []uint{1, 2, 2},
+				CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
+			},
+		}
+		names := tr.FeatureNames()
+		expected := []string{"Age", "Salary", "Kids", "Weight", "Height", "City_Pangyo", "City_Seoul", "City_Daejeon", "City_Busan", "Car", "Income", "Description_text", "Description_problem", "Description_help"}
+		assert.Equal(t, expected, names)
+	})
+
+	t.Run("feature names empty categorical skipped", func(t *testing.T) {
+		tr := EmployeeFeatureTransformer{}
+		names := tr.FeatureNames()
+		expected := []string{"Age", "Salary", "Kids", "Weight", "Height", "Car", "Income"}
+		assert.Equal(t, expected, names)
+	})
+
 	t.Run("fit", func(t *testing.T) {
 		employee := []Employee{
 			{
@@ -110,19 +137,19 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 		output, err := json.MarshalIndent(tr, "", "    ")
 		outputStr := string(output)
 		expected := `{
-    "Age": {},
-    "Salary": {
+    "Age_identity": {},
+    "Salary_minmax": {
         "Min": 500,
         "Max": 900
     },
-    "Kids": {
+    "Kids_maxabs": {
         "Max": 4
     },
-    "Weight": {
+    "Weight_standard": {
         "Mean": 60,
         "STD": 25
     },
-    "Height": {
+    "Height_quantile": {
         "Quantiles": [
             20,
             100,
@@ -131,7 +158,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             150
         ]
     },
-    "City": {
+    "City_onehot": {
         "Values": [
             "Pangyo",
             "Seoul",
@@ -139,13 +166,13 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             "Busan"
         ]
     },
-    "Car": {
+    "Car_ordinal": {
         "Mapping": {
             "BMW": 90000,
             "Tesla": 1
         }
     },
-    "Income": {
+    "Income_kbins": {
         "Quantiles": [
             1000,
             1100,
@@ -154,7 +181,7 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
             10000
         ]
     },
-    "Description": {
+    "Description_tfidf": {
         "Mapping": {
             "help": 2,
             "problem": 1,

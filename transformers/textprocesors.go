@@ -53,6 +53,26 @@ func (t *CountVectorizer) Transform(v string) []float64 {
 	return counts
 }
 
+// FeatureNames returns slice with produced feature names
+func (t *CountVectorizer) FeatureNames() []string {
+	if t == nil || len(t.Mapping) == 0 {
+		return nil
+	}
+
+	// sanity check, do not transform on invalid transformer
+	for _, idx := range t.Mapping {
+		if idx >= uint(t.NumFeatures()) {
+			return nil
+		}
+	}
+
+	names := make([]string, t.NumFeatures())
+	for w, i := range t.Mapping {
+		names[i] = w
+	}
+	return names
+}
+
 // TransformInplace counts how many time each word appeared in input, inplace version
 func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
 	if t == nil || len(t.Mapping) == 0 || len(dest) != t.NumFeatures() {
@@ -132,6 +152,14 @@ func (t *TFIDFVectorizer) TransformInplace(dest []float64, v string) {
 	if t == nil || dest == nil || len(dest) != t.NumFeatures() {
 		return
 	}
+
+	// sanity check, do not transform on invalid transformer
+	for _, idx := range t.Mapping {
+		if idx >= uint(t.NumFeatures()) {
+			return
+		}
+	}
+
 	t.CountVectorizer.TransformInplace(dest, v)
 
 	for i, tf := range dest {
@@ -143,4 +171,12 @@ func (t *TFIDFVectorizer) TransformInplace(dest []float64, v string) {
 	}
 
 	t.Normalizer.TransformInplace(dest, dest)
+}
+
+// FeatureNames returns slice with produced feature names.
+func (t *TFIDFVectorizer) FeatureNames() []string {
+	if t == nil {
+		return nil
+	}
+	return t.CountVectorizer.FeatureNames()
 }

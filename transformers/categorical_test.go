@@ -90,6 +90,18 @@ func TestOneHotEncoderTransform(t *testing.T) {
 	})
 }
 
+func TestOneHotEncoderFeatureNames(t *testing.T) {
+	t.Run("feature names on empty transformer", func(t *testing.T) {
+		var encoder *OneHotEncoder
+		assert.Equal(t, []string(nil), encoder.FeatureNames())
+	})
+
+	t.Run("feature names", func(t *testing.T) {
+		encoder := OneHotEncoder{Values: []string{"a", "b"}}
+		assert.Equal(t, []string{"a", "b"}, encoder.FeatureNames())
+	})
+}
+
 func TestOrdinalEncoderFit(t *testing.T) {
 	samples := []struct {
 		name   string

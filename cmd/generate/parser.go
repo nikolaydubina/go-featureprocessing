@@ -6,6 +6,8 @@ import (
 	"go/parser"
 	"go/token"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 // Field represents single transformer and field it transforms, for internal use only
@@ -14,6 +16,7 @@ type Field struct {
 	Transformer    string
 	Expanding      bool
 	NumericalInput bool
+	TransformerTag string
 }
 
 // TemplateParams represents all parameters for template, for internal use only
@@ -126,6 +129,19 @@ func parseCode(filename string, code []byte, structName string, packageName stri
 				}
 				name := field.Names[0].Name
 
+				// Field name has to start from UTF-8 letter.
+				// This is contraint of Go language spec.
+				firstRune, _ := utf8.DecodeRuneInString(name)
+				if !unicode.IsLetter(firstRune) {
+					continue
+				}
+
+				// Should start from latin letter,
+				// otherwise some weird error happens with fields inclusion.
+				if !unicode.In(firstRune, unicode.Scripts["Latin"]) {
+					continue
+				}
+
 				// type
 				fieldType := field.Type
 				if fieldType == nil {
@@ -170,6 +186,7 @@ func parseCode(filename string, code []byte, structName string, packageName stri
 					Transformer:    tagToTransformer[tag],
 					Expanding:      isTransformerExpanding[tag],
 					NumericalInput: isTypeNumerical[fieldTypeVal],
+					TransformerTag: tag,
 				}
 				if !isTransformerExpanding[tag] {
 					numFieldsFlat++
