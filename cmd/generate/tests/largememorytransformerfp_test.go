@@ -30,7 +30,7 @@ func TestLargeMemoryTransformerFeatureTransformerFeatureNames(t *testing.T) {
 	t.Run("feature names", func(t *testing.T) {
 		names := validTransformer.FeatureNames()
 		assert.True(t, len(names) > 0)
-		assert.Equal(t, len(names), validTransformer.GetNumFeatures())
+		assert.Equal(t, len(names), validTransformer.NumFeatures())
 	})
 
 	t.Run("feature names fuzzy transformer has some feature names", func(t *testing.T) {
@@ -42,7 +42,7 @@ func TestLargeMemoryTransformerFeatureTransformerFeatureNames(t *testing.T) {
 		tr := LargeMemoryTransformerFeatureTransformer{}
 		names := tr.FeatureNames()
 		assert.True(t, len(names) > 0)
-		assert.Equal(t, len(names), tr.GetNumFeatures())
+		assert.Equal(t, len(names), tr.NumFeatures())
 	})
 
 	t.Run("feature name transformer is nil", func(t *testing.T) {
@@ -65,7 +65,7 @@ func TestLargeMemoryTransformerFeatureTransformerTransform(t *testing.T) {
 
 		assert.NotNil(t, features)
 		assert.True(t, len(features) > 0)
-		assert.Equal(t, tr.GetNumFeatures(), len(features))
+		assert.Equal(t, tr.NumFeatures(), len(features))
 	})
 
 	t.Run("fuzzy struct", func(t *testing.T) {
@@ -79,7 +79,7 @@ func TestLargeMemoryTransformerFeatureTransformerTransform(t *testing.T) {
 
 		assert.NotNil(t, features)
 		assert.True(t, len(features) > 0)
-		assert.Equal(t, tr.GetNumFeatures(), len(features))
+		assert.Equal(t, tr.NumFeatures(), len(features))
 	})
 
 	t.Run("transformer is nil and struct is not nil", func(t *testing.T) {
@@ -91,7 +91,7 @@ func TestLargeMemoryTransformerFeatureTransformerTransform(t *testing.T) {
 		features := tr.Transform(&s)
 
 		assert.Nil(t, features)
-		assert.Equal(t, tr.GetNumFeatures(), 0)
+		assert.Equal(t, tr.NumFeatures(), 0)
 	})
 
 	t.Run("transformer is not nil but struct is nil", func(t *testing.T) {
@@ -103,7 +103,7 @@ func TestLargeMemoryTransformerFeatureTransformerTransform(t *testing.T) {
 		features := tr.Transform(s)
 
 		assert.Nil(t, features)
-		assert.True(t, tr.GetNumFeatures() > 0)
+		assert.True(t, tr.NumFeatures() > 0)
 	})
 
 	t.Run("serialize and deserialize transformer", func(t *testing.T) {
@@ -210,7 +210,7 @@ func BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_Inplace(b *test
 	tr := LargeMemoryTransformerFeatureTransformer{}
 	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
 
-	features := make([]float64, tr.GetNumFeatures())
+	features := make([]float64, tr.NumFeatures())
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {

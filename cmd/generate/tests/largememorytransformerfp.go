@@ -84,14 +84,14 @@ func (e *LargeMemoryTransformerFeatureTransformer) Transform(s *LargeMemoryTrans
 		return nil
 	}
 
-	features := make([]float64, e.GetNumFeatures())
+	features := make([]float64, e.NumFeatures())
 	e.TransformInplace(features, s)
 	return features
 }
 
 // TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
 func (e *LargeMemoryTransformerFeatureTransformer) TransformInplace(dst []float64, s *LargeMemoryTransformer) {
-	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
 
@@ -124,8 +124,8 @@ func (e *LargeMemoryTransformerFeatureTransformer) TransformInplace(dst []float6
 	return
 }
 
-// GetNumFeatures returns number of features in output feature vector
-func (e *LargeMemoryTransformerFeatureTransformer) GetNumFeatures() int {
+// NumFeatures returns number of features in output feature vector
+func (e *LargeMemoryTransformerFeatureTransformer) NumFeatures() int {
 	if e == nil {
 		return 0
 	}
@@ -144,7 +144,7 @@ func (e *LargeMemoryTransformerFeatureTransformer) FeatureNames() []string {
 	}
 
 	idx := 0
-	names := make([]string, e.GetNumFeatures())
+	names := make([]string, e.NumFeatures())
 
 	for _, w := range e.Name1.FeatureNames() {
 		names[idx] = "Name1_" + w

@@ -244,14 +244,14 @@ func (e *With32FieldsFeatureTransformer) Transform(s *With32Fields) []float64 {
 		return nil
 	}
 
-	features := make([]float64, e.GetNumFeatures())
+	features := make([]float64, e.NumFeatures())
 	e.TransformInplace(features, s)
 	return features
 }
 
 // TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
 func (e *With32FieldsFeatureTransformer) TransformInplace(dst []float64, s *With32Fields) {
-	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
 
@@ -353,8 +353,8 @@ func (e *With32FieldsFeatureTransformer) TransformInplace(dst []float64, s *With
 	return
 }
 
-// GetNumFeatures returns number of features in output feature vector
-func (e *With32FieldsFeatureTransformer) GetNumFeatures() int {
+// NumFeatures returns number of features in output feature vector
+func (e *With32FieldsFeatureTransformer) NumFeatures() int {
 	if e == nil {
 		return 0
 	}
@@ -371,7 +371,7 @@ func (e *With32FieldsFeatureTransformer) FeatureNames() []string {
 	}
 
 	idx := 0
-	names := make([]string, e.GetNumFeatures())
+	names := make([]string, e.NumFeatures())
 
 	names[idx] = "Name1"
 	idx++
