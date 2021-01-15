@@ -243,7 +243,6 @@ Feel free to open an issue or submit a PR! Some outstanding tasks:
 - [ ] order fields in order different from struct declaration
 - [ ] hand-crafted assembly
 - [ ] SIMD
-- [ ] fixed precision short decimals encoded as say int16, no floats, 
 
 ### Reference
 
