@@ -282,6 +282,10 @@ func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100000elems(b *testing
 	benchTransformAllWith32Fields(b, 100000)
 }
 
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000000elems(b *testing.B) {
+	benchTransformAllWith32Fields(b, 1000000)
+}
+
 func benchTransformAllParallelWith32Fields(b *testing.B, numelem int, nworkers uint) {
 	s := make([]With32Fields, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
@@ -295,18 +299,22 @@ func benchTransformAllParallelWith32Fields(b *testing.B, numelem int, nworkers u
 	}
 }
 
-func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100elems_4workers(b *testing.B) {
-	benchTransformAllParallelWith32Fields(b, 100, 4)
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 100, 8)
 }
 
-func BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000elems_4workers(b *testing.B) {
-	benchTransformAllParallelWith32Fields(b, 1000, 4)
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 1000, 8)
 }
 
-func BenchmarkWith32FieldsFeatureTransformer_TransformAll_10000elems_4workers(b *testing.B) {
-	benchTransformAllParallelWith32Fields(b, 10000, 4)
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_10000elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 10000, 8)
 }
 
-func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100000elems_4workers(b *testing.B) {
-	benchTransformAllParallelWith32Fields(b, 100000, 4)
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100000elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 100000, 8)
+}
+
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 1000000, 8)
 }

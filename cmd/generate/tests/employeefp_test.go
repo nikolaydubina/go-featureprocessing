@@ -282,6 +282,10 @@ func BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems(b *testing.B) 
 	benchTransformAllEmployee(b, 100000)
 }
 
+func BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems(b *testing.B) {
+	benchTransformAllEmployee(b, 1000000)
+}
+
 func benchTransformAllParallelEmployee(b *testing.B, numelem int, nworkers uint) {
 	s := make([]Employee, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
@@ -295,20 +299,24 @@ func benchTransformAllParallelEmployee(b *testing.B, numelem int, nworkers uint)
 	}
 }
 
-func BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_4workers(b *testing.B) {
-	benchTransformAllParallelEmployee(b, 100, 4)
+func BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 100, 8)
 }
 
-func BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_4workers(b *testing.B) {
-	benchTransformAllParallelEmployee(b, 1000, 4)
+func BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 1000, 8)
 }
 
-func BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_4workers(b *testing.B) {
-	benchTransformAllParallelEmployee(b, 10000, 4)
+func BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 10000, 8)
 }
 
-func BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_4workers(b *testing.B) {
-	benchTransformAllParallelEmployee(b, 100000, 4)
+func BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 100000, 8)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 1000000, 8)
 }
 
 func benchLargeTransformerEmployee(b *testing.B, numelem int) {

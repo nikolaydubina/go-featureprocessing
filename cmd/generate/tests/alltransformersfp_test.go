@@ -282,6 +282,10 @@ func BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems(b *test
 	benchTransformAllAllTransformers(b, 100000)
 }
 
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems(b *testing.B) {
+	benchTransformAllAllTransformers(b, 1000000)
+}
+
 func benchTransformAllParallelAllTransformers(b *testing.B, numelem int, nworkers uint) {
 	s := make([]AllTransformers, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
@@ -295,20 +299,24 @@ func benchTransformAllParallelAllTransformers(b *testing.B, numelem int, nworker
 	}
 }
 
-func BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems_4workers(b *testing.B) {
-	benchTransformAllParallelAllTransformers(b, 100, 4)
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 100, 8)
 }
 
-func BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems_4workers(b *testing.B) {
-	benchTransformAllParallelAllTransformers(b, 1000, 4)
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 1000, 8)
 }
 
-func BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems_4workers(b *testing.B) {
-	benchTransformAllParallelAllTransformers(b, 10000, 4)
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 10000, 8)
 }
 
-func BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems_4workers(b *testing.B) {
-	benchTransformAllParallelAllTransformers(b, 100000, 4)
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 100000, 8)
+}
+
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 1000000, 8)
 }
 
 func benchLargeTransformerAllTransformers(b *testing.B, numelem int) {

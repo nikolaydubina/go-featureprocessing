@@ -282,6 +282,10 @@ func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100000elems(
 	benchTransformAllLargeMemoryTransformer(b, 100000)
 }
 
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000000elems(b *testing.B) {
+	benchTransformAllLargeMemoryTransformer(b, 1000000)
+}
+
 func benchTransformAllParallelLargeMemoryTransformer(b *testing.B, numelem int, nworkers uint) {
 	s := make([]LargeMemoryTransformer, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
@@ -295,20 +299,24 @@ func benchTransformAllParallelLargeMemoryTransformer(b *testing.B, numelem int, 
 	}
 }
 
-func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100elems_4workers(b *testing.B) {
-	benchTransformAllParallelLargeMemoryTransformer(b, 100, 4)
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 100, 8)
 }
 
-func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000elems_4workers(b *testing.B) {
-	benchTransformAllParallelLargeMemoryTransformer(b, 1000, 4)
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000elems_8workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 1000, 8)
 }
 
-func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_10000elems_4workers(b *testing.B) {
-	benchTransformAllParallelLargeMemoryTransformer(b, 10000, 4)
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_10000elems_8workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 10000, 8)
 }
 
-func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100000elems_4workers(b *testing.B) {
-	benchTransformAllParallelLargeMemoryTransformer(b, 100000, 4)
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100000elems_8workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 100000, 8)
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 1000000, 8)
 }
 
 func benchLargeTransformerLargeMemoryTransformer(b *testing.B, numelem int) {

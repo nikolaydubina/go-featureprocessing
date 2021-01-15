@@ -285,6 +285,10 @@ func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100000elems(b *tes
 	benchTransformAll{{$.StructName}}(b, 100000)
 }
 
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_1000000elems(b *testing.B) {
+	benchTransformAll{{$.StructName}}(b, 1000000)
+}
+
 func benchTransformAllParallel{{$.StructName}}(b *testing.B, numelem int, nworkers uint) {
 	s := make([]{{$.StructName}}, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
@@ -298,20 +302,24 @@ func benchTransformAllParallel{{$.StructName}}(b *testing.B, numelem int, nworke
 	}
 }
 
-func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100elems_4workers(b *testing.B) {
-	benchTransformAllParallel{{$.StructName}}(b, 100, 4)
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 100, 8)
 }
 
-func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_1000elems_4workers(b *testing.B) {
-	benchTransformAllParallel{{$.StructName}}(b, 1000, 4)
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_1000elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 1000, 8)
 }
 
-func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_10000elems_4workers(b *testing.B) {
-	benchTransformAllParallel{{$.StructName}}(b, 10000, 4)
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_10000elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 10000, 8)
 }
 
-func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100000elems_4workers(b *testing.B) {
-	benchTransformAllParallel{{$.StructName}}(b, 100000, 4)
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100000elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 100000, 8)
+}
+
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 1000000, 8)
 }
 
 {{if $.HasLargeTransformers}}
