@@ -171,7 +171,7 @@ For typical use, with this struct encoder you can get ~100ns processing time for
 ```
 
 This is significantly faster than sklearn, or calling sklearn from Go, for few samples.
-And it performs similarly to sklearn for large number of samples.
+And it performs similarly or faster than sklearn for large number of samples.
 ![bench_log](docs/bench_log.png)
 ![bench_lin](docs/bench_lin.png)
 
