@@ -3,6 +3,8 @@
 package examplemodule
 
 import (
+	"sync"
+
 	fp "github.com/nikolaydubina/go-featureprocessing/transformers"
 )
 
@@ -97,15 +99,14 @@ func (e *AllTransformersFeatureTransformer) Transform(s *AllTransformers) []floa
 	if s == nil || e == nil {
 		return nil
 	}
-
-	features := make([]float64, e.GetNumFeatures())
+	features := make([]float64, e.NumFeatures())
 	e.TransformInplace(features, s)
 	return features
 }
 
 // TransformInplace transforms struct into feature vector accordingly to transformers, and does so inplace
 func (e *AllTransformersFeatureTransformer) TransformInplace(dst []float64, s *AllTransformers) {
-	if s == nil || e == nil || len(dst) != e.GetNumFeatures() {
+	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
 
@@ -144,8 +145,73 @@ func (e *AllTransformersFeatureTransformer) TransformInplace(dst []float64, s *A
 	return
 }
 
-// GetNumFeatures returns number of features in output feature vector
-func (e *AllTransformersFeatureTransformer) GetNumFeatures() int {
+// TransformAll transforms a slice of AllTransformers
+func (e *AllTransformersFeatureTransformer) TransformAll(s []AllTransformers) []float64 {
+	if e == nil {
+		return nil
+	}
+	features := make([]float64, len(s)*e.NumFeatures())
+	e.TransformAllInplace(features, s)
+	return features
+}
+
+// TransformAllInplace transforms a slice of AllTransformers inplace
+func (e *AllTransformersFeatureTransformer) TransformAllInplace(dst []float64, s []AllTransformers) {
+	if e == nil {
+		return
+	}
+	n := e.NumFeatures()
+	if len(dst) != n*len(s) {
+		return
+	}
+	for i, _ := range s {
+		e.TransformInplace(dst[i*n:(i+1)*n], &s[i])
+	}
+}
+
+// TransformAllParallel transforms a slice of AllTransformers in parallel
+func (e *AllTransformersFeatureTransformer) TransformAllParallel(s []AllTransformers, nworkers uint) []float64 {
+	if e == nil {
+		return nil
+	}
+	features := make([]float64, len(s)*e.NumFeatures())
+	e.TransformAllInplaceParallel(features, s, nworkers)
+	return features
+}
+
+// TransformAllInplaceParallel transforms a slice of AllTransformers inplace parallel
+// Useful for very large slices.
+func (e *AllTransformersFeatureTransformer) TransformAllInplaceParallel(dst []float64, s []AllTransformers, nworkers uint) {
+	if e == nil || nworkers == 0 {
+		return
+	}
+	ns := uint(len(s))
+	nf := uint(e.NumFeatures())
+	if uint(len(dst)) != nf*ns {
+		return
+	}
+
+	nbatch := ns / nworkers
+	var wg sync.WaitGroup
+
+	for i := uint(0); i < nworkers; i++ {
+		wg.Add(1)
+		go func(i uint) {
+			defer wg.Done()
+			iStart := nbatch * i
+			iEnd := nbatch * (i + 1)
+			if i == (nworkers - 1) {
+				iEnd = ns
+			}
+			e.TransformAllInplace(dst[iStart*nf:iEnd*nf], s[iStart:iEnd])
+		}(i)
+	}
+
+	wg.Wait()
+}
+
+// NumFeatures returns number of features in output feature vector
+func (e *AllTransformersFeatureTransformer) NumFeatures() int {
 	if e == nil {
 		return 0
 	}
@@ -167,7 +233,7 @@ func (e *AllTransformersFeatureTransformer) FeatureNames() []string {
 	}
 
 	idx := 0
-	names := make([]string, e.GetNumFeatures())
+	names := make([]string, e.NumFeatures())
 
 	names[idx] = "Name0"
 	idx++

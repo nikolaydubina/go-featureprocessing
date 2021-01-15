@@ -43,6 +43,100 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 		assert.Equal(t, expected, features)
 	})
 
+	t.Run("transform_all", func(t *testing.T) {
+		employee := Employee{
+			Age:         22,
+			Salary:      1000.0,
+			Kids:        2,
+			Weight:      85.1,
+			Height:      160.0,
+			City:        "Pangyo",
+			Car:         "Tesla",
+			Income:      9000.1,
+			SecretValue: 42,
+			Description: "large text fields are not a problem neither, tf-idf can help here too! more advanced NLP will be added later!",
+		}
+
+		employees := []Employee{
+			employee,
+			employee,
+			employee,
+		}
+
+		tr := EmployeeFeatureTransformer{
+			Salary: MinMaxScaler{Min: 500, Max: 900},
+			Kids:   MaxAbsScaler{Max: 4},
+			Weight: StandardScaler{Mean: 60, STD: 25},
+			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
+			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
+			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
+			Description: TFIDFVectorizer{
+				NumDocuments:    2,
+				DocCount:        []uint{1, 2, 2},
+				CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
+			},
+		}
+
+		features := tr.TransformAll(employees)
+		expectedOne := []float64{22, 1, 0.5, 1.0039999999999998, 1, 1, 0, 0, 0, 1, 5, 0.7674945674619879, 0.4532946552278861, 0.4532946552278861}
+		var expected []float64
+		expected = append(expected, expectedOne...)
+		expected = append(expected, expectedOne...)
+		expected = append(expected, expectedOne...)
+		assert.Equal(t, expected, features)
+	})
+
+	t.Run("transform_all_parallel", func(t *testing.T) {
+		employee := Employee{
+			Age:         22,
+			Salary:      1000.0,
+			Kids:        2,
+			Weight:      85.1,
+			Height:      160.0,
+			City:        "Pangyo",
+			Car:         "Tesla",
+			Income:      9000.1,
+			SecretValue: 42,
+			Description: "large text fields are not a problem neither, tf-idf can help here too! more advanced NLP will be added later!",
+		}
+
+		employees := []Employee{
+			employee,
+			employee,
+			employee,
+			employee,
+			employee,
+			employee,
+		}
+
+		tr := EmployeeFeatureTransformer{
+			Salary: MinMaxScaler{Min: 500, Max: 900},
+			Kids:   MaxAbsScaler{Max: 4},
+			Weight: StandardScaler{Mean: 60, STD: 25},
+			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
+			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
+			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
+			Description: TFIDFVectorizer{
+				NumDocuments:    2,
+				DocCount:        []uint{1, 2, 2},
+				CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
+			},
+		}
+
+		features := tr.TransformAllParallel(employees, 3)
+		expectedOne := []float64{22, 1, 0.5, 1.0039999999999998, 1, 1, 0, 0, 0, 1, 5, 0.7674945674619879, 0.4532946552278861, 0.4532946552278861}
+		var expected []float64
+		expected = append(expected, expectedOne...)
+		expected = append(expected, expectedOne...)
+		expected = append(expected, expectedOne...)
+		expected = append(expected, expectedOne...)
+		expected = append(expected, expectedOne...)
+		expected = append(expected, expectedOne...)
+		assert.Equal(t, expected, features)
+	})
+
 	t.Run("feature names", func(t *testing.T) {
 		tr := EmployeeFeatureTransformer{
 			Salary: MinMaxScaler{Min: 500, Max: 900},

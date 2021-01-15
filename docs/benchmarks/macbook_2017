@@ -1,0 +1,111 @@
+GOMAXPROCS=8 go test -bench=. -benchtime=3s -benchmem ./...
+?   	github.com/nikolaydubina/go-featureprocessing/cmd/generate	[no test files]
+goos: darwin
+goarch: amd64
+pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
+BenchmarkAllTransformersFeatureTransformer_Fit_100elements-8                                   	   13290	    278346 ns/op	  133748 B/op	     447 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Fit_1000elements-8                                  	     199	  19698662 ns/op	 8796461 B/op	    4174 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Fit_10000elements-8                                 	       2	1751477986 ns/op	824244832 B/op	   41154 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform-8                                         	23919644	       159 ns/op	      80 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_Inplace-8                                 	24718575	       139 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems-8                             	   46944	     67168 ns/op	  245760 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems-8                            	    6298	    711060 ns/op	 2392073 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems-8                           	     595	   6321058 ns/op	24166408 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems-8                          	      69	  51448786 ns/op	236806149 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems-8                         	       3	2931644400 ns/op	2384003106 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems_8workers-8                    	   37210	     96649 ns/op	  237584 B/op	       2 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems_8workers-8                   	    6482	    617152 ns/op	 2383896 B/op	       2 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems_8workers-8                  	     730	   5205111 ns/op	24002581 B/op	       2 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems_8workers-8                 	     118	  30600371 ns/op	244006931 B/op	       2 allocs/op
+BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems_8workers-8                	       2	1663027688 ns/op	2320007184 B/op	       2 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100elements-8             	 4492450	       857 ns/op	    2688 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_1000elements-8            	  581584	      6792 ns/op	   24576 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_10000elements-8           	   85210	     44236 ns/op	  237568 B/op	       1 allocs/op
+BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100000elements-8          	    7791	    441573 ns/op	 2277376 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Fit_100elements-8                                          	   14884	    247732 ns/op	  123830 B/op	     337 allocs/op
+BenchmarkEmployeeFeatureTransformer_Fit_1000elements-8                                         	     205	  17349599 ns/op	 8657731 B/op	    3133 allocs/op
+BenchmarkEmployeeFeatureTransformer_Fit_10000elements-8                                        	       2	1711951138 ns/op	823097124 B/op	   30837 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform-8                                                	29559154	       115 ns/op	      80 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                                        	47479938	        73.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                                    	   55782	     54723 ns/op	  163840 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                                   	    6958	    571745 ns/op	 1622026 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                                  	     880	   3959331 ns/op	16326663 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                                 	      81	  37433126 ns/op	164003841 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                                	       3	1068868357 ns/op	1632002050 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8                           	   52406	     64149 ns/op	  163856 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8                          	    8410	    455876 ns/op	 1646612 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8                         	    1234	   2947268 ns/op	16244756 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8                        	     142	  28138135 ns/op	164806677 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8                       	       4	1459758179 ns/op	1632002064 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100elements-8                    	 6256238	       629 ns/op	    1792 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_1000elements-8                   	  760516	      4852 ns/op	   16384 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_10000elements-8                  	   99351	     36374 ns/op	  155648 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100000elements-8                 	   12196	    321422 ns/op	 1540096 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Fit_100elements-8                            	   24150	    146708 ns/op	   41523 B/op	      50 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Fit_1000elements-8                           	    1761	   2027998 ns/op	  579283 B/op	     177 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Fit_10000elements-8                          	     124	  29514466 ns/op	 4783678 B/op	    1143 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform-8                                  	34713688	       104 ns/op	      64 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_Inplace-8                          	52676227	        67.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100elems-8                      	   51002	     66589 ns/op	  172033 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000elems-8                     	    5188	    712585 ns/op	 1654795 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_10000elems-8                    	     656	   5863107 ns/op	16482310 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100000elems-8                   	      63	  55004185 ns/op	164806660 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000000elems-8                  	       6	1439031044 ns/op	1648001024 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100elems_8workers-8             	   51164	     69337 ns/op	  172048 B/op	       2 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000elems_8workers-8            	    6600	    508448 ns/op	 1654803 B/op	       2 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_10000elems_8workers-8           	     996	   3485176 ns/op	16482323 B/op	       2 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100000elems_8workers-8          	     126	  28413992 ns/op	164806677 B/op	       2 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000000elems_8workers-8         	      10	1044162048 ns/op	1648001040 B/op	       2 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100elements-8      	 5035708	       677 ns/op	    1792 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_1000elements-8     	  583753	      6049 ns/op	   16384 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_10000elements-8    	   68518	     52880 ns/op	  163840 B/op	       1 allocs/op
+BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_LargeComposites_100000elements-8   	    5512	    559029 ns/op	 1605632 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Fit_100elements-8                                         	   13323	    278268 ns/op	  123366 B/op	     334 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Fit_1000elements-8                                        	     200	  19088941 ns/op	 8657224 B/op	    3129 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Fit_10000elements-8                                       	       2	1754252358 ns/op	823096484 B/op	   30875 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Transform-8                                               	39923688	        85.5 ns/op	      64 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Transform_Inplace-8                                       	66931484	        59.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_100elems-8                                   	   51842	     70054 ns/op	  245761 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_1000elems-8                                  	    6048	    716230 ns/op	 2392075 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_10000elems-8                                 	     612	   6663782 ns/op	23846919 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_100000elems-8                                	      80	  48731792 ns/op	240803842 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_1000000elems-8                               	       2	2218578898 ns/op	2400002048 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_100elems_8workers-8                          	   43446	    101544 ns/op	  245777 B/op	       2 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_1000elems_8workers-8                         	    6834	    590218 ns/op	 2424851 B/op	       2 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_10000elems_8workers-8                        	     940	   4350308 ns/op	24084506 B/op	       2 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_100000elems_8workers-8                       	     115	  31714505 ns/op	239206418 B/op	       2 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_TransformAll_1000000elems_8workers-8                      	       2	1548091902 ns/op	2416001044 B/op	       2 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Transform_LargeComposites_100elements-8                   	 4375221	      1066 ns/op	    2688 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Transform_LargeComposites_1000elements-8                  	  460670	      7416 ns/op	   24576 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Transform_LargeComposites_10000elements-8                 	   56394	     61242 ns/op	  237568 B/op	       1 allocs/op
+BenchmarkWeirdTagsFeatureTransformer_Transform_LargeComposites_100000elements-8                	    3056	   1159391 ns/op	 2342912 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Fit_100elements-8                                      	   83066	     51375 ns/op	     896 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Fit_1000elements-8                                     	    7129	    503203 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Fit_10000elements-8                                    	     656	   5605786 ns/op	   81920 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Transform-8                                            	31678317	       116 ns/op	     256 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Transform_Inplace-8                                    	80729049	        43.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_100elems-8                                	  337806	     10527 ns/op	   27264 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000elems-8                               	   18547	    167128 ns/op	  253954 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_10000elems-8                              	    2161	   1513375 ns/op	 2482186 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_100000elems-8                             	     246	  17408592 ns/op	24805389 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000000elems-8                            	      22	 157971352 ns/op	248004621 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_100elems_8workers-8                       	  219331	     17065 ns/op	   27280 B/op	       2 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000elems_8workers-8                      	   30385	    136649 ns/op	  253969 B/op	       2 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_10000elems_8workers-8                     	    3836	    951521 ns/op	 2482193 B/op	       2 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_100000elems_8workers-8                    	     475	   8610984 ns/op	24805394 B/op	       2 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000000elems_8workers-8                   	      55	  68739435 ns/op	248004624 B/op	       2 allocs/op
+PASS
+ok  	github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests	630.106s
+goos: darwin
+goarch: amd64
+pkg: github.com/nikolaydubina/go-featureprocessing/structtransformer
+BenchmarkStructTransformer_Transform_Small-8                            	 9639564	       364 ns/op	     120 B/op	       4 allocs/op
+BenchmarkStructTransformer_Transform_LargeComposites_100elements-8      	 1512699	      2277 ns/op	    3696 B/op	       6 allocs/op
+BenchmarkStructTransformer_Transform_LargeComposites_1000elements-8     	  252637	     16253 ns/op	   32880 B/op	       6 allocs/op
+BenchmarkStructTransformer_Transform_LargeComposites_10000elements-8    	   23606	    151644 ns/op	  327792 B/op	       6 allocs/op
+BenchmarkStructTransformer_Transform_LargeComposites_100000elements-8   	    1678	   1898886 ns/op	 3211376 B/op	       6 allocs/op
+BenchmarkStructTransformer_Transform_32fields-8                         	 1729353	      2271 ns/op	     512 B/op	       2 allocs/op
+PASS
+ok  	github.com/nikolaydubina/go-featureprocessing/structtransformer	32.629s
+PASS
+ok  	github.com/nikolaydubina/go-featureprocessing/transformers	0.550s

@@ -30,7 +30,7 @@ func TestEmployeeFeatureTransformerFeatureNames(t *testing.T) {
 	t.Run("feature names", func(t *testing.T) {
 		names := validTransformer.FeatureNames()
 		assert.True(t, len(names) > 0)
-		assert.Equal(t, len(names), validTransformer.GetNumFeatures())
+		assert.Equal(t, len(names), validTransformer.NumFeatures())
 	})
 
 	t.Run("feature names fuzzy transformer has some feature names", func(t *testing.T) {
@@ -42,7 +42,7 @@ func TestEmployeeFeatureTransformerFeatureNames(t *testing.T) {
 		tr := EmployeeFeatureTransformer{}
 		names := tr.FeatureNames()
 		assert.True(t, len(names) > 0)
-		assert.Equal(t, len(names), tr.GetNumFeatures())
+		assert.Equal(t, len(names), tr.NumFeatures())
 	})
 
 	t.Run("feature name transformer is nil", func(t *testing.T) {
@@ -65,7 +65,7 @@ func TestEmployeeFeatureTransformerTransform(t *testing.T) {
 
 		assert.NotNil(t, features)
 		assert.True(t, len(features) > 0)
-		assert.Equal(t, tr.GetNumFeatures(), len(features))
+		assert.Equal(t, tr.NumFeatures(), len(features))
 	})
 
 	t.Run("fuzzy struct", func(t *testing.T) {
@@ -79,7 +79,7 @@ func TestEmployeeFeatureTransformerTransform(t *testing.T) {
 
 		assert.NotNil(t, features)
 		assert.True(t, len(features) > 0)
-		assert.Equal(t, tr.GetNumFeatures(), len(features))
+		assert.Equal(t, tr.NumFeatures(), len(features))
 	})
 
 	t.Run("transformer is nil and struct is not nil", func(t *testing.T) {
@@ -91,7 +91,7 @@ func TestEmployeeFeatureTransformerTransform(t *testing.T) {
 		features := tr.Transform(&s)
 
 		assert.Nil(t, features)
-		assert.Equal(t, tr.GetNumFeatures(), 0)
+		assert.Equal(t, tr.NumFeatures(), 0)
 	})
 
 	t.Run("transformer is not nil but struct is nil", func(t *testing.T) {
@@ -103,7 +103,7 @@ func TestEmployeeFeatureTransformerTransform(t *testing.T) {
 		features := tr.Transform(s)
 
 		assert.Nil(t, features)
-		assert.True(t, tr.GetNumFeatures() > 0)
+		assert.True(t, tr.NumFeatures() > 0)
 	})
 
 	t.Run("serialize and deserialize transformer", func(t *testing.T) {
@@ -132,6 +132,84 @@ func TestEmployeeFeatureTransformerTransform(t *testing.T) {
 		tr.TransformInplace(features, &s)
 
 		assert.Equal(t, 123456789.0, features[0])
+	})
+}
+
+func TestEmployeeFeatureTransformerTransformAll(t *testing.T) {
+	t.Run("when transformer is nil", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100*100)
+
+		var tr *EmployeeFeatureTransformer
+		assert.Nil(t, tr.TransformAll(s))
+		assert.Nil(t, tr.TransformAllParallel(s, 4))
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
+	t.Run("inplace with wrong output dimensions, output is smaller", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100)
+
+		tr := EmployeeFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
+	t.Run("inplace with wrong output dimensions, output is bigger", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100*120)
+
+		tr := EmployeeFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
+	t.Run("transform all", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := EmployeeFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAll(s)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+
+	t.Run("transform all parallel 1 worker", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := EmployeeFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAllParallel(s, 1)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+
+	t.Run("transform all parallel 4 workers", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := EmployeeFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAllParallel(s, 4)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
 	})
 }
 
@@ -210,12 +288,78 @@ func BenchmarkEmployeeFeatureTransformer_Transform_Inplace(b *testing.B) {
 	tr := EmployeeFeatureTransformer{}
 	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
 
-	features := make([]float64, tr.GetNumFeatures())
+	features := make([]float64, tr.NumFeatures())
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		tr.TransformInplace(features, &s)
 	}
+}
+
+func benchTransformAllEmployee(b *testing.B, numelem int) {
+	s := make([]Employee, numelem)
+	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
+
+	tr := EmployeeFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		tr.TransformAll(s)
+	}
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_100elems(b *testing.B) {
+	benchTransformAllEmployee(b, 100)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems(b *testing.B) {
+	benchTransformAllEmployee(b, 1000)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems(b *testing.B) {
+	benchTransformAllEmployee(b, 10000)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems(b *testing.B) {
+	benchTransformAllEmployee(b, 100000)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems(b *testing.B) {
+	benchTransformAllEmployee(b, 1000000)
+}
+
+func benchTransformAllParallelEmployee(b *testing.B, numelem int, nworkers uint) {
+	s := make([]Employee, numelem)
+	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
+
+	tr := EmployeeFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		tr.TransformAllParallel(s, nworkers)
+	}
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 100, 8)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 1000, 8)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 10000, 8)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 100000, 8)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 1000000, 8)
 }
 
 func benchLargeTransformerEmployee(b *testing.B, numelem int) {
