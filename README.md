@@ -180,21 +180,22 @@ For full benchmarks go to `/docs/benchmarks`, some extract for typical struct:
 goos: darwin
 goarch: amd64
 pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
-BenchmarkAllTransformersFeatureTransformer_Transform-8                                         	11534653	       310 ns/op	     288 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_Inplace-8                                 	20954436	       167 ns/op	       0 B/op	       0 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10elems-8                              	 1504075	      2390 ns/op	    3072 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems-8                             	  137522	     26397 ns/op	   27264 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems-8                            	   13261	    269251 ns/op	  303105 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems-8                           	    1269	   2717324 ns/op	 2801668 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems-8                          	     120	  32259475 ns/op	28803072 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems-8                         	      10	 329235362 ns/op	280002560 B/op	       1 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10elems_8workers-8                     	  460125	      8256 ns/op	    3088 B/op	       2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems_8workers-8                    	  114345	     37036 ns/op	   32784 B/op	       2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems_8workers-8                   	   12106	    273372 ns/op	  311313 B/op	       2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems_8workers-8                  	    1696	   2582489 ns/op	 3047448 B/op	       2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems_8workers-8                 	     211	  16258268 ns/op	28803092 B/op	       2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems_8workers-8                	      22	 148782487 ns/op	296001552 B/op	       2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_5000000elems_8workers-8                	       2	2049761654 ns/op	1440006160 B/op	    2 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform-8                                  	58974885	       203 ns/op	     208 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                          	92727553	       140 ns/op	       0 B/op	       0 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems-8                       	 6119355	      1894 ns/op	    2304 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                      	  618709	     20344 ns/op	   24576 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                     	   53894	    223998 ns/op	  229376 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                    	    5455	   2262200 ns/op	 2162694 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                   	     487	  25268212 ns/op	21602307 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                  	      43	 251433955 ns/op       216006658 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems_8workers-8              	 1667092	      7401 ns/op	    2320 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8             	  479625	     27722 ns/op	   21776 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8            	   68299	    172469 ns/op	  221200 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8           	    8300	   1332310 ns/op	 2162706 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8          	     936	  13418078 ns/op	20807703 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8         	      96	 123383038 ns/op       216006675 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8         	       7	1432692704 ns/op      1080000528 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8        	       1       16932645112 ns/op      3120005136 B/op	       2 allocs/op
 ```
 
 ### [beta] Reflection based version
@@ -240,7 +241,9 @@ Feel free to open an issue or submit a PR! Some outstanding tasks:
 
 - [ ] multiple transformers for same field
 - [ ] order fields in order different from struct declaration
-- [ ] hand crafted assembly, SIMD support
+- [ ] hand-crafted assembly
+- [ ] SIMD
+- [ ] fixed precision short decimals encoded as say int16, no floats, 
 
 ### Reference
 
