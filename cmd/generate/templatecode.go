@@ -6,6 +6,8 @@ const templateCode = `
 package {{$.PackageName}}
 
 import (
+	"sync"
+
 	fp "github.com/nikolaydubina/go-featureprocessing/transformers"
 )
 
@@ -41,7 +43,6 @@ func (e *{{$.StructName}}FeatureTransformer) Transform(s *{{$.StructName}}) []fl
 	if s == nil || e == nil {
 		return nil
 	}
-
 	features := make([]float64, e.NumFeatures())
 	e.TransformInplace(features, s)
 	return features
@@ -66,6 +67,71 @@ func (e *{{$.StructName}}FeatureTransformer) TransformInplace(dst []float64, s *
 
 	{{end}}
 	return
+}
+
+// TransformAll transforms a slice of {{$.StructName}}
+func (e *{{$.StructName}}FeatureTransformer) TransformAll(s []{{$.StructName}}) []float64 {
+	if e == nil {
+		return nil
+	}
+	features := make([]float64, len(s) * e.NumFeatures())
+	e.TransformAllInplace(features, s)
+	return features
+}
+
+// TransformAllInplace transforms a slice of {{$.StructName}} inplace
+func (e *{{$.StructName}}FeatureTransformer) TransformAllInplace(dst []float64, s []{{$.StructName}}) {
+	if e == nil {
+		return
+	}
+	n := e.NumFeatures()
+	if len(dst) != n * len(s) {
+		return 
+	}
+	for i, _ := range s {
+		e.TransformInplace(dst[i * n: (i + 1) * n], &s[i])
+	}
+}
+
+// TransformAllParallel transforms a slice of {{$.StructName}} in parallel
+func (e *{{$.StructName}}FeatureTransformer) TransformAllParallel(s []{{$.StructName}}, nworkers uint) []float64 {
+	if e == nil {
+		return nil
+	}
+	features := make([]float64, len(s) * e.NumFeatures())
+	e.TransformAllInplaceParallel(features, s, nworkers)
+	return features
+}
+
+// TransformAllInplaceParallel transforms a slice of {{$.StructName}} inplace parallel
+// Useful for very large slices.
+func (e *{{$.StructName}}FeatureTransformer) TransformAllInplaceParallel(dst []float64, s []{{$.StructName}}, nworkers uint) {
+	if e == nil || nworkers == 0 {
+		return
+	}
+	ns := uint(len(s))
+	nf := uint(e.NumFeatures())
+	if uint(len(dst)) != nf * ns {
+		return 
+	}
+
+	nbatch := ns / nworkers
+	var wg sync.WaitGroup
+
+	for i := uint(0); i < nworkers; i++ {
+		wg.Add(1)
+		go func (i uint) {
+			defer wg.Done()
+			iStart := nbatch * i
+			iEnd := nbatch * (i + 1)
+			if i == (nworkers - 1) {
+				iEnd = ns
+			}
+			e.TransformAllInplace(dst[iStart * nf: iEnd * nf], s[iStart:iEnd])
+		} (i);
+	}
+
+	wg.Wait()
 }
 
 // NumFeatures returns number of features in output feature vector

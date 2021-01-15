@@ -135,6 +135,41 @@ func TestLargeMemoryTransformerFeatureTransformerTransform(t *testing.T) {
 	})
 }
 
+func TestLargeMemoryTransformerFeatureTransformerTransformAll(t *testing.T) {
+	t.Run("transform all", func(t *testing.T) {
+		s := make([]LargeMemoryTransformer, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := LargeMemoryTransformerFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAll(s)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+
+	t.Run("transform all parallel 1 worker", func(t *testing.T) {
+		s := make([]LargeMemoryTransformer, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := LargeMemoryTransformerFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAllParallel(s, 1)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+
+	t.Run("transform all parallel 4 workers", func(t *testing.T) {
+		s := make([]LargeMemoryTransformer, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := LargeMemoryTransformerFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAllParallel(s, 4)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+}
+
 func TestLargeMemoryTransformerFeatureTransformerFit(t *testing.T) {
 	t.Run("fuzzy input", func(t *testing.T) {
 		s := make([]LargeMemoryTransformer, 10)
@@ -216,6 +251,64 @@ func BenchmarkLargeMemoryTransformerFeatureTransformer_Transform_Inplace(b *test
 	for n := 0; n < b.N; n++ {
 		tr.TransformInplace(features, &s)
 	}
+}
+
+func benchTransformAllLargeMemoryTransformer(b *testing.B, numelem int) {
+	s := make([]LargeMemoryTransformer, numelem)
+	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
+
+	tr := LargeMemoryTransformerFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		tr.TransformAll(s)
+	}
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100elems(b *testing.B) {
+	benchTransformAllLargeMemoryTransformer(b, 100)
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000elems(b *testing.B) {
+	benchTransformAllLargeMemoryTransformer(b, 1000)
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_10000elems(b *testing.B) {
+	benchTransformAllLargeMemoryTransformer(b, 10000)
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100000elems(b *testing.B) {
+	benchTransformAllLargeMemoryTransformer(b, 100000)
+}
+
+func benchTransformAllParallelLargeMemoryTransformer(b *testing.B, numelem int, nworkers uint) {
+	s := make([]LargeMemoryTransformer, numelem)
+	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
+
+	tr := LargeMemoryTransformerFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		tr.TransformAllParallel(s, nworkers)
+	}
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100elems_4workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 100, 4)
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_1000elems_4workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 1000, 4)
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_10000elems_4workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 10000, 4)
+}
+
+func BenchmarkLargeMemoryTransformerFeatureTransformer_TransformAll_100000elems_4workers(b *testing.B) {
+	benchTransformAllParallelLargeMemoryTransformer(b, 100000, 4)
 }
 
 func benchLargeTransformerLargeMemoryTransformer(b *testing.B, numelem int) {

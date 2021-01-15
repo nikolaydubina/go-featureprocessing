@@ -135,6 +135,41 @@ func TestWeirdTagsFeatureTransformerTransform(t *testing.T) {
 	})
 }
 
+func TestWeirdTagsFeatureTransformerTransformAll(t *testing.T) {
+	t.Run("transform all", func(t *testing.T) {
+		s := make([]WeirdTags, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := WeirdTagsFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAll(s)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+
+	t.Run("transform all parallel 1 worker", func(t *testing.T) {
+		s := make([]WeirdTags, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := WeirdTagsFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAllParallel(s, 1)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+
+	t.Run("transform all parallel 4 workers", func(t *testing.T) {
+		s := make([]WeirdTags, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		tr := WeirdTagsFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		features := tr.TransformAllParallel(s, 4)
+		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
+	})
+}
+
 func TestWeirdTagsFeatureTransformerFit(t *testing.T) {
 	t.Run("fuzzy input", func(t *testing.T) {
 		s := make([]WeirdTags, 10)
@@ -216,6 +251,64 @@ func BenchmarkWeirdTagsFeatureTransformer_Transform_Inplace(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		tr.TransformInplace(features, &s)
 	}
+}
+
+func benchTransformAllWeirdTags(b *testing.B, numelem int) {
+	s := make([]WeirdTags, numelem)
+	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
+
+	tr := WeirdTagsFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		tr.TransformAll(s)
+	}
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_100elems(b *testing.B) {
+	benchTransformAllWeirdTags(b, 100)
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_1000elems(b *testing.B) {
+	benchTransformAllWeirdTags(b, 1000)
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_10000elems(b *testing.B) {
+	benchTransformAllWeirdTags(b, 10000)
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_100000elems(b *testing.B) {
+	benchTransformAllWeirdTags(b, 100000)
+}
+
+func benchTransformAllParallelWeirdTags(b *testing.B, numelem int, nworkers uint) {
+	s := make([]WeirdTags, numelem)
+	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
+
+	tr := WeirdTagsFeatureTransformer{}
+	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		tr.TransformAllParallel(s, nworkers)
+	}
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_100elems_4workers(b *testing.B) {
+	benchTransformAllParallelWeirdTags(b, 100, 4)
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_1000elems_4workers(b *testing.B) {
+	benchTransformAllParallelWeirdTags(b, 1000, 4)
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_10000elems_4workers(b *testing.B) {
+	benchTransformAllParallelWeirdTags(b, 10000, 4)
+}
+
+func BenchmarkWeirdTagsFeatureTransformer_TransformAll_100000elems_4workers(b *testing.B) {
+	benchTransformAllParallelWeirdTags(b, 100000, 4)
 }
 
 func benchLargeTransformerWeirdTags(b *testing.B, numelem int) {

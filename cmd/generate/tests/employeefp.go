@@ -3,6 +3,8 @@
 package examplemodule
 
 import (
+	"sync"
+
 	fp "github.com/nikolaydubina/go-featureprocessing/transformers"
 )
 
@@ -90,7 +92,6 @@ func (e *EmployeeFeatureTransformer) Transform(s *Employee) []float64 {
 	if s == nil || e == nil {
 		return nil
 	}
-
 	features := make([]float64, e.NumFeatures())
 	e.TransformInplace(features, s)
 	return features
@@ -132,6 +133,71 @@ func (e *EmployeeFeatureTransformer) TransformInplace(dst []float64, s *Employee
 	idx += e.Description.NumFeatures()
 
 	return
+}
+
+// TransformAll transforms a slice of Employee
+func (e *EmployeeFeatureTransformer) TransformAll(s []Employee) []float64 {
+	if e == nil {
+		return nil
+	}
+	features := make([]float64, len(s)*e.NumFeatures())
+	e.TransformAllInplace(features, s)
+	return features
+}
+
+// TransformAllInplace transforms a slice of Employee inplace
+func (e *EmployeeFeatureTransformer) TransformAllInplace(dst []float64, s []Employee) {
+	if e == nil {
+		return
+	}
+	n := e.NumFeatures()
+	if len(dst) != n*len(s) {
+		return
+	}
+	for i, _ := range s {
+		e.TransformInplace(dst[i*n:(i+1)*n], &s[i])
+	}
+}
+
+// TransformAllParallel transforms a slice of Employee in parallel
+func (e *EmployeeFeatureTransformer) TransformAllParallel(s []Employee, nworkers uint) []float64 {
+	if e == nil {
+		return nil
+	}
+	features := make([]float64, len(s)*e.NumFeatures())
+	e.TransformAllInplaceParallel(features, s, nworkers)
+	return features
+}
+
+// TransformAllInplaceParallel transforms a slice of Employee inplace parallel
+// Useful for very large slices.
+func (e *EmployeeFeatureTransformer) TransformAllInplaceParallel(dst []float64, s []Employee, nworkers uint) {
+	if e == nil || nworkers == 0 {
+		return
+	}
+	ns := uint(len(s))
+	nf := uint(e.NumFeatures())
+	if uint(len(dst)) != nf*ns {
+		return
+	}
+
+	nbatch := ns / nworkers
+	var wg sync.WaitGroup
+
+	for i := uint(0); i < nworkers; i++ {
+		wg.Add(1)
+		go func(i uint) {
+			defer wg.Done()
+			iStart := nbatch * i
+			iEnd := nbatch * (i + 1)
+			if i == (nworkers - 1) {
+				iEnd = ns
+			}
+			e.TransformAllInplace(dst[iStart*nf:iEnd*nf], s[iStart:iEnd])
+		}(i)
+	}
+
+	wg.Wait()
 }
 
 // NumFeatures returns number of features in output feature vector
