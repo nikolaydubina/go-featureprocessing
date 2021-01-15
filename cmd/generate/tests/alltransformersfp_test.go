@@ -309,6 +309,10 @@ func benchTransformAllAllTransformers(b *testing.B, numelem int) {
 	}
 }
 
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_10elems(b *testing.B) {
+	benchTransformAllAllTransformers(b, 10)
+}
+
 func BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems(b *testing.B) {
 	benchTransformAllAllTransformers(b, 100)
 }
@@ -342,6 +346,10 @@ func benchTransformAllParallelAllTransformers(b *testing.B, numelem int, nworker
 	}
 }
 
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_10elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 10, 8)
+}
+
 func BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
 	benchTransformAllParallelAllTransformers(b, 100, 8)
 }
@@ -360,6 +368,14 @@ func BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems_8worker
 
 func BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
 	benchTransformAllParallelAllTransformers(b, 1000000, 8)
+}
+
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_5000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 5000000, 8)
+}
+
+func BenchmarkAllTransformersFeatureTransformer_TransformAll_15000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelAllTransformers(b, 15000000, 8)
 }
 
 func benchLargeTransformerAllTransformers(b *testing.B, numelem int) {

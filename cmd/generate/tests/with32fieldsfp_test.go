@@ -309,6 +309,10 @@ func benchTransformAllWith32Fields(b *testing.B, numelem int) {
 	}
 }
 
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_10elems(b *testing.B) {
+	benchTransformAllWith32Fields(b, 10)
+}
+
 func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100elems(b *testing.B) {
 	benchTransformAllWith32Fields(b, 100)
 }
@@ -342,6 +346,10 @@ func benchTransformAllParallelWith32Fields(b *testing.B, numelem int, nworkers u
 	}
 }
 
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_10elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 10, 8)
+}
+
 func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
 	benchTransformAllParallelWith32Fields(b, 100, 8)
 }
@@ -360,4 +368,12 @@ func BenchmarkWith32FieldsFeatureTransformer_TransformAll_100000elems_8workers(b
 
 func BenchmarkWith32FieldsFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
 	benchTransformAllParallelWith32Fields(b, 1000000, 8)
+}
+
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_5000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 5000000, 8)
+}
+
+func BenchmarkWith32FieldsFeatureTransformer_TransformAll_15000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelWith32Fields(b, 15000000, 8)
 }

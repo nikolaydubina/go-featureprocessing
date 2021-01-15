@@ -312,6 +312,10 @@ func benchTransformAll{{$.StructName}}(b *testing.B, numelem int) {
 	}
 }
 
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_10elems(b *testing.B) {
+	benchTransformAll{{$.StructName}}(b, 10)
+}
+
 func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100elems(b *testing.B) {
 	benchTransformAll{{$.StructName}}(b, 100)
 }
@@ -345,6 +349,10 @@ func benchTransformAllParallel{{$.StructName}}(b *testing.B, numelem int, nworke
 	}
 }
 
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_10elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 10, 8)
+}
+
 func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
 	benchTransformAllParallel{{$.StructName}}(b, 100, 8)
 }
@@ -363,6 +371,14 @@ func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_100000elems_8worke
 
 func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
 	benchTransformAllParallel{{$.StructName}}(b, 1000000, 8)
+}
+
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_5000000elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 5000000, 8)
+}
+
+func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_15000000elems_8workers(b *testing.B) {
+	benchTransformAllParallel{{$.StructName}}(b, 15000000, 8)
 }
 
 {{if $.HasLargeTransformers}}

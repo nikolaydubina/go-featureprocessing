@@ -1,0 +1,9 @@
+nsamples=1	 ntrials=10	 ntrialsgroup=100	 avg=12824253 ns	 min=12219147 ns	 max=13943499 ns	 samples_dataframe_size=8 B setuptook=27610184 ns 
+nsamples=10	 ntrials=10	 ntrialsgroup=100	 avg=13809201 ns	 min=12688076 ns	 max=14746466 ns	 samples_dataframe_size=80 B setuptook=27280819 ns 
+nsamples=100	 ntrials=10	 ntrialsgroup=100	 avg=14324627 ns	 min=13311803 ns	 max=15129684 ns	 samples_dataframe_size=800 B setuptook=25503670 ns 
+nsamples=1000	 ntrials=10	 ntrialsgroup=100	 avg=15042673 ns	 min=13605346 ns	 max=17810513 ns	 samples_dataframe_size=8000 B setuptook=32386977 ns 
+nsamples=10000	 ntrials=10	 ntrialsgroup=10	 avg=20092639 ns	 min=18415227 ns	 max=22949523 ns	 samples_dataframe_size=80000 B setuptook=98518650 ns 
+nsamples=100000	 ntrials=10	 ntrialsgroup=10	 avg=73354263 ns	 min=71922718 ns	 max=75853612 ns	 samples_dataframe_size=800000 B setuptook=758389751 ns 
+nsamples=1000000	 ntrials=10	 ntrialsgroup=1	 avg=660746274 ns	 min=645929252 ns	 max=697522591 ns	 samples_dataframe_size=8000000 B setuptook=6992992088 ns 
+nsamples=5000000	 ntrials=10	 ntrialsgroup=1	 avg=3839594987 ns	 min=3557765533 ns	 max=4383723914 ns	 samples_dataframe_size=40000000 B setuptook=37772393178 ns 
+nsamples=15000000	 ntrials=10	 ntrialsgroup=1	 avg=19546411996 ns	 min=15810273557 ns	 max=21872775279 ns	 samples_dataframe_size=120000000 B setuptook=197243552642 ns 

@@ -126,7 +126,7 @@ fp := EmployeeFeatureTransformer{
 
 ### Benchmarks
 
-For typical use, with this struct encoder you can get <100ns processing time. How fast you need to get? Here are some numbers:
+For typical use, with this struct encoder you can get <100ns processing time for a single sample. How fast you need to get? Here are some numbers:
 
 ```
                        0 - C++ FlatBuffers decode
@@ -168,7 +168,11 @@ For typical use, with this struct encoder you can get <100ns processing time. Ho
  10s                     - AWS Cloudfront 1MB transfer time
 ```
 
-For full benchmarks go to `/docs/benchmarks`. Typical run would be:
+This is faster than doing similar work in sklearn for few samples. 
+For large number of samples, both scale linearly, although sklearn seem to be faster per sample. 
+![bench_log](docs/bench_log.png)
+
+For full benchmarks go to `/docs/benchmarks`, some extract for typical struct: 
 ```
 goos: darwin
 goarch: amd64
@@ -234,7 +238,6 @@ Feel free to open an issue or submit a PR! Some outstanding tasks:
 - [ ] multiple transformers for same field
 - [ ] order fields in order different from struct declaration
 - [ ] hand crafted assembly, SIMD support
-- [ ] sklearn model to serialized transformer json conversion tool
 
 ### Reference
 

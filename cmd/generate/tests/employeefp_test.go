@@ -309,6 +309,10 @@ func benchTransformAllEmployee(b *testing.B, numelem int) {
 	}
 }
 
+func BenchmarkEmployeeFeatureTransformer_TransformAll_10elems(b *testing.B) {
+	benchTransformAllEmployee(b, 10)
+}
+
 func BenchmarkEmployeeFeatureTransformer_TransformAll_100elems(b *testing.B) {
 	benchTransformAllEmployee(b, 100)
 }
@@ -342,6 +346,10 @@ func benchTransformAllParallelEmployee(b *testing.B, numelem int, nworkers uint)
 	}
 }
 
+func BenchmarkEmployeeFeatureTransformer_TransformAll_10elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 10, 8)
+}
+
 func BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers(b *testing.B) {
 	benchTransformAllParallelEmployee(b, 100, 8)
 }
@@ -360,6 +368,14 @@ func BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers(b *te
 
 func BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers(b *testing.B) {
 	benchTransformAllParallelEmployee(b, 1000000, 8)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 5000000, 8)
+}
+
+func BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers(b *testing.B) {
+	benchTransformAllParallelEmployee(b, 15000000, 8)
 }
 
 func benchLargeTransformerEmployee(b *testing.B, numelem int) {

@@ -1,2 +1,2 @@
 *.test
-benchmark_profiles/*
+docs/benchmark_profiles/*
