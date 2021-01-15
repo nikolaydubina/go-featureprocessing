@@ -174,19 +174,19 @@ goarch: amd64
 pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
 BenchmarkEmployeeFeatureTransformer_Fit_100elements-8                                          	   14884	    247732 ns/op	  123830 B/op	     337 allocs/op
 BenchmarkEmployeeFeatureTransformer_Fit_1000elements-8                                         	     205	  17349599 ns/op	 8657731 B/op	    3133 allocs/op
-BenchmarkEmployeeFeatureTransformer_Fit_10000elements-8                                        	       2	1711951138 ns/op 823097124 B/op	   30837 allocs/op
+BenchmarkEmployeeFeatureTransformer_Fit_10000elements-8                                        	       2	1711951138 ns/op       823097124 B/op	   30837 allocs/op
 BenchmarkEmployeeFeatureTransformer_Transform-8                                                	29559154	       115 ns/op	      80 B/op	       1 allocs/op
 BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                                        	47479938	      73.8 ns/op	       0 B/op	       0 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                                    	   55782	     54723 ns/op	  163840 B/op	       1 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                                   	    6958	    571745 ns/op	 1622026 B/op	       1 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                                  	     880	   3959331 ns/op	16326663 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                                 	      81	  37433126 ns/op	164003841 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                                	       3	1068868357 ns/op	1632002050 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                                 	      81	  37433126 ns/op       164003841 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                                	       3	1068868357 ns/op      1632002050 B/op	       1 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8                           	   52406	     64149 ns/op	  163856 B/op	       2 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8                          	    8410	    455876 ns/op	 1646612 B/op	       2 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8                         	    1234	   2947268 ns/op	16244756 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8                        	     142	  28138135 ns/op	164806677 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8                       	       4	1459758179 ns/op	1632002064 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8                        	     142	  28138135 ns/op       164806677 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8                       	       4	1459758179 ns/op      1632002064 B/op	       2 allocs/op
 ```
 
 ### [beta] Reflection based version
@@ -201,9 +201,16 @@ Benchmarks:
 ```
 goos: darwin
 goarch: amd64
+
+// reflection
 pkg: github.com/nikolaydubina/go-featureprocessing/structtransformer
 BenchmarkStructTransformerTransformSmall-4                               9994407               360 ns/op             120 B/op          4 allocs/op
 BenchmarkStructTransformerTransform_32fields-4                           1732573              2079 ns/op             512 B/op          2 allocs/op
+
+// non-reflection
+pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
+BenchmarkWith32FieldsFeatureTransformer_Transform-8                     31678317	       116 ns/op	     256 B/op	       1 allocs/op
+BenchmarkWith32FieldsFeatureTransformer_Transform_Inplace-8           	80729049	        43 ns/op	       0 B/op	       0 allocs/op
 ```
 
 ### Profiling
