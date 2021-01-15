@@ -136,6 +136,49 @@ func TestEmployeeFeatureTransformerTransform(t *testing.T) {
 }
 
 func TestEmployeeFeatureTransformerTransformAll(t *testing.T) {
+	t.Run("when transformer is nil", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100*100)
+
+		var tr *EmployeeFeatureTransformer
+		assert.Nil(t, tr.TransformAll(s))
+		assert.Nil(t, tr.TransformAllParallel(s, 4))
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
+	t.Run("inplace with wrong output dimensions, output is smaller", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100)
+
+		tr := EmployeeFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
+	t.Run("inplace with wrong output dimensions, output is bigger", func(t *testing.T) {
+		s := make([]Employee, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100*120)
+
+		tr := EmployeeFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
 	t.Run("transform all", func(t *testing.T) {
 		s := make([]Employee, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)

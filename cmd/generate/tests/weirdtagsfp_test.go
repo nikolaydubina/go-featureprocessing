@@ -136,6 +136,49 @@ func TestWeirdTagsFeatureTransformerTransform(t *testing.T) {
 }
 
 func TestWeirdTagsFeatureTransformerTransformAll(t *testing.T) {
+	t.Run("when transformer is nil", func(t *testing.T) {
+		s := make([]WeirdTags, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100*100)
+
+		var tr *WeirdTagsFeatureTransformer
+		assert.Nil(t, tr.TransformAll(s))
+		assert.Nil(t, tr.TransformAllParallel(s, 4))
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
+	t.Run("inplace with wrong output dimensions, output is smaller", func(t *testing.T) {
+		s := make([]WeirdTags, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100)
+
+		tr := WeirdTagsFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
+	t.Run("inplace with wrong output dimensions, output is bigger", func(t *testing.T) {
+		s := make([]WeirdTags, 100)
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
+
+		dst := make([]float64, 100*120)
+
+		tr := WeirdTagsFeatureTransformer{}
+		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+
+		// does not panic
+		tr.TransformAllInplace(dst, s)
+		tr.TransformAllInplaceParallel(dst, s, 4)
+	})
+
 	t.Run("transform all", func(t *testing.T) {
 		s := make([]WeirdTags, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
