@@ -11,10 +11,11 @@ Ultra-fast and simple feature processing in Go with feature parity of [sklearn](
 
 - ✅ Does not cross `cgo` boundary
 - ✅ No memory allocation
-- ✅ Convenient serializiation makes it easy to integrate with other frameworks
+- ✅ No reflection
+- ✅ Serialization
 - ✅ Generated code has 100% test coverage and benchmarks
 - ✅ Fitting
-- ✅ Batch transform in parallel
+- ✅ Parallel batch transform
 
 ```go
 //go:generate go run github.com/nikolaydubina/go-featureprocessing/cmd/generate -struct=Employee
