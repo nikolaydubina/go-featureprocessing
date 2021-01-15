@@ -126,7 +126,7 @@ fp := EmployeeFeatureTransformer{
 
 ### Benchmarks
 
-For typical use, with this struct encoder you can get <100ns processing time for a single sample. How fast you need to get? Here are some numbers:
+For typical use, with this struct encoder you can get ~100ns processing time for a single sample. How fast you need to get? Here are some numbers:
 
 ```
                        0 - C++ FlatBuffers decode
@@ -137,8 +137,8 @@ For typical use, with this struct encoder you can get <100ns processing time for
                20ns      - DDR4 CAS, first byte from memory latency
                20ns      - C++ raw hardcoded structs access
                80ns      - C++ FlatBuffers decode/traverse/dealloc
- ---------->  100ns      - go-featureprocessing typical processing
               150ns      - PCIe bus latency
+ ---------->  168ns      - go-featureprocessing typical processing
               171ns      - Go cgo call boundary, 2015
               200ns      - some High Frequency Trading FPGA claims
               800ns      - Go Protocol Buffers Marshal
@@ -168,9 +168,10 @@ For typical use, with this struct encoder you can get <100ns processing time for
  10s                     - AWS Cloudfront 1MB transfer time
 ```
 
-This is faster than doing similar work in sklearn for few samples. 
-For large number of samples, both scale linearly, although sklearn seem to be faster per sample. 
+This is significantly faster than sklearn, or calling sklearn from Go, for few samples.
+And it performs similarly to sklearn for large number of samples.
 ![bench_log](docs/bench_log.png)
+![bench_lin](docs/bench_lin.png)
 
 For full benchmarks go to `/docs/benchmarks`, some extract for typical struct: 
 ```
@@ -180,18 +181,22 @@ pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
 BenchmarkEmployeeFeatureTransformer_Fit_100elements-8                                          	   14884	    247732 ns/op	  123830 B/op	     337 allocs/op
 BenchmarkEmployeeFeatureTransformer_Fit_1000elements-8                                         	     205	  17349599 ns/op	 8657731 B/op	    3133 allocs/op
 BenchmarkEmployeeFeatureTransformer_Fit_10000elements-8                                        	       2	1711951138 ns/op       823097124 B/op	   30837 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform-8                                                	29559154	       115 ns/op	      80 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                                        	47479938	      73.8 ns/op	       0 B/op	       0 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                                    	   55782	     54723 ns/op	  163840 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                                   	    6958	    571745 ns/op	 1622026 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                                  	     880	   3959331 ns/op	16326663 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                                 	      81	  37433126 ns/op       164003841 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                                	       3	1068868357 ns/op      1632002050 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8                           	   52406	     64149 ns/op	  163856 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8                          	    8410	    455876 ns/op	 1646612 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8                         	    1234	   2947268 ns/op	16244756 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8                        	     142	  28138135 ns/op       164806677 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8                       	       4	1459758179 ns/op      1632002064 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform-8                                  	14886992	       231 ns/op	     224 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                          	20895944	       168 ns/op	      16 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems-8                       	 1438218	      2479 ns/op	    2464 B/op	      11 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                      	  137925	     26119 ns/op	   23456 B/op	     101 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                     	   12853	    271672 ns/op	  229536 B/op	    1001 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                    	    1248	   2873639 ns/op	 2246193 B/op	   10001 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                   	      88	  41014943 ns/op	23255681 B/op	  100001 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                  	       8	 393020026 ns/op	248539984 B/op	 1000001 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems_8workers-8              	  412047	      8361 ns/op	    2496 B/op	      12 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8             	  133123	     32507 ns/op	   23408 B/op	     102 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8            	   15753	    265068 ns/op	  229408 B/op	    1002 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8           	    2012	   2196934 ns/op	 2327619 B/op	   10002 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8          	     196	  17910894 ns/op	23254434 B/op	  100002 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8         	      18	 204270350 ns/op	224543232 B/op	 1000002 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8         	       3	2153195134 ns/op	1082682928 B/op	 5000002 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8        	       1	18813370176 ns/op	3247996016 B/op	15000002 allocs/op
 ```
 
 ### [beta] Reflection based version

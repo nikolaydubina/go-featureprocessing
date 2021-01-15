@@ -13,7 +13,7 @@ import (
 // makeMock creates some valid With32FieldsFeatureTransformer by fitting on fuzzy data.
 // This function is handy for tests.
 func makeMockWith32FieldsFeatureTransformer() *With32FieldsFeatureTransformer {
-	s := make([]With32Fields, 1000000)
+	s := make([]With32Fields, 10)
 	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&s)
 
 	tr := With32FieldsFeatureTransformer{}
@@ -22,20 +22,12 @@ func makeMockWith32FieldsFeatureTransformer() *With32FieldsFeatureTransformer {
 }
 
 func TestWith32FieldsFeatureTransformerFeatureNames(t *testing.T) {
-	validTransformer := makeMockWith32FieldsFeatureTransformer()
-
-	fuzzyTransformer := With32FieldsFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&fuzzyTransformer)
+	tr := makeMockWith32FieldsFeatureTransformer()
 
 	t.Run("feature names", func(t *testing.T) {
-		names := validTransformer.FeatureNames()
+		names := tr.FeatureNames()
 		assert.True(t, len(names) > 0)
-		assert.Equal(t, len(names), validTransformer.NumFeatures())
-	})
-
-	t.Run("feature names fuzzy transformer has some feature names", func(t *testing.T) {
-		names := fuzzyTransformer.FeatureNames()
-		assert.True(t, len(names) > 0)
+		assert.Equal(t, len(names), tr.NumFeatures())
 	})
 
 	t.Run("feature name transformer is empty", func(t *testing.T) {
@@ -53,14 +45,10 @@ func TestWith32FieldsFeatureTransformerFeatureNames(t *testing.T) {
 }
 
 func TestWith32FieldsFeatureTransformerTransform(t *testing.T) {
-	t.Run("empty struct fuzzy transformer", func(t *testing.T) {
+	tr := makeMockWith32FieldsFeatureTransformer()
+
+	t.Run("empty struct", func(t *testing.T) {
 		s := With32Fields{}
-
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
-
-		tr.Transform(&s)
-
 		features := tr.Transform(&s)
 
 		assert.NotNil(t, features)
@@ -82,34 +70,25 @@ func TestWith32FieldsFeatureTransformerTransform(t *testing.T) {
 		assert.Equal(t, tr.NumFeatures(), len(features))
 	})
 
-	t.Run("transformer is nil and struct is not nil", func(t *testing.T) {
+	t.Run("struct is nil", func(t *testing.T) {
+		var s *With32Fields
+		features := tr.Transform(s)
+		assert.Nil(t, features)
+		assert.True(t, tr.NumFeatures() > 0)
+	})
+
+	t.Run("transformer is nil", func(t *testing.T) {
 		var s With32Fields
 		fuzz.New().Fuzz(&s)
 
 		var tr *With32FieldsFeatureTransformer
-
 		features := tr.Transform(&s)
 
 		assert.Nil(t, features)
 		assert.Equal(t, tr.NumFeatures(), 0)
 	})
 
-	t.Run("transformer is not nil but struct is nil", func(t *testing.T) {
-		var s *With32Fields
-
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
-
-		features := tr.Transform(s)
-
-		assert.Nil(t, features)
-		assert.True(t, tr.NumFeatures() > 0)
-	})
-
 	t.Run("serialize and deserialize transformer", func(t *testing.T) {
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
-
 		output, err := json.Marshal(tr)
 		assert.Nil(t, err)
 		assert.NotEmpty(t, output)
@@ -117,7 +96,7 @@ func TestWith32FieldsFeatureTransformerTransform(t *testing.T) {
 		var tr2 With32FieldsFeatureTransformer
 		err = json.Unmarshal(output, &tr2)
 		assert.Nil(t, err)
-		assert.Equal(t, tr, tr2)
+		assert.Equal(t, *tr, tr2)
 	})
 
 	t.Run("inplace transform does not run when destination does not match num features", func(t *testing.T) {
@@ -125,7 +104,6 @@ func TestWith32FieldsFeatureTransformerTransform(t *testing.T) {
 		fuzz.New().Fuzz(&s)
 
 		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
 
 		features := make([]float64, 1000)
 		features[0] = 123456789.0
@@ -157,8 +135,7 @@ func TestWith32FieldsFeatureTransformerTransformAll(t *testing.T) {
 
 		dst := make([]float64, 100)
 
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMockWith32FieldsFeatureTransformer()
 
 		// does not panic
 		tr.TransformAllInplace(dst, s)
@@ -171,8 +148,7 @@ func TestWith32FieldsFeatureTransformerTransformAll(t *testing.T) {
 
 		dst := make([]float64, 100*120)
 
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMockWith32FieldsFeatureTransformer()
 
 		// does not panic
 		tr.TransformAllInplace(dst, s)
@@ -183,8 +159,7 @@ func TestWith32FieldsFeatureTransformerTransformAll(t *testing.T) {
 		s := make([]With32Fields, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
 
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMockWith32FieldsFeatureTransformer()
 
 		features := tr.TransformAll(s)
 		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
@@ -194,8 +169,7 @@ func TestWith32FieldsFeatureTransformerTransformAll(t *testing.T) {
 		s := make([]With32Fields, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
 
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMockWith32FieldsFeatureTransformer()
 
 		features := tr.TransformAllParallel(s, 1)
 		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
@@ -205,8 +179,7 @@ func TestWith32FieldsFeatureTransformerTransformAll(t *testing.T) {
 		s := make([]With32Fields, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
 
-		tr := With32FieldsFeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMockWith32FieldsFeatureTransformer()
 
 		features := tr.TransformAllParallel(s, 4)
 		assert.Equal(t, len(s)*tr.NumFeatures(), len(features))
@@ -272,8 +245,7 @@ func BenchmarkWith32FieldsFeatureTransformer_Transform(b *testing.B) {
 	var s With32Fields
 	fuzz.New().Fuzz(&s)
 
-	tr := With32FieldsFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
+	tr := makeMockWith32FieldsFeatureTransformer()
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
@@ -285,8 +257,7 @@ func BenchmarkWith32FieldsFeatureTransformer_Transform_Inplace(b *testing.B) {
 	var s With32Fields
 	fuzz.New().Fuzz(&s)
 
-	tr := With32FieldsFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
+	tr := makeMockWith32FieldsFeatureTransformer()
 
 	features := make([]float64, tr.NumFeatures())
 
@@ -300,8 +271,7 @@ func benchTransformAllWith32Fields(b *testing.B, numelem int) {
 	s := make([]With32Fields, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
 
-	tr := With32FieldsFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+	tr := makeMockWith32FieldsFeatureTransformer()
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
@@ -337,8 +307,7 @@ func benchTransformAllParallelWith32Fields(b *testing.B, numelem int, nworkers u
 	s := make([]With32Fields, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
 
-	tr := With32FieldsFeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+	tr := makeMockWith32FieldsFeatureTransformer()
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {

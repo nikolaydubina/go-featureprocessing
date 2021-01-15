@@ -45,7 +45,7 @@ func (t *CountVectorizer) NumFeatures() int {
 
 // Transform counts how many time each word appeared in input
 func (t *CountVectorizer) Transform(v string) []float64 {
-	if t == nil || len(t.Mapping) == 0 {
+	if t == nil || v == "" || len(t.Mapping) == 0 {
 		return nil
 	}
 	counts := make([]float64, t.NumFeatures())
@@ -59,13 +59,6 @@ func (t *CountVectorizer) FeatureNames() []string {
 		return nil
 	}
 
-	// sanity check, do not transform on invalid transformer
-	for _, idx := range t.Mapping {
-		if idx >= uint(t.NumFeatures()) {
-			return nil
-		}
-	}
-
 	names := make([]string, t.NumFeatures())
 	for w, i := range t.Mapping {
 		names[i] = w
@@ -74,21 +67,10 @@ func (t *CountVectorizer) FeatureNames() []string {
 }
 
 // TransformInplace counts how many time each word appeared in input, inplace version
+// It is responsibility of caller to zero-out destination.
 func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
 	if t == nil || len(t.Mapping) == 0 || len(dest) != t.NumFeatures() {
 		return
-	}
-
-	// sanity check, do not transform on invalid transformer
-	for _, idx := range t.Mapping {
-		if idx >= uint(t.NumFeatures()) {
-			return
-		}
-	}
-
-	// zero out first
-	for i := range dest {
-		dest[i] = 0
 	}
 
 	for _, w := range strings.Split(v, t.Separator) {
@@ -147,19 +129,12 @@ func (t *TFIDFVectorizer) Transform(v string) []float64 {
 	return features
 }
 
-// TransformInplace performs tf-idf computation, inplace
+// TransformInplace performs tf-idf computation, inplace.
+// It is responsibility of caller to zero-out destination.
 func (t *TFIDFVectorizer) TransformInplace(dest []float64, v string) {
 	if t == nil || dest == nil || len(dest) != t.NumFeatures() {
 		return
 	}
-
-	// sanity check, do not transform on invalid transformer
-	for _, idx := range t.Mapping {
-		if idx >= uint(t.NumFeatures()) {
-			return
-		}
-	}
-
 	t.CountVectorizer.TransformInplace(dest, v)
 
 	for i, tf := range dest {

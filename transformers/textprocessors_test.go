@@ -48,19 +48,6 @@ func TestCountVectorizer(t *testing.T) {
 		encoder := CountVectorizer{Mapping: map[string]uint{"a": 1, "b": 0}}
 		assert.Equal(t, []string{"b", "a"}, encoder.FeatureNames())
 	})
-
-	t.Run("inplace does not run when mapping is broken", func(t *testing.T) {
-		encoder := CountVectorizer{Mapping: map[string]uint{"a": 0, "b": 5}, Separator: " "}
-		features := []float64{1, 2}
-		encoder.TransformInplace(features, "a b")
-		assert.Equal(t, []float64{1, 2}, features)
-	})
-
-	t.Run("feature names does not run when mapping is broken", func(t *testing.T) {
-		encoder := CountVectorizer{Mapping: map[string]uint{"a": 0, "b": 5}, Separator: " "}
-		names := encoder.FeatureNames()
-		assert.Nil(t, names)
-	})
 }
 
 func TestTFIDFVectorizerFit(t *testing.T) {
@@ -141,10 +128,10 @@ func TestTFIDFVectorizerTransform(t *testing.T) {
 				encoder.TransformInplace(features, s.input)
 				assert.Equal(t, s.output, features)
 
+				// note, values in copied range should be zero
 				features = make([]float64, encoder.NumFeatures()+100)
 				features[0] = 11223344556677
 				features[1] = 10101010110101
-				features[10] = 1231 // has to overwrite this
 				features[99] = 1231231231
 
 				expected := make([]float64, len(features))
@@ -167,18 +154,6 @@ func TestTFIDFVectorizerTransform(t *testing.T) {
 		features := []float64{1, 2, 3, 4}
 		encoder.TransformInplace(features, "a b c d")
 		assert.Equal(t, []float64{1, 2, 3, 4}, features)
-	})
-
-	t.Run("inplace does not run when mapping is broken", func(t *testing.T) {
-		encoder := TFIDFVectorizer{
-			CountVectorizer: CountVectorizer{Mapping: map[string]uint{"a": 0, "b": 5}, Separator: " "},
-			NumDocuments:    5,
-			DocCount:        []uint{2, 5},
-		}
-
-		features := []float64{1, 2}
-		encoder.TransformInplace(features, "a b")
-		assert.Equal(t, []float64{1, 2}, features)
 	})
 }
 

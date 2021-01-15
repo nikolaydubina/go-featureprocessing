@@ -16,7 +16,7 @@ import (
 // makeMock creates some valid {{$.StructName}}FeatureTransformer by fitting on fuzzy data.
 // This function is handy for tests.
 func makeMock{{$.StructName}}FeatureTransformer() *{{$.StructName}}FeatureTransformer {
-	s := make([]{{$.StructName}}, 1000000)
+	s := make([]{{$.StructName}}, 10)
 	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&s)
 	
 	tr := {{$.StructName}}FeatureTransformer{}
@@ -25,20 +25,12 @@ func makeMock{{$.StructName}}FeatureTransformer() *{{$.StructName}}FeatureTransf
 }
 
 func Test{{$.StructName}}FeatureTransformerFeatureNames(t *testing.T) {
-	validTransformer := makeMock{{$.StructName}}FeatureTransformer()
-
-	fuzzyTransformer := {{$.StructName}}FeatureTransformer{} 
-	fuzz.New().NilChance(0).NumElements(10, 10).Fuzz(&fuzzyTransformer)
+	tr := makeMock{{$.StructName}}FeatureTransformer()
 
 	t.Run("feature names", func(t *testing.T) {
-		names := validTransformer.FeatureNames()
+		names := tr.FeatureNames()
 		assert.True(t, len(names) > 0)
-		assert.Equal(t, len(names), validTransformer.NumFeatures())
-	})
-
-	t.Run("feature names fuzzy transformer has some feature names", func(t *testing.T) {
-		names := fuzzyTransformer.FeatureNames()
-		assert.True(t, len(names) > 0)
+		assert.Equal(t, len(names), tr.NumFeatures())
 	})
 
 	t.Run("feature name transformer is empty", func(t *testing.T) {
@@ -56,14 +48,10 @@ func Test{{$.StructName}}FeatureTransformerFeatureNames(t *testing.T) {
 }
 
 func Test{{$.StructName}}FeatureTransformerTransform(t *testing.T) {
-	t.Run("empty struct fuzzy transformer", func(t *testing.T) {
-		s := {{$.StructName}}{}
-		
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
+	tr := makeMock{{$.StructName}}FeatureTransformer()
 
-		tr.Transform(&s)
-		
+	t.Run("empty struct", func(t *testing.T) {
+		s := {{$.StructName}}{}
 		features := tr.Transform(&s)
 
 		assert.NotNil(t, features)
@@ -85,42 +73,33 @@ func Test{{$.StructName}}FeatureTransformerTransform(t *testing.T) {
 		assert.Equal(t, tr.NumFeatures(), len(features))
 	})
 
-	t.Run("transformer is nil and struct is not nil", func(t *testing.T) {
+	t.Run("struct is nil", func(t *testing.T) {
+		var s *{{$.StructName}}
+		features := tr.Transform(s)
+		assert.Nil(t, features)
+		assert.True(t, tr.NumFeatures() > 0)
+	})
+
+	t.Run("transformer is nil", func(t *testing.T) {
 		var s {{$.StructName}}
 		fuzz.New().Fuzz(&s)
 		
 		var tr *{{$.StructName}}FeatureTransformer
-
 		features := tr.Transform(&s)
 
 		assert.Nil(t, features)
 		assert.Equal(t, tr.NumFeatures(), 0)
 	})
 
-	t.Run("transformer is not nil but struct is nil", func(t *testing.T) {
-		var s *{{$.StructName}}
-		
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
-		
-		features := tr.Transform(s)
-		
-		assert.Nil(t, features)
-		assert.True(t, tr.NumFeatures() > 0)
-	})
-
 	t.Run("serialize and deserialize transformer", func(t *testing.T) {
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
-
 		output, err := json.Marshal(tr)
 		assert.Nil(t, err)
 		assert.NotEmpty(t, output)
-
+		
 		var tr2 {{$.StructName}}FeatureTransformer
 		err = json.Unmarshal(output, &tr2)
 		assert.Nil(t, err)
-		assert.Equal(t, tr, tr2)
+		assert.Equal(t, *tr, tr2)
 	})
 
 	t.Run("inplace transform does not run when destination does not match num features", func(t *testing.T) {
@@ -128,7 +107,6 @@ func Test{{$.StructName}}FeatureTransformerTransform(t *testing.T) {
 		fuzz.New().Fuzz(&s)
 		
 		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
 
 		features := make([]float64, 1000)
 		features[0] = 123456789.0
@@ -160,8 +138,7 @@ func Test{{$.StructName}}FeatureTransformerTransformAll(t *testing.T) {
 
 		dst := make([]float64, 100)
 
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMock{{$.StructName}}FeatureTransformer()
 		
 		// does not panic
 		tr.TransformAllInplace(dst, s)
@@ -174,8 +151,7 @@ func Test{{$.StructName}}FeatureTransformerTransformAll(t *testing.T) {
 
 		dst := make([]float64, 100 * 120)
 
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMock{{$.StructName}}FeatureTransformer()
 		
 		// does not panic
 		tr.TransformAllInplace(dst, s)
@@ -186,8 +162,7 @@ func Test{{$.StructName}}FeatureTransformerTransformAll(t *testing.T) {
 		s := make([]{{$.StructName}}, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
 		
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMock{{$.StructName}}FeatureTransformer()
 
 		features := tr.TransformAll(s)
 		assert.Equal(t, len(s) * tr.NumFeatures(), len(features))
@@ -197,8 +172,7 @@ func Test{{$.StructName}}FeatureTransformerTransformAll(t *testing.T) {
 		s := make([]{{$.StructName}}, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
 		
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMock{{$.StructName}}FeatureTransformer()
 
 		features := tr.TransformAllParallel(s, 1)
 		assert.Equal(t, len(s) * tr.NumFeatures(), len(features))
@@ -208,8 +182,7 @@ func Test{{$.StructName}}FeatureTransformerTransformAll(t *testing.T) {
 		s := make([]{{$.StructName}}, 100)
 		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&s)
 		
-		tr := {{$.StructName}}FeatureTransformer{}
-		fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+		tr := makeMock{{$.StructName}}FeatureTransformer()
 
 		features := tr.TransformAllParallel(s, 4)
 		assert.Equal(t, len(s) * tr.NumFeatures(), len(features))
@@ -275,8 +248,7 @@ func Benchmark{{$.StructName}}FeatureTransformer_Transform(b *testing.B) {
 	var s {{$.StructName}}
 	fuzz.New().Fuzz(&s)
 	
-	tr := {{$.StructName}}FeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
+	tr := makeMock{{$.StructName}}FeatureTransformer()
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
@@ -288,8 +260,7 @@ func Benchmark{{$.StructName}}FeatureTransformer_Transform_Inplace(b *testing.B)
 	var s {{$.StructName}}
 	fuzz.New().Fuzz(&s)
 	
-	tr := {{$.StructName}}FeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(1, 1).Fuzz(&tr)
+	tr := makeMock{{$.StructName}}FeatureTransformer()
 
 	features := make([]float64, tr.NumFeatures())
 
@@ -303,8 +274,7 @@ func benchTransformAll{{$.StructName}}(b *testing.B, numelem int) {
 	s := make([]{{$.StructName}}, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
 	
-	tr := {{$.StructName}}FeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+	tr := makeMock{{$.StructName}}FeatureTransformer()
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
@@ -340,8 +310,7 @@ func benchTransformAllParallel{{$.StructName}}(b *testing.B, numelem int, nworke
 	s := make([]{{$.StructName}}, numelem)
 	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
 	
-	tr := {{$.StructName}}FeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(100, 100).Fuzz(&tr)
+	tr := makeMock{{$.StructName}}FeatureTransformer()
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
@@ -384,15 +353,15 @@ func Benchmark{{$.StructName}}FeatureTransformer_TransformAll_15000000elems_8wor
 {{if $.HasLargeTransformers}}
 
 func benchLargeTransformer{{$.StructName}}(b *testing.B, numelem int) {
-	var s {{$.StructName}}
-	fuzz.New().Fuzz(&s)
+	var s []{{$.StructName}}
+	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&s)
 	
 	tr := {{$.StructName}}FeatureTransformer{}
-	fuzz.New().NilChance(0).NumElements(numelem, numelem).Fuzz(&tr)
+	tr.Fit(s)
 
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		tr.Transform(&s)
+		tr.Transform(&s[0])
 	}
 }
 
