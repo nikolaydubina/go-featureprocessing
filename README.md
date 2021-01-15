@@ -204,7 +204,6 @@ goarch: amd64
 
 // reflection
 pkg: github.com/nikolaydubina/go-featureprocessing/structtransformer
-BenchmarkStructTransformerTransformSmall-4                               9994407               360 ns/op             120 B/op          4 allocs/op
 BenchmarkStructTransformerTransform_32fields-4                           1732573              2079 ns/op             512 B/op          2 allocs/op
 
 // non-reflection
