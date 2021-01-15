@@ -1,129 +1,21 @@
-GOMAXPROCS=8 go test -bench=. -benchtime=3s -benchmem ./...
+GOMAXPROCS=8 go test -timeout=30m -bench=. -benchtime=3s -benchmem ./...
 ?   	github.com/nikolaydubina/go-featureprocessing/cmd/generate	[no test files]
 goos: darwin
 goarch: amd64
 pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
-BenchmarkAllTransformersFeatureTransformer_Fit_100elements-8                                   	   20132	    152217 ns/op	  115796 B/op	     434 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Fit_1000elements-8                                  	     980	   4212481 ns/op	 8410996 B/op	    4080 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Fit_10000elements-8                                 	      18	 215369803 ns/op	780077914 B/op	   40063 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform-8                                         	11406434	       335 ns/op	     320 B/op	       3 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_Inplace-8                                 	12806739	       254 ns/op	      32 B/op	       2 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10elems-8                              	 1000000	      3407 ns/op	    3392 B/op	      21 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems-8                             	  106009	     35041 ns/op	   36016 B/op	     201 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems-8                            	    9304	    426559 ns/op	  352353 B/op	    2001 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems-8                           	     823	   4317177 ns/op	 3213780 B/op	   20001 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems-8                          	      69	  43994352 ns/op	32109600 B/op	  200001 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems-8                         	       7	 442912932 ns/op	337070240 B/op	 2000001 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10elems_8workers-8                     	  411174	      9627 ns/op	    3408 B/op	      22 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100elems_8workers-8                    	   81745	     45623 ns/op	   36096 B/op	     202 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000elems_8workers-8                   	   10000	    321025 ns/op	  336322 B/op	    2002 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_10000elems_8workers-8                  	    1354	   2567798 ns/op	 3132803 B/op	   20002 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_100000elems_8workers-8                 	     100	  31395354 ns/op	33709501 B/op	  200002 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_1000000elems_8workers-8                	      14	 300237640 ns/op	337071405 B/op	 2000002 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_5000000elems_8workers-8                	       1	3952576087 ns/op	1685315360 B/op	10000002 allocs/op
-BenchmarkAllTransformersFeatureTransformer_TransformAll_15000000elems_8workers-8               	       1	15695225235 ns/op	4936014688 B/op	30000003 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100elements-8             	 2637618	      1818 ns/op	    2720 B/op	       3 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_1000elements-8            	  378268	     13461 ns/op	   24608 B/op	       3 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_10000elements-8           	   42597	     97354 ns/op	  229408 B/op	       3 allocs/op
-BenchmarkAllTransformersFeatureTransformer_Transform_LargeComposites_100000elements-8          	    5395	    777411 ns/op	 2252832 B/op	       3 allocs/op
-BenchmarkEmployeeFeatureTransformer_Fit_100elements-8                                          	   27477	    131468 ns/op	  121186 B/op	     331 allocs/op
-BenchmarkEmployeeFeatureTransformer_Fit_1000elements-8                                         	    1010	   3643320 ns/op	 8214207 B/op	    3024 allocs/op
-BenchmarkEmployeeFeatureTransformer_Fit_10000elements-8                                        	      19	 186340276 ns/op	780086872 B/op	   29819 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform-8                                                	15148066	       301 ns/op	     224 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                                        	19859535	       179 ns/op	      16 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10elems-8                                     	 1000000	      3618 ns/op	    2464 B/op	      11 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                                    	   95866	     34203 ns/op	   23408 B/op	     101 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                                   	    7245	    487302 ns/op	  246016 B/op	    1001 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                                  	    1051	   3031341 ns/op	 2328403 B/op	   10001 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                                 	      98	  31994001 ns/op	23253777 B/op	  100001 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                                	       9	 394976404 ns/op	216542506 B/op	 1000001 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10elems_8workers-8                            	  419458	      8895 ns/op	    2496 B/op	      12 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8                           	   68724	     43769 ns/op	   23424 B/op	     102 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8                          	   14946	    219168 ns/op	  221232 B/op	    1002 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8                         	    1743	   1786362 ns/op	 2089844 B/op	   10002 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8                        	     216	  17018786 ns/op	23256260 B/op	  100002 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8                       	      21	 194411154 ns/op	240541460 B/op	 1000002 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8                       	       2	4210103602 ns/op	1122669876 B/op	 5000003 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8                      	       1	18394674424 ns/op	3488018984 B/op	15000003 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100elements-8                    	 3463478	       996 ns/op	    1808 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_1000elements-8                   	  476054	      7575 ns/op	   16400 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_10000elements-8                  	   58935	     58308 ns/op	  155664 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100000elements-8                 	SIGQUIT: quit
-PC=0x11307b9 m=0 sigcode=0
-
-goroutine 8483770 [running]:
-github.com/nikolaydubina/go-featureprocessing/transformers.(*TFIDFVectorizer).Fit(0xc0003ebe78, 0xc002144000, 0x186a0, 0x186a0)
-	/Users/nikolaydubina/Workspace/go-featureprocessing/transformers/textprocesors.go:107 +0xd9 fp=0xc0003eb638 sp=0xc0003eb5e0 pc=0x11307b9
-github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests.(*EmployeeFeatureTransformer).Fit(0xc0003ebe00, 0xc000ff2000, 0x186a0, 0x186a0)
-	/Users/nikolaydubina/Workspace/go-featureprocessing/cmd/generate/tests/employeefp.go:86 +0x8fa fp=0xc0003ebdc8 sp=0xc0003eb638 pc=0x120571a
-github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests.benchLargeTransformerEmployee(0xc0000d4d80, 0x186a0)
-	/Users/nikolaydubina/Workspace/go-featureprocessing/cmd/generate/tests/employeefp_test.go:355 +0xe7 fp=0xc0003ebec8 sp=0xc0003ebdc8 pc=0x120fd67
-github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests.BenchmarkEmployeeFeatureTransformer_Transform_LargeComposites_100000elements(0xc0000d4d80)
-	/Users/nikolaydubina/Workspace/go-featureprocessing/cmd/generate/tests/employeefp_test.go:376 +0x34 fp=0xc0003ebee8 sp=0xc0003ebec8 pc=0x120ff74
-testing.(*B).runN(0xc0000d4d80, 0x12f2)
-	/usr/local/go/src/testing/benchmark.go:191 +0xeb fp=0xc0003ebf58 sp=0xc0003ebee8 pc=0x10e7acb
-testing.(*B).launch(0xc0000d4d80)
-	/usr/local/go/src/testing/benchmark.go:321 +0xea fp=0xc0003ebfd8 sp=0xc0003ebf58 pc=0x10e818a
-runtime.goexit()
-	/usr/local/go/src/runtime/asm_amd64.s:1374 +0x1 fp=0xc0003ebfe0 sp=0xc0003ebfd8 pc=0x106f721
-created by testing.(*B).doBench
-	/usr/local/go/src/testing/benchmark.go:276 +0x55
-
-goroutine 1 [chan receive]:
-testing.(*B).doBench(0xc0000d4d80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
-	/usr/local/go/src/testing/benchmark.go:277 +0x73
-testing.(*benchContext).processBench(0xc000583b60, 0xc0000d4d80)
-	/usr/local/go/src/testing/benchmark.go:572 +0x226
-testing.(*B).run(0xc0000d4d80)
-	/usr/local/go/src/testing/benchmark.go:268 +0x65
-testing.(*B).Run(0xc0000d4fc0, 0x129d80e, 0x4c, 0x12a4568, 0x10e7700)
-	/usr/local/go/src/testing/benchmark.go:657 +0x42f
-testing.runBenchmarks.func1(0xc0000d4fc0)
-	/usr/local/go/src/testing/benchmark.go:533 +0x78
-testing.(*B).runN(0xc0000d4fc0, 0x1)
-	/usr/local/go/src/testing/benchmark.go:191 +0xeb
-testing.runBenchmarks(0x129c509, 0x40, 0xc000583b40, 0x1438380, 0x6f, 0x6f, 0x143bdc0)
-	/usr/local/go/src/testing/benchmark.go:542 +0x3d1
-testing.(*M).Run(0xc000108080, 0x0)
-	/usr/local/go/src/testing/testing.go:1351 +0x51d
-main.main()
-	_testmain.go:305 +0x138
-
-rax    0xc00af9e000
-rbx    0x60a6
-rcx    0x170ba
-rdx    0xc0003ebe78
-rdi    0x12
-rsi    0x124db60
-rbp    0xc0003eb628
-rsp    0xc0003eb5e0
-r8     0xc000ad0e40
-r9     0xc000ad0e40
-r10    0x12d38b0
-r11    0xc000536340
-r12    0xffffffffffffffff
-r13    0x35
-r14    0x34
-r15    0x200
-rip    0x11307b9
-rflags 0x242
-cs     0x2b
-fs     0x0
-gs     0x0
-*** Test killed with quit: ran too long (11m0s).
-exit status 2
-FAIL	github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests	660.927s
-goos: darwin
-goarch: amd64
-pkg: github.com/nikolaydubina/go-featureprocessing/structtransformer
-BenchmarkStructTransformer_Transform_Small-8                            	 7374414	       410 ns/op	     120 B/op	       4 allocs/op
-BenchmarkStructTransformer_Transform_LargeComposites_100elements-8      	 1564368	      2321 ns/op	    3696 B/op	       6 allocs/op
-BenchmarkStructTransformer_Transform_LargeComposites_1000elements-8     	  266058	     16813 ns/op	   32880 B/op	       6 allocs/op
-BenchmarkStructTransformer_Transform_LargeComposites_10000elements-8    	   27322	    156807 ns/op	  327792 B/op	       6 allocs/op
-BenchmarkStructTransformer_Transform_LargeComposites_100000elements-8   	    1585	   2059174 ns/op	 3211376 B/op	       6 allocs/op
-BenchmarkStructTransformer_Transform_32fields-8                         	 1546998	      2126 ns/op	     512 B/op	       2 allocs/op
-PASS
-ok  	github.com/nikolaydubina/go-featureprocessing/structtransformer	30.596s
-PASS
-ok  	github.com/nikolaydubina/go-featureprocessing/transformers	0.720s
-FAIL
+BenchmarkEmployeeFeatureTransformer_Transform-8                                  	61921623	       222 ns/op	     224 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                          	97289284	       123 ns/op	       0 B/op	       0 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems-8                       	 6169688	      1909 ns/op	    2304 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                      	  614016	     19021 ns/op	   21760 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                     	   56037	    220507 ns/op	  229377 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                    	    4951	   2167243 ns/op	 2080775 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                   	     499	  24436591 ns/op	22405128 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                  	      44	 252416790 ns/op	216006658 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems_8workers-8              	 1663152	      7389 ns/op	    2320 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8             	  445546	     25943 ns/op	   21776 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8            	   68310	    170646 ns/op	  221200 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8           	    7803	   1312244 ns/op	 1925137 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8          	     892	  13702557 ns/op	21602325 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8         	      80	 156102987 ns/op	224002067 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8         	       9	1705636725 ns/op	1120002064 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8        	       1	12213853923 ns/op	3120005136 B/op	       2 allocs/op

@@ -6,6 +6,8 @@ import (
 )
 
 // CountVectorizer performs bag of words encoding of text.
+// Separator should not be a part of any word, responsibility to ensure this
+// is on caller.
 type CountVectorizer struct {
 	Mapping   map[string]uint
 	Separator string // default space
@@ -68,14 +70,41 @@ func (t *CountVectorizer) FeatureNames() []string {
 
 // TransformInplace counts how many time each word appeared in input, inplace version
 // It is responsibility of caller to zero-out destination.
+// Using zero memory allocation algorithm based on strings.Split.
+// Utilizing that string is slice of bytes.
+// Should work fin with UTF-8.
 func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
-	if t == nil || len(t.Mapping) == 0 || len(dest) != t.NumFeatures() {
+	if t == nil || t.Separator == "" || len(t.Mapping) == 0 || len(dest) != t.NumFeatures() {
+		return
+	}
+	sep := t.Separator
+
+	n := strings.Count(v, sep)
+	if n == 0 {
+		// no separators, try to match whole string
+		if idx, ok := t.Mapping[v]; ok {
+			dest[idx] = 1
+		}
 		return
 	}
 
-	for _, w := range strings.Split(v, t.Separator) {
-		if i, ok := t.Mapping[w]; ok {
-			dest[i]++
+	j := 0 // looking for position of separator in v starting from here
+	for i := 0; i < n; i++ {
+		// we are guaranteed to find next separator, m >= 0
+		m := strings.Index(v[j:], sep)
+
+		// word between separators
+		if idx, ok := t.Mapping[v[j:j+m]]; ok {
+			dest[idx]++
+		}
+
+		// increment by current word length and separator length
+		j += m + len(sep)
+	}
+	if j != len(v) {
+		// if string did not end with separator, it ended with word
+		if idx, ok := t.Mapping[v[j:]]; ok {
+			dest[idx]++
 		}
 	}
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func TestCountVectorizer(t *testing.T) {
-	samples := []struct {
+	samplesFit := []struct {
 		name   string
 		input  []string
 		output map[string]uint
@@ -21,7 +21,7 @@ func TestCountVectorizer(t *testing.T) {
 		{"empty", nil, nil},
 	}
 
-	for _, s := range samples {
+	for _, s := range samplesFit {
 		t.Run(s.name, func(t *testing.T) {
 			encoder := CountVectorizer{}
 			encoder.Fit(s.input)
@@ -48,6 +48,31 @@ func TestCountVectorizer(t *testing.T) {
 		encoder := CountVectorizer{Mapping: map[string]uint{"a": 1, "b": 0}}
 		assert.Equal(t, []string{"b", "a"}, encoder.FeatureNames())
 	})
+
+	samplesTransform := []struct {
+		name    string
+		sep     string
+		mapping map[string]uint
+		input   string
+		output  []float64
+	}{
+		{"empty string", "", map[string]uint{"a": 0, "b": 1, "c": 2}, "a b c", []float64{0, 0, 0}},
+		{"no separator", " ", map[string]uint{"a": 0, "b": 1, "c": 2}, "a", []float64{1, 0, 0}},
+		{"no separator repeating not counted", " ", map[string]uint{"a": 0, "b": 1, "c": 2}, "aaa", []float64{0, 0, 0}},
+		{"no separator utf-8", " ", map[string]uint{"안녕": 0, "b": 1, "c": 2}, "안녕", []float64{1, 0, 0}},
+		{"no separator utf-8 repeating not counted", " ", map[string]uint{"a": 0, "b": 1, "c": 2}, "안녕안녕안녕", []float64{0, 0, 0}},
+		{"basic", " ", map[string]uint{"a": 0, "b": 1, "c": 2}, "a b c", []float64{1, 1, 1}},
+		{"ending with separator", " ", map[string]uint{"a": 0, "b": 1, "c": 2}, "a b c ", []float64{1, 1, 1}},
+		{"separators continuosly", " ", map[string]uint{"a": 0, "b": 1, "c": 2}, " a b    c  ", []float64{1, 1, 1}},
+		{"counting", " ", map[string]uint{"a": 0, "b": 1, "c": 2}, "a a a b b c", []float64{3, 2, 1}},
+	}
+
+	for _, s := range samplesTransform {
+		t.Run("transform_inplace_"+s.name, func(t *testing.T) {
+			tr := CountVectorizer{Separator: s.sep, Mapping: s.mapping}
+			assert.Equal(t, s.output, tr.Transform(s.input))
+		})
+	}
 }
 
 func TestTFIDFVectorizerFit(t *testing.T) {
