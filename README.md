@@ -194,8 +194,8 @@ BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8           
 BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8           	    8704	    1505994 ns/op	   2162707 B/op	       2 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8          	     800	   15840396 ns/op	  21602323 B/op	       2 allocs/op
 BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8         	      72	  139700740 ns/op	 192004112 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8         	       9	 1720488586 ns/op 1040007184 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8        	       1	14009776007 ns/op 3240001552 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8         	       9	 1720488586 ns/op       1040007184 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8        	       1	14009776007 ns/op       3240001552 B/op	       2 allocs/op
 ```
 
 ### [beta] Reflection based version
