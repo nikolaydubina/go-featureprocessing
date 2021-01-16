@@ -30,7 +30,7 @@ func (e *{{$.StructName}}FeatureTransformer) Fit(s []{{$.StructName}}) {
 	{{range $i, $tr := $.Fields}}
 
 	for i, v := range s {
-		{{if $tr.NumericalInput }}dataNum[i] = float64(v.{{$tr.Name}}){{else}}dataStr[i] = string(v.{{$tr.Name}}){{end}}
+		{{if $tr.NumericalInput }}dataNum[i] = float64(v.{{$tr.Name}}){{else}}dataStr[i] = v.{{$tr.Name}}{{end}}
 	}
 
 	e.{{$tr.Name}}.Fit({{if $tr.NumericalInput }}dataNum{{else}}dataStr{{end}})
@@ -53,18 +53,13 @@ func (e *{{$.StructName}}FeatureTransformer) TransformInplace(dst []float64, s *
 	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
-
 	idx := 0
 	{{range $i, $tr := $.Fields}}
-
-	{{if $tr.Expanding }}
-	e.{{$tr.Name}}.TransformInplace(dst[idx:idx + e.{{$tr.Name}}.NumFeatures()], s.{{$tr.Name}})
+	{{if $tr.Expanding }}e.{{$tr.Name}}.TransformInplace(dst[idx:idx + e.{{$tr.Name}}.NumFeatures()], s.{{$tr.Name}})
 	idx += e.{{$tr.Name}}.NumFeatures()
-	{{else}}
-	dst[idx] = e.{{$tr.Name}}.Transform( {{if $tr.NumericalInput }}float64{{else}}string{{end}}( s.{{$tr.Name}} ))
+	{{else}}dst[idx] = e.{{$tr.Name}}.Transform( {{if $tr.NumericalInput }}float64{{end}}( s.{{$tr.Name}} ))
 	idx++
 	{{end}}
-
 	{{end}}
 	return
 }

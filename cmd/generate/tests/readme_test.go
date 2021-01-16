@@ -28,8 +28,8 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Kids:   MaxAbsScaler{Max: 4},
 			Weight: StandardScaler{Mean: 60, STD: 25},
 			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
-			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
-			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			City:   OneHotEncoder{Mapping: map[string]uint{"Pangyo": 0, "Seoul": 1, "Daejeon": 2, "Busan": 3}},
+			Car:    OrdinalEncoder{Mapping: map[string]uint{"Tesla": 1, "BMW": 90000}},
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
@@ -68,8 +68,8 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Kids:   MaxAbsScaler{Max: 4},
 			Weight: StandardScaler{Mean: 60, STD: 25},
 			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
-			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
-			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			City:   OneHotEncoder{Mapping: map[string]uint{"Pangyo": 0, "Seoul": 1, "Daejeon": 2, "Busan": 3}},
+			Car:    OrdinalEncoder{Mapping: map[string]uint{"Tesla": 1, "BMW": 90000}},
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
@@ -115,8 +115,8 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Kids:   MaxAbsScaler{Max: 4},
 			Weight: StandardScaler{Mean: 60, STD: 25},
 			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
-			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
-			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			City:   OneHotEncoder{Mapping: map[string]uint{"Pangyo": 0, "Seoul": 1, "Daejeon": 2, "Busan": 3}},
+			Car:    OrdinalEncoder{Mapping: map[string]uint{"Tesla": 1, "BMW": 90000}},
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
@@ -143,8 +143,8 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Kids:   MaxAbsScaler{Max: 4},
 			Weight: StandardScaler{Mean: 60, STD: 25},
 			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
-			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
-			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			City:   OneHotEncoder{Mapping: map[string]uint{"Pangyo": 0, "Seoul": 1, "Daejeon": 2, "Busan": 3}},
+			Car:    OrdinalEncoder{Mapping: map[string]uint{"Tesla": 1, "BMW": 90000}},
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
@@ -199,8 +199,8 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Kids:   MaxAbsScaler{Max: 2},
 			Weight: StandardScaler{Mean: 30, STD: 28.284271247461902},
 			Height: QuantileScaler{Quantiles: []float64{120, 160}},
-			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul"}},
-			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 2}},
+			City:   OneHotEncoder{Mapping: map[string]uint{"Pangyo": 0, "Seoul": 1}},
+			Car:    OrdinalEncoder{Mapping: map[string]uint{"Tesla": 1, "BMW": 2}},
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{420.1, 9000.1}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
@@ -218,8 +218,8 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
 			Kids:   MaxAbsScaler{Max: 4},
 			Weight: StandardScaler{Mean: 60, STD: 25},
 			Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
-			City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
-			Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+			City:   OneHotEncoder{Mapping: map[string]uint{"Pangyo": 0, "Seoul": 1, "Daejeon": 2, "Busan": 3}},
+			Car:    OrdinalEncoder{Mapping: map[string]uint{"Tesla": 1, "BMW": 90000}},
 			Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
 			Description: TFIDFVectorizer{
 				NumDocuments:    2,
@@ -253,12 +253,12 @@ func TestEmployeeFeatureTransformerReadme(t *testing.T) {
         ]
     },
     "City_onehot": {
-        "Values": [
-            "Pangyo",
-            "Seoul",
-            "Daejeon",
-            "Busan"
-        ]
+        "Mapping": {
+            "Busan": 3,
+            "Daejeon": 2,
+            "Pangyo": 0,
+            "Seoul": 1
+        }
     },
     "Car_ordinal": {
         "Mapping": {

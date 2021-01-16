@@ -6,11 +6,19 @@ import (
 )
 
 // CountVectorizer performs bag of words encoding of text.
-// Separator should not be a part of any word, responsibility to ensure this
-// is on caller.
+//
+// Separator should not be a part of any word.
+// Responsibility to ensure this is on caller.
+// Words that have separator as its substring will be ommited.
+//
+// Mapping should contain all values from 0 to N where N is len(Mapping).
+// Responsibility to ensure this is on caller.
+// If some index is higher than N or lower than 0, then code will panic.
+// If some index is not set, then that index will be skipped.
+// If some index is set twice, then index will have sum of words.
 type CountVectorizer struct {
-	Mapping   map[string]uint
-	Separator string // default space
+	Mapping   map[string]uint // word to index
+	Separator string          // default space
 }
 
 // Fit assigns a number from 0 to N for each word in input, where N is number of words
@@ -45,7 +53,7 @@ func (t *CountVectorizer) NumFeatures() int {
 	return len(t.Mapping)
 }
 
-// Transform counts how many time each word appeared in input
+// Transform counts how many times each word appeared in input
 func (t *CountVectorizer) Transform(v string) []float64 {
 	if t == nil || v == "" || len(t.Mapping) == 0 {
 		return nil
@@ -68,11 +76,11 @@ func (t *CountVectorizer) FeatureNames() []string {
 	return names
 }
 
-// TransformInplace counts how many time each word appeared in input, inplace version
+// TransformInplace counts how many time each word appeared in input, inplace version.
 // It is responsibility of caller to zero-out destination.
-// Using zero memory allocation algorithm based on strings.Split.
+// Using zero memory allocation algorithm based on `strings.Split`.
 // Utilizing that string is slice of bytes.
-// Should work fin with UTF-8.
+// Works fine with UTF-8.
 func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
 	if t == nil || t.Separator == "" || len(t.Mapping) == 0 || len(dest) != t.NumFeatures() {
 		return
@@ -112,9 +120,12 @@ func (t *CountVectorizer) TransformInplace(dest []float64, v string) {
 // TFIDFVectorizer performs tf-idf vectorization on top of count vectorization.
 // Based on: https://scikit-learn.org/stable/modules/feature_extraction.html
 // Using non-smooth version, adding 1 to log instead of denominator in idf.
+//
+// DocCount should have len of len(CountVectorizer.Mapping).
+// It is responsibility of a caller to sensure it is so.
 type TFIDFVectorizer struct {
 	CountVectorizer
-	DocCount     []uint // number of documents i-th word appeared in
+	DocCount     []uint // number of documents where i-th word from CountVectorizer appeared in
 	NumDocuments int
 	Normalizer   SampleNormalizerL2
 }

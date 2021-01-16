@@ -62,13 +62,13 @@ func (e *EmployeeFeatureTransformer) Fit(s []Employee) {
 	e.Height.Fit(dataNum)
 
 	for i, v := range s {
-		dataStr[i] = string(v.City)
+		dataStr[i] = v.City
 	}
 
 	e.City.Fit(dataStr)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Car)
+		dataStr[i] = v.Car
 	}
 
 	e.Car.Fit(dataStr)
@@ -80,7 +80,7 @@ func (e *EmployeeFeatureTransformer) Fit(s []Employee) {
 	e.Income.Fit(dataNum)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Description)
+		dataStr[i] = v.Description
 	}
 
 	e.Description.Fit(dataStr)
@@ -102,7 +102,6 @@ func (e *EmployeeFeatureTransformer) TransformInplace(dst []float64, s *Employee
 	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
-
 	idx := 0
 
 	dst[idx] = e.Age.Transform(float64(s.Age))
@@ -123,7 +122,7 @@ func (e *EmployeeFeatureTransformer) TransformInplace(dst []float64, s *Employee
 	e.City.TransformInplace(dst[idx:idx+e.City.NumFeatures()], s.City)
 	idx += e.City.NumFeatures()
 
-	dst[idx] = e.Car.Transform(string(s.Car))
+	dst[idx] = e.Car.Transform((s.Car))
 	idx++
 
 	dst[idx] = e.Income.Transform(float64(s.Income))

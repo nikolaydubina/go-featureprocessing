@@ -1,93 +1,104 @@
 package transformers
 
-import "sort"
-
-// OneHotEncoder encodes string value feature into vector accordingly to order of Values field.
-// This less less efficient than map, but more intuitive.
+// OneHotEncoder encodes string value to corresponding index
+//
+// Mapping should contain all values from 0 to N where N is len(Mapping).
+// Responsibility to ensure this is on caller.
+// If some index is higher than N or lower than 0, then code will panic.
+// If some index is not set, then that index will be skipped.
+// If some index is set twice, then index will have effect of either of words.
 type OneHotEncoder struct {
-	Values []string
+	Mapping map[string]uint // word to index
 }
 
-// Fit assigns each value from inputs a number, then makes string of values and sorts values
-func (t *OneHotEncoder) Fit(vals []string) {
-	if vals == nil {
+// Fit assigns each value from inputs a number
+// based on order of occurrence in input data.
+// Ignoring empty strings in input.
+func (t *OneHotEncoder) Fit(vs []string) {
+	if t == nil || len(vs) == 0 {
 		return
 	}
-	mp := make(map[string]int)
-	for _, v := range vals {
-		if _, ok := mp[v]; !ok {
-			mp[v] = len(mp)
+	t.Mapping = make(map[string]uint)
+	for _, v := range vs {
+		if v == "" {
+			continue
+		}
+		if _, ok := t.Mapping[v]; !ok {
+			t.Mapping[v] = uint(len(t.Mapping))
 		}
 	}
-	t.Values = make([]string, len(mp))
-	for val, idx := range mp {
-		t.Values[idx] = val
-	}
-	sort.Slice(t.Values, func(i, j int) bool {
-		return mp[t.Values[i]] < mp[t.Values[j]]
-	})
 }
 
 // NumFeatures returns number of features one field is expanded
 func (t *OneHotEncoder) NumFeatures() int {
-	return len(t.Values)
+	return len(t.Mapping)
 }
 
 // Transform assigns 1 to value that is found
 func (t *OneHotEncoder) Transform(v string) []float64 {
-	if t == nil || len(t.Values) == 0 {
+	if t == nil || len(t.Mapping) == 0 {
 		return nil
 	}
-	flags := make([]float64, len(t.Values))
-	t.TransformInplace(flags, v)
-	return flags
+	features := make([]float64, t.NumFeatures())
+	t.TransformInplace(features, v)
+	return features
 }
 
-// TransformInplace assigns 1 to value that is found, inplace
+// TransformInplace assigns 1 to value that is found, inplace.
+// It is responsibility of a caller to reset destination to 0.
 func (t *OneHotEncoder) TransformInplace(dest []float64, v string) {
-	if t == nil || len(t.Values) == 0 || len(dest) != len(t.Values) {
+	if t == nil || len(t.Mapping) == 0 || len(dest) != t.NumFeatures() {
 		return
 	}
-	for idx, val := range t.Values {
-		if val == v {
-			dest[idx] = 1
-		} else {
-			dest[idx] = 0
-		}
+	if idx, ok := t.Mapping[v]; ok {
+		dest[idx] = 1
 	}
 }
 
 // FeatureNames returns names of each produced value.
 func (t *OneHotEncoder) FeatureNames() []string {
-	if t == nil || len(t.Values) == 0 {
+	if t == nil || len(t.Mapping) == 0 {
 		return nil
 	}
 	names := make([]string, t.NumFeatures())
-	for i, w := range t.Values {
+	for w, i := range t.Mapping {
 		names[i] = w
 	}
 	return names
 }
 
 // OrdinalEncoder returns 0 for string that is not found, or else a number for that string
+//
+// Mapping should contain all values from 0 to N where N is len(Mapping).
+// Responsibility to ensure this is on caller.
+// If some index is higher than N or lower than 0, then code will panic.
+// If some index is not set, then that index will be skipped.
+// If some index is set twice, then index will have effect of either of words.
 type OrdinalEncoder struct {
-	Mapping map[string]float64
+	Mapping map[string]uint
 }
 
 // Fit assigns each word value from 1 to N
+// Ignoring empty strings in input.
 func (t *OrdinalEncoder) Fit(vals []string) {
-	if len(vals) == 0 {
+	if t == nil || len(vals) == 0 {
 		return
 	}
-	t.Mapping = make(map[string]float64)
+	t.Mapping = make(map[string]uint)
 	for _, v := range vals {
+		if v == "" {
+			continue
+		}
 		if _, ok := t.Mapping[v]; !ok {
-			t.Mapping[v] = float64(len(t.Mapping) + 1)
+			t.Mapping[v] = uint(len(t.Mapping) + 1)
 		}
 	}
 }
 
 // Transform returns number of input, if not found returns zero value which is 0
 func (t *OrdinalEncoder) Transform(v string) float64 {
-	return t.Mapping[v]
+	if t == nil {
+		return 0
+	}
+	return float64(t.Mapping[v])
 }

@@ -63,13 +63,13 @@ func (e *AllTransformersFeatureTransformer) Fit(s []AllTransformers) {
 	e.Name4.Fit(dataNum)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name5)
+		dataStr[i] = v.Name5
 	}
 
 	e.Name5.Fit(dataStr)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name6)
+		dataStr[i] = v.Name6
 	}
 
 	e.Name6.Fit(dataStr)
@@ -81,13 +81,13 @@ func (e *AllTransformersFeatureTransformer) Fit(s []AllTransformers) {
 	e.Name7.Fit(dataNum)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name8)
+		dataStr[i] = v.Name8
 	}
 
 	e.Name8.Fit(dataStr)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name9)
+		dataStr[i] = v.Name9
 	}
 
 	e.Name9.Fit(dataStr)
@@ -109,7 +109,6 @@ func (e *AllTransformersFeatureTransformer) TransformInplace(dst []float64, s *A
 	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
-
 	idx := 0
 
 	dst[idx] = e.Name0.Transform(float64(s.Name0))
@@ -130,7 +129,7 @@ func (e *AllTransformersFeatureTransformer) TransformInplace(dst []float64, s *A
 	e.Name5.TransformInplace(dst[idx:idx+e.Name5.NumFeatures()], s.Name5)
 	idx += e.Name5.NumFeatures()
 
-	dst[idx] = e.Name6.Transform(string(s.Name6))
+	dst[idx] = e.Name6.Transform((s.Name6))
 	idx++
 
 	dst[idx] = e.Name7.Transform(float64(s.Name7))

@@ -42,7 +42,7 @@ func (e *WeirdTagsFeatureTransformer) Fit(s []WeirdTags) {
 	e.FeatureNotFirst.Fit(dataNum)
 
 	for i, v := range s {
-		dataStr[i] = string(v.FirstFeature)
+		dataStr[i] = v.FirstFeature
 	}
 
 	e.FirstFeature.Fit(dataStr)
@@ -60,13 +60,13 @@ func (e *WeirdTagsFeatureTransformer) Fit(s []WeirdTags) {
 	e.A안녕하세요.Fit(dataNum)
 
 	for i, v := range s {
-		dataStr[i] = string(v.B안녕하세요1)
+		dataStr[i] = v.B안녕하세요1
 	}
 
 	e.B안녕하세요1.Fit(dataStr)
 
 	for i, v := range s {
-		dataStr[i] = string(v.C안녕하세요0)
+		dataStr[i] = v.C안녕하세요0
 	}
 
 	e.C안녕하세요0.Fit(dataStr)
@@ -88,7 +88,6 @@ func (e *WeirdTagsFeatureTransformer) TransformInplace(dst []float64, s *WeirdTa
 	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
-
 	idx := 0
 
 	dst[idx] = e.OnlyFeature.Transform(float64(s.OnlyFeature))

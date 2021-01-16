@@ -255,7 +255,6 @@ func (e *With32FieldsFeatureTransformer) TransformInplace(dst []float64, s *With
 	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
-
 	idx := 0
 
 	dst[idx] = e.Name1.Transform(float64(s.Name1))

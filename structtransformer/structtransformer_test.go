@@ -22,8 +22,8 @@ func TestStructTransformer(t *testing.T) {
 		tr := StructTransformer{Transformers: []interface{}{
 			&MinMaxScaler{Min: 1, Max: 10},
 			&StandardScaler{Mean: 15, STD: 2.5},
-			&OneHotEncoder{Values: []string{"male", "female"}},
-			&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+			&OneHotEncoder{Mapping: map[string]uint{"male": 0, "female": 1}},
+			&OrdinalEncoder{Mapping: map[string]uint{"city-A": 1, "city-B": 2}},
 		}}
 
 		assert.Equal(t, []float64{1, 1, 0, 1, 2}, tr.Transform(S{Age: 23, Salary: 17.5, Gender: "female", City: "city-B"}))
@@ -70,8 +70,8 @@ func TestStructTransformer(t *testing.T) {
 		tr := StructTransformer{Transformers: []interface{}{
 			&MinMaxScaler{Min: 1, Max: 10},
 			&StandardScaler{Mean: 15, STD: 2.5},
-			&OneHotEncoder{Values: []string{"male", "female"}},
-			&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+			&OneHotEncoder{Mapping: map[string]uint{"male": 0, "female": 1}},
+			&OrdinalEncoder{Mapping: map[string]uint{"city-A": 1, "city-B": 2}},
 		}}
 		assert.PanicsWithValue(t, "unsupported type in struct", func() { tr.Transform(s) })
 	})
@@ -87,8 +87,8 @@ func TestStructTransformer(t *testing.T) {
 		tr := StructTransformer{Transformers: []interface{}{
 			&MinMaxScaler{Min: 1, Max: 10},
 			nil,
-			&OneHotEncoder{Values: []string{"male", "female"}},
-			&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+			&OneHotEncoder{Mapping: map[string]uint{"male": 0, "female": 1}},
+			&OrdinalEncoder{Mapping: map[string]uint{"city-A": 1, "city-B": 2}},
 		}}
 
 		assert.Equal(t, []float64{1, 0, 1, 2}, tr.Transform(S{Age: 23, Salary: 17.5, Gender: "female", City: "city-B"}))
@@ -106,8 +106,8 @@ func TestStructTransformer(t *testing.T) {
 		tr := StructTransformer{Transformers: []interface{}{
 			&MinMaxScaler{Min: 1, Max: 10},
 			&T{},
-			&OneHotEncoder{Values: []string{"male", "female"}},
-			&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+			&OneHotEncoder{Mapping: map[string]uint{"male": 0, "female": 1}},
+			&OrdinalEncoder{Mapping: map[string]uint{"city-A": 1, "city-B": 2}},
 		}}
 
 		assert.Equal(t, []float64{1, 0, 1, 2}, tr.Transform(S{Age: 23, Salary: 17.5, Gender: "female", City: "city-B"}))
@@ -125,7 +125,7 @@ func TestStructTransformer(t *testing.T) {
 		tr := StructTransformer{Transformers: []interface{}{
 			&MinMaxScaler{Min: 1, Max: 10},
 			&StandardScaler{Mean: 15, STD: 2.5},
-			&OneHotEncoder{Values: []string{"male", "female"}},
+			&OneHotEncoder{Mapping: map[string]uint{"male": 0, "female": 1}},
 			&T{},
 		}}
 
@@ -167,8 +167,8 @@ func BenchmarkStructTransformer_Transform_Small(b *testing.B) {
 	tr := StructTransformer{Transformers: []interface{}{
 		&MinMaxScaler{Min: 1, Max: 10},
 		&StandardScaler{Mean: 15, STD: 2.5},
-		&OneHotEncoder{Values: []string{"male", "female"}},
-		&OrdinalEncoder{Mapping: map[string]float64{"city-A": 1, "city-B": 2}},
+		&OneHotEncoder{Mapping: map[string]uint{"male": 0, "female": 1}},
+		&OrdinalEncoder{Mapping: map[string]uint{"city-A": 1, "city-B": 2}},
 	}}
 
 	s := S{
@@ -212,15 +212,15 @@ func randomSliceString(num int, strlen int) []string {
 	return ret
 }
 
-func randomMappingString(num int, strlen int) map[string]float64 {
-	ret := make(map[string]float64)
+func randomMappingString(num int, strlen int) map[string]uint {
+	ret := make(map[string]uint)
 	for i := 0; i < num; i++ {
-		ret[randomString(strlen)] = float64(i)
+		ret[randomString(strlen)] = uint(i)
 	}
 	return ret
 }
 
-func getAnyKeyFromMap(mp map[string]float64) string {
+func getAnyKeyFromMap(mp map[string]uint) string {
 	for k := range mp {
 		return k
 	}
@@ -240,8 +240,8 @@ func benchLargeTransformer(b *testing.B, numelem int) {
 	}
 
 	tr := StructTransformer{Transformers: []interface{}{
-		&OneHotEncoder{Values: randomSliceString(numelem, 20)},
-		&OneHotEncoder{Values: randomSliceString(numelem, 20)},
+		&OneHotEncoder{Mapping: randomMappingString(numelem, 20)},
+		&OneHotEncoder{Mapping: randomMappingString(numelem, 20)},
 		&OrdinalEncoder{Mapping: randomMappingString(numelem, 20)},
 		&OrdinalEncoder{Mapping: randomMappingString(numelem, 20)},
 		&QuantileScaler{Quantiles: randomSliceFloat64(numelem)},
@@ -251,8 +251,8 @@ func benchLargeTransformer(b *testing.B, numelem int) {
 	}}
 
 	s := S{
-		Name1: tr.Transformers[0].(*OneHotEncoder).Values[randomInt(1, numelem-1)],
-		Name2: tr.Transformers[1].(*OneHotEncoder).Values[randomInt(1, numelem-1)],
+		Name1: getAnyKeyFromMap(tr.Transformers[0].(*OrdinalEncoder).Mapping),
+		Name2: getAnyKeyFromMap(tr.Transformers[1].(*OrdinalEncoder).Mapping),
 		Name3: getAnyKeyFromMap(tr.Transformers[2].(*OrdinalEncoder).Mapping),
 		Name4: getAnyKeyFromMap(tr.Transformers[3].(*OrdinalEncoder).Mapping),
 		Name5: tr.Transformers[4].(*QuantileScaler).Quantiles[randomInt(1, numelem-1)],

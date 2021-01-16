@@ -31,25 +31,25 @@ func (e *LargeMemoryTransformerFeatureTransformer) Fit(s []LargeMemoryTransforme
 	dataStr := make([]string, len(s))
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name1)
+		dataStr[i] = v.Name1
 	}
 
 	e.Name1.Fit(dataStr)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name2)
+		dataStr[i] = v.Name2
 	}
 
 	e.Name2.Fit(dataStr)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name3)
+		dataStr[i] = v.Name3
 	}
 
 	e.Name3.Fit(dataStr)
 
 	for i, v := range s {
-		dataStr[i] = string(v.Name4)
+		dataStr[i] = v.Name4
 	}
 
 	e.Name4.Fit(dataStr)
@@ -95,7 +95,6 @@ func (e *LargeMemoryTransformerFeatureTransformer) TransformInplace(dst []float6
 	if s == nil || e == nil || len(dst) != e.NumFeatures() {
 		return
 	}
-
 	idx := 0
 
 	e.Name1.TransformInplace(dst[idx:idx+e.Name1.NumFeatures()], s.Name1)
@@ -104,10 +103,10 @@ func (e *LargeMemoryTransformerFeatureTransformer) TransformInplace(dst []float6
 	e.Name2.TransformInplace(dst[idx:idx+e.Name2.NumFeatures()], s.Name2)
 	idx += e.Name2.NumFeatures()
 
-	dst[idx] = e.Name3.Transform(string(s.Name3))
+	dst[idx] = e.Name3.Transform((s.Name3))
 	idx++
 
-	dst[idx] = e.Name4.Transform(string(s.Name4))
+	dst[idx] = e.Name4.Transform((s.Name4))
 	idx++
 
 	dst[idx] = e.Name5.Transform(float64(s.Name5))

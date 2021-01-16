@@ -81,7 +81,7 @@ Serialized transformer is easy to read, update, and integrate with other tools.
    "Kids_maxabs": {"Max": 4},
    "Weight_standard": {"Mean": 60, "STD": 25},
    "Height_quantile": {"Quantiles": [20, 100, 110, 120, 150]},
-   "City_onehot": {"Values": ["Pangyo", "Seoul", "Daejeon", "Busan"]},
+   "City_onehot": {"Mapping": {"Pangyo": 0, "Seoul": 1, "Daejeon": 2, "Busan": 3},
    "Car_ordinal": {"Mapping": {"BMW": 90000, "Tesla": 1}},
    "Income_kbins": {"Quantiles": [1000, 1100, 2000, 3000, 10000]},
    "Description_tfidf": {
@@ -101,13 +101,13 @@ fp := EmployeeFeatureTransformer{
    Kids:   MaxAbsScaler{Max: 4},
    Weight: StandardScaler{Mean: 60, STD: 25},
    Height: QuantileScaler{Quantiles: []float64{20, 100, 110, 120, 150}},
-   City:   OneHotEncoder{Values: []string{"Pangyo", "Seoul", "Daejeon", "Busan"}},
-   Car:    OrdinalEncoder{Mapping: map[string]float64{"Tesla": 1, "BMW": 90000}},
+   City:   OneHotEncoder{Mapping: map[string]uint{"Pangyo": 0, "Seoul": 1, "Daejeon": 2, "Busan": 3}},
+   Car:    OrdinalEncoder{Mapping: map[string]uint{"Tesla": 1, "BMW": 90000}},
    Income: KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: []float64{1000, 1100, 2000, 3000, 10000}}},
    Description: TFIDFVectorizer{
       NumDocuments:    2,
       DocCount:        []uint{1, 2, 2},
-      CountVectorizer: CountVectorizer{Mapping: map[string]int{"text": 0, "problem": 1, "help": 2}, Separator: " "},
+      CountVectorizer: CountVectorizer{Mapping: map[string]uint{"text": 0, "problem": 1, "help": 2}, Separator: " "},
    },
 }
 ```
@@ -139,7 +139,7 @@ For typical use, with this struct encoder you can get ~100ns processing time for
                20ns      - DDR4 CAS, first byte from memory latency
                20ns      - C++ raw hardcoded structs access
                80ns      - C++ FlatBuffers decode/traverse/dealloc
- ---------->  130ns      - go-featureprocessing typical processing
+ ---------->  100ns      - go-featureprocessing typical processing
               150ns      - PCIe bus latency
               171ns      - Go cgo call boundary, 2015
               200ns      - some High Frequency Trading FPGA claims
@@ -180,22 +180,22 @@ For full benchmarks go to `/docs/benchmarks`, some extract for typical struct:
 goos: darwin
 goarch: amd64
 pkg: github.com/nikolaydubina/go-featureprocessing/cmd/generate/tests
-BenchmarkEmployeeFeatureTransformer_Transform-8                                  	58974885	       203 ns/op	     208 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                          	92727553	       140 ns/op	       0 B/op	       0 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10elems-8                       	 6119355	      1894 ns/op	    2304 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                      	  618709	     20344 ns/op	   24576 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                     	   53894	    223998 ns/op	  229376 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                    	    5455	   2262200 ns/op	 2162694 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                   	     487	  25268212 ns/op	21602307 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                  	      43	 251433955 ns/op       216006658 B/op	       1 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10elems_8workers-8              	 1667092	      7401 ns/op	    2320 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8             	  479625	     27722 ns/op	   21776 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8            	   68299	    172469 ns/op	  221200 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8           	    8300	   1332310 ns/op	 2162706 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8          	     936	  13418078 ns/op	20807703 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8         	      96	 123383038 ns/op       216006675 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8         	       7	1432692704 ns/op      1080000528 B/op	       2 allocs/op
-BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8        	       1       16932645112 ns/op      3120005136 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform-8                                  	62135674	        206 ns/op	       208 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_Transform_Inplace-8                          	89993084	        123 ns/op	         0 B/op	       0 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems-8                       	 5921253	       1881 ns/op	      2048 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems-8                      	  528890	      20532 ns/op	     21760 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems-8                     	   53524	     238542 ns/op	    221185 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems-8                    	    4879	    2267683 ns/op	   2007048 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems-8                   	     475	   23257147 ns/op	  20004876 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems-8                  	      46	  284763749 ns/op	 192004098 B/op	       1 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10elems_8workers-8              	 1552704	       7362 ns/op	      2064 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100elems_8workers-8             	  412455	      29814 ns/op	     21776 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000elems_8workers-8            	   63822	     177183 ns/op	    213008 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_10000elems_8workers-8           	    8704	    1505994 ns/op	   2162707 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_100000elems_8workers-8          	     800	   15840396 ns/op	  21602323 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_1000000elems_8workers-8         	      72	  139700740 ns/op	 192004112 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_5000000elems_8workers-8         	       9	 1720488586 ns/op 1040007184 B/op	       2 allocs/op
+BenchmarkEmployeeFeatureTransformer_TransformAll_15000000elems_8workers-8        	       1	14009776007 ns/op 3240001552 B/op	       2 allocs/op
 ```
 
 ### [beta] Reflection based version
