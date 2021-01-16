@@ -56,10 +56,10 @@ var fp EmployeeFeatureTransformer
 config, _ := ioutil.ReadAll("employee_feature_processor.json")
 json.Unmarshal(config, &fp)
 
-fp.Transform(&employee)
+features := fp.Transform(&employee)
 // []float64{22, 1, 0.5, 1.0039999999999998, 1, 1, 0, 0, 0, 1, 5, 0.7674945674619879, 0.4532946552278861, 0.4532946552278861}
 
-fp.FeatureNames()
+names := fp.FeatureNames()
 // []string{"Age", "Salary", "Kids", "Weight", "Height", "City_Pangyo", "City_Seoul", "City_Daejeon", "City_Busan", "Car", "Income", "Description_text", "Description_problem", "Description_help"}
 ```
 
