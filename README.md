@@ -19,7 +19,8 @@ Fast, simple [sklearn](https://scikit-learn.org/stable/modules/preprocessing.htm
 - [x] Faster than sklearn in batch mode
 - [ ] SIMD
 - [ ] CUDA
-- [ ] hand-crafted assembly and analysis of assaembly 
+- [ ] hand-crafted assembly and analysis of assaembly
+- [ ] No-heap version
 
 ```go
 //go:generate go run github.com/nikolaydubina/go-featureprocessing/cmd/generate -struct=Employee
