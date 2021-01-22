@@ -61,7 +61,6 @@ func (e *{{$.StructName}}FeatureTransformer) TransformInplace(dst []float64, s *
 	idx++
 	{{end}}
 	{{end}}
-	return
 }
 
 // TransformAll transforms a slice of {{$.StructName}}
@@ -83,7 +82,7 @@ func (e *{{$.StructName}}FeatureTransformer) TransformAllInplace(dst []float64, 
 	if len(dst) != n * len(s) {
 		return 
 	}
-	for i, _ := range s {
+	for i := range s {
 		e.TransformInplace(dst[i * n: (i + 1) * n], &s[i])
 	}
 }

@@ -86,25 +86,16 @@ type LargeMemoryTransformer struct {
 
 // WeirdTags has unusual but valid tags
 type WeirdTags struct {
-	OnlyFeature     float64 `feature:"minmax"`
-	FeatureNotFirst float64 `json:"name2" feature:"maxabs"`
-	FirstFeature    string  `feature:"onehot" json:"some_json_tag"`
-	Multiline       float64 `json:"name2" 
-	feature:"maxabs"
-	`
-	WithoutFeatureTag string `json:"with_tag"`
-	WeirdTag          string `jsonsadfasd;lk1 asdf;lkads;lfa
-	
-	asd;flksd;laf
-	
-	a;sdfkl`
+	OnlyFeature       float64 `feature:"minmax"`
+	FeatureNotFirst   float64 `json:"name2" feature:"maxabs"`
+	FirstFeature      string  `feature:"onehot" json:"some_json_tag"`
+	Multiline         float64 `json:"multiline" feature:"maxabs"`
+	WithoutFeatureTag string  `json:"with_tag"`
+
 	WithoutTag string
 
 	// UTF-8 is allowed
 	A안녕하세요  int    `feature:"minmax"`
 	B안녕하세요1 string `feature:"onehot"`
 	C안녕하세요0 string `feature:"tfidf"`
-
-	// UTF-8 that starts from non-latin rune is skipped
-	안녕하세요2 string `feature:"tfidf"`
 }

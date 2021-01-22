@@ -131,7 +131,6 @@ func (e *EmployeeFeatureTransformer) TransformInplace(dst []float64, s *Employee
 	e.Description.TransformInplace(dst[idx:idx+e.Description.NumFeatures()], s.Description)
 	idx += e.Description.NumFeatures()
 
-	return
 }
 
 // TransformAll transforms a slice of Employee
@@ -153,7 +152,7 @@ func (e *EmployeeFeatureTransformer) TransformAllInplace(dst []float64, s []Empl
 	if len(dst) != n*len(s) {
 		return
 	}
-	for i, _ := range s {
+	for i := range s {
 		e.TransformInplace(dst[i*n:(i+1)*n], &s[i])
 	}
 }

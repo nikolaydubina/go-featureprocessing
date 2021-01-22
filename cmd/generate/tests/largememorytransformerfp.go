@@ -121,7 +121,6 @@ func (e *LargeMemoryTransformerFeatureTransformer) TransformInplace(dst []float6
 	dst[idx] = e.Name8.Transform(float64(s.Name8))
 	idx++
 
-	return
 }
 
 // TransformAll transforms a slice of LargeMemoryTransformer
@@ -143,7 +142,7 @@ func (e *LargeMemoryTransformerFeatureTransformer) TransformAllInplace(dst []flo
 	if len(dst) != n*len(s) {
 		return
 	}
-	for i, _ := range s {
+	for i := range s {
 		e.TransformInplace(dst[i*n:(i+1)*n], &s[i])
 	}
 }

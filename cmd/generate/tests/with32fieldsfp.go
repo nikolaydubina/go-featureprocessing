@@ -350,7 +350,6 @@ func (e *With32FieldsFeatureTransformer) TransformInplace(dst []float64, s *With
 	dst[idx] = e.Name32.Transform(float64(s.Name32))
 	idx++
 
-	return
 }
 
 // TransformAll transforms a slice of With32Fields
@@ -372,7 +371,7 @@ func (e *With32FieldsFeatureTransformer) TransformAllInplace(dst []float64, s []
 	if len(dst) != n*len(s) {
 		return
 	}
-	for i, _ := range s {
+	for i := range s {
 		e.TransformInplace(dst[i*n:(i+1)*n], &s[i])
 	}
 }

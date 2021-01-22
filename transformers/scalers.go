@@ -136,7 +136,6 @@ func (t *QuantileScaler) Fit(vals []float64) {
 		idx := int(float64(i) * f)
 		t.Quantiles[i] = sorted[idx]
 	}
-	return
 }
 
 // Transform changes distribution into uniform one from 0 to 1

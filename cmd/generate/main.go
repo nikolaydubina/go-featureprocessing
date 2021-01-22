@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"go.uber.org/multierr"
 )
 
 func run() error {
@@ -66,7 +68,7 @@ func generate(params *TemplateParams, outfilepath string, templateName string, t
 	return nil
 }
 
-func writeCodeToFile(code []byte, outfilepath string) error {
+func writeCodeToFile(code []byte, outfilepath string) (err error) {
 	formattedCode, err := format.Source(code)
 	if err != nil {
 		return fmt.Errorf("can not format code: %w, code: %s", err, code)
@@ -80,7 +82,7 @@ func writeCodeToFile(code []byte, outfilepath string) error {
 	if err != nil {
 		return fmt.Errorf("can not create file: %w", err)
 	}
-	defer file.Close()
+	defer func() { err = multierr.Combine(err, file.Close()) }()
 
 	if _, err := file.Write(formattedCode); err != nil {
 		return fmt.Errorf("can not write code to file: %w", err)

@@ -204,14 +204,6 @@ func randomSliceFloat64(num int) []float64 {
 	return ret
 }
 
-func randomSliceString(num int, strlen int) []string {
-	ret := make([]string, num)
-	for i := 0; i < num; i++ {
-		ret[i] = randomString(strlen)
-	}
-	return ret
-}
-
 func randomMappingString(num int, strlen int) map[string]uint {
 	ret := make(map[string]uint)
 	for i := 0; i < num; i++ {
@@ -246,8 +238,8 @@ func benchLargeTransformer(b *testing.B, numelem int) {
 		&OrdinalEncoder{Mapping: randomMappingString(numelem, 20)},
 		&QuantileScaler{Quantiles: randomSliceFloat64(numelem)},
 		&QuantileScaler{Quantiles: randomSliceFloat64(numelem)},
-		&KBinsDiscretizer{QuantileScaler{Quantiles: randomSliceFloat64(numelem)}},
-		&KBinsDiscretizer{QuantileScaler{Quantiles: randomSliceFloat64(numelem)}},
+		&KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: randomSliceFloat64(numelem)}},
+		&KBinsDiscretizer{QuantileScaler: QuantileScaler{Quantiles: randomSliceFloat64(numelem)}},
 	}}
 
 	s := S{

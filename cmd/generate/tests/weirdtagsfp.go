@@ -111,7 +111,6 @@ func (e *WeirdTagsFeatureTransformer) TransformInplace(dst []float64, s *WeirdTa
 	e.C안녕하세요0.TransformInplace(dst[idx:idx+e.C안녕하세요0.NumFeatures()], s.C안녕하세요0)
 	idx += e.C안녕하세요0.NumFeatures()
 
-	return
 }
 
 // TransformAll transforms a slice of WeirdTags
@@ -133,7 +132,7 @@ func (e *WeirdTagsFeatureTransformer) TransformAllInplace(dst []float64, s []Wei
 	if len(dst) != n*len(s) {
 		return
 	}
-	for i, _ := range s {
+	for i := range s {
 		e.TransformInplace(dst[i*n:(i+1)*n], &s[i])
 	}
 }
