@@ -8,15 +8,18 @@
 
 Fast, simple [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html)-like feature processing for Go
 
-- ✅ Does not cross `cgo` boundary
-- ✅ No memory allocation
-- ✅ No reflection
-- ✅ Convenient serialization
-- ✅ Generated code has 100% test coverage and benchmarks
-- ✅ Fitting
-- ✅ UTF-8
-- ✅ Parallel batch transform
-- ✅ Faster than sklearn in batch mode
+- [x] Does not cross `cgo` boundary
+- [x] No memory allocation
+- [x] No reflection
+- [x] Convenient serialization
+- [x] Generated code has 100% test coverage and benchmarks
+- [x] Fitting
+- [x] UTF-8
+- [x] Parallel batch transform
+- [x] Faster than sklearn in batch mode
+- [ ] SIMD
+- [ ] CUDA
+- [ ] hand-crafted assembly and analysis of assaembly 
 
 ```go
 //go:generate go run github.com/nikolaydubina/go-featureprocessing/cmd/generate -struct=Employee
@@ -233,16 +236,6 @@ gencode:
 
 reflect:
 ![reflect](docs/reflect_transform_cpu_profile.png)
-
-### Comments, Corrections, Feature Requests, Improvements
-
-Feel free to open an issue or submit a PR! Some outstanding tasks:
-
-- [ ] multiple transformers for same field
-- [ ] order fields in order different from struct declaration
-- [ ] hand-crafted assembly
-- [ ] SIMD
-- [ ] CUDA support
 
 ### Reference
 
