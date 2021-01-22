@@ -6,9 +6,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/nikolaydubina/go-featureprocessing.svg)](https://pkg.go.dev/github.com/nikolaydubina/go-featureprocessing)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-> _Perfect for low latency machine learning inference of data models in Go_
-
-Ultra-fast and simple feature processing in Go with functionality matching [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html).
+Fast, simple [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html)-like feature processing in Go.
 
 - ✅ Does not cross `cgo` boundary
 - ✅ No memory allocation
