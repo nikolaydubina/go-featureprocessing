@@ -6,7 +6,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/nikolaydubina/go-featureprocessing.svg)](https://pkg.go.dev/github.com/nikolaydubina/go-featureprocessing)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-Fast, simple [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html)-like feature processing for Go
+[Fast](https://github.com/nikolaydubina/go-ml-benchmarks), simple [sklearn](https://scikit-learn.org/stable/modules/preprocessing.html)-like feature processing for Go
 
 - [x] Does not cross `cgo` boundary
 - [x] No memory allocation
@@ -19,8 +19,9 @@ Fast, simple [sklearn](https://scikit-learn.org/stable/modules/preprocessing.htm
 - [x] Faster than sklearn in batch mode
 - [ ] SIMD
 - [ ] CUDA
-- [ ] hand-crafted assembly and analysis of assaembly
-- [ ] No-heap version
+- [ ] assembly analysis and hand-crafted version
+- [ ] no-heap version
+- [ ] ONNX model import
 
 ```go
 //go:generate go run github.com/nikolaydubina/go-featureprocessing/cmd/generate -struct=Employee
@@ -238,6 +239,10 @@ gencode:
 reflect:
 ![reflect](docs/reflect_transform_cpu_profile.png)
 
+## GitHub stars over time
+
+[![GitHub stars over time](https://starchart.cc/nikolaydubina/go-featureprocessing.svg)](https://starchart.cc/nikolaydubina/go-featureprocessing)
+      
 ### Reference
 
 - https://dave.cheney.net/2016/01/18/cgo-is-not-go
