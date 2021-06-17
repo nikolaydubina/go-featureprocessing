@@ -17,11 +17,6 @@
 - [x] UTF-8
 - [x] Parallel batch transform
 - [x] Faster than sklearn in batch mode
-- [ ] SIMD
-- [ ] CUDA
-- [ ] assembly analysis and hand-crafted version
-- [ ] no-heap version
-- [ ] ONNX model import
 
 ```go
 //go:generate go run github.com/nikolaydubina/go-featureprocessing/cmd/generate -struct=Employee
@@ -115,20 +110,6 @@ fp := EmployeeFeatureTransformer{
    },
 }
 ```
-
-### Supported transformers
-
-- [x] `numerical` MinMaxScaler
-- [x] `numerical` MaxAbsScaler
-- [x] `numerical` StandardScaler
-- [x] `numerical` QuantileScaler
-- [x] `numerical` SampleNormalizerL1
-- [x] `numerical` SampleNormalizerL2
-- [x] `categorical` OneHotEncoder
-- [x] `categorical` OrdinalEncoder
-- [x] `numerical` KBinsDiscretizer
-- [x] `text` CountVectorizer
-- [x] `text` TFIDFVectorizer
 
 ### Benchmarks
 
