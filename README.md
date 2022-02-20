@@ -219,10 +219,6 @@ gencode:
 
 reflect:
 ![reflect](docs/reflect_transform_cpu_profile.png)
-
-## GitHub stars over time
-
-[![GitHub stars over time](https://starchart.cc/nikolaydubina/go-featureprocessing.svg)](https://starchart.cc/nikolaydubina/go-featureprocessing)
       
 ### Reference
 
