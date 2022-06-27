@@ -4,6 +4,6 @@ go 1.15
 
 require (
 	github.com/google/gofuzz v1.2.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.5
 	go.uber.org/multierr v1.8.0
 )
