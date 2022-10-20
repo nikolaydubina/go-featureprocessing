@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: If you reference this library in publication, please cite it as below.
+title: Feature Pre-processing in Go
+abstract: High-performance machine learning feature preprocessing in Go
+authors:
+- family-names: Dubina
+  given-names: Nikolay
+version: 2.1
+date-released: 2020-12-21
+license: MIT
+repository-code: https://github.com/nikolaydubina/go-featureprocessing
+url: https://github.com/nikolaydubina/go-featureprocessing
