@@ -1,39 +1,41 @@
-name: Tests 
+name: Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 permissions: read-all
 
 jobs:
-
   build:
-    name: Tests 
+    name: Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.15
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version: ^1.15
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Test
+        run: |
+          go generate ./...
+          go get -v -t -d ./...
+          go install github.com/jstemmer/go-junit-report/v2@latest
+          go test -coverprofile=coverage.out -covermode=atomic -cover -json -v ./... 2>&1 | go-junit-report -set-exit-code > tests.xml
 
-    - name: Get dependencies
-      run: |
-        export PATH=$PATH:$(go env GOPATH)/bin
-        make install-tools
-    
-    - name: Test
-      run: make test
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: tests.xml
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: coverage.txt
-        verbose: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4.1.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.out

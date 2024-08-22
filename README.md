@@ -193,6 +193,10 @@ And you would get ~20x time increase for struct with 32 fields.
 Note, some features like serialization and de-serialization are not supported yet.
 
 Benchmarks:
+```bash
+go test -timeout=1h -bench=. -benchtime=10s -benchmem ./...
+```
+
 ```
 goos: darwin
 goarch: amd64
@@ -211,8 +215,14 @@ BenchmarkWith32FieldsFeatureTransformer_Transform_Inplace-8           	80729049	
 
 From profiling benchmarks for struct with 32 fields, we see that reflect version takes much longer and spends time on what looks like reflection related code.
 Meanwhile `go:generate` version is fast enough to compar to testing routines themselves and spends 50% of the time on allocating single output slice, which is good since means memory access is a bottleneck.
-Run `make profile` to make profiles.
 Flamegraphs were produced from pprof output by https://www.speedscope.app/.
+
+Make profiles with 
+```bash
+mkdir -p docs/benchmark_profiles
+go test -bench=BenchmarkWith32FieldsFeatureTransformer_Transform -benchtime=3s -benchmem -memprofile docs/benchmark_profiles/codegen_transform_mem.profile -cpuprofile docs/benchmark_profiles/codegen_transform_cpu.profile ./cmd/generate/tests
+go test -bench=BenchmarkStructTransformer_Transform_32fields -benchtime=3s -benchmem -memprofile docs/benchmark_profiles/reflect_transform_mem.profile -cpuprofile docs/benchmark_profiles/reflect_transform_cpu.profile ./structtransformer
+```
 
 gencode:
 ![gencode](docs/codegen_transform_cpu_profile.png)
